@@ -1,0 +1,18 @@
+body {
+	text-align: center;
+}
+.login-form {
+	text-align: center;
+	display: inline-block;
+}
+.login-wrapper {
+	text-align: center;
+	margin: auto;
+	display: inline-block;
+}
+.right {
+	float: right;
+}
+.left {
+	float:left;
+}

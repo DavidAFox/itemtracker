@@ -1,0 +1,89 @@
+<div class="panel panel-default">
+    <div class="panel-heading" id="sales-heading">
+        <h1>Sales</h1>
+    </div>
+    <div class="panel-body">
+        <label>By Date: </label><input type="checkbox" [(ngModel)]="datesSelected" (ngModelChange)="updateSales()"/>
+        <div class="form-group" *ngIf="datesSelected"><label>Start Date</label><br>
+            <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="startMonth"/>
+            <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="startDay"/>
+            <label>Y</label><input (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="startYear"/>
+        </div>
+        <div class="form-group" *ngIf="datesSelected"><label>End Date</label><br>
+            <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="endMonth"/>
+            <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="endDay"/>
+            <label>Y</label><input  (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="endYear"/>
+        </div>
+        <label>By Location: </label><input type="checkbox" [(ngModel)]="locationSelected"/>
+        <div class="form-group" *ngIf="locationSelected"><label>Location</label>
+           <input type="text" [(ngModel)]="location"/>
+        </div>
+        <div class="table-responsive">
+            <table class= "table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th (click)="sortBy('itemId')">
+                            <label>Product #</label>
+                            <span *ngIf="(sort==='itemId' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='itemId' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>                            
+                        </th>
+                        <th (click)="sortBy('name')">
+                            <label>Name</label>
+                            <span *ngIf="(sort==='name' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='name' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>          
+                        </th>
+                        <th (click)="sortBy('price')">
+                            <label>Price Sold</label>
+                            <span *ngIf="(sort==='price' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='price' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>                        
+                        </th>
+                        <th (click)="sortBy('originalPrice')">
+                            <label>Original Price</label>
+                            <span *ngIf="(sort==='originalPrice' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='originalPrice' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th (click)="sortBy('originalSalePrice')">
+                            <label>Sale Price</label>
+                            <span *ngIf="(sort==='originalSalePrice' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='originalSalePrice' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th (click)="sortBy('quantity')">
+                            <label>Quantity</label>
+                            <span *ngIf="(sort==='quantity' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='quantity' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th (click)="sortBy('totalSale')">
+                            <label>Total Sale</label>
+                            <span *ngIf="(sort==='totalSale' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='totalSale' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>               
+                        <th (click)="sortBy('where')">
+                            <label>Where Sold</label>
+                            <span *ngIf="(sort==='where' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='where' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th (click)="sortBy('date')">
+                            <label>Date</label>
+                            <span *ngIf="(sort==='date' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                            <span *ngIf="(sort==='date' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="#sale of sales" (click)="edit(sale)" [hidden]="!(!locationSelected || locMatch(sale.where))">
+                        <td>{{sale.itemId}}</td>
+                        <td>{{itemNames[sale.itemId]}}</td>
+                        <td>{{sale.price / 100 | currency:'USD':true:'1.2-2'}}</td>
+                        <td>{{sale.originalPrice / 100 | currency:'USD':true:'1.2-2'}}</td>
+                        <td>{{sale.originalSalePrice / 100 | currency:'USD':true:'1.2-2'}}</td>
+                        <td>{{sale.quantity}}</td>
+                        <td>{{sale.price * sale.quantity / 100 | currency:'USD':true:'1.2-2'}}</td>
+                        <td>{{sale.where}}</td>
+                        <td>{{sale.date.getMonth()+1}}-{{sale.date.getDate()}}-{{sale.date.getFullYear()}}</td>
+                    </tr>
+                </tbody>    
+            </table>
+        </div>
+        <label>Total Sales:</label>{{total(sales) / 100 | currency:'USD':true:'1.2-2'}}
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+</div>    

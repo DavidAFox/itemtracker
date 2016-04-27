@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Sales Tax</h1>
+                </div>
+                <div class="panel-body">
+                    <label>By Date: </label><input type="checkbox" [(ngModel)]="datesSelected" (ngModelChange)="updateStolens()"/>
+                    <div class="form-group" *ngIf="datesSelected"><label>Start Date</label><br>
+                        <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="startMonth"/>
+                        <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="startDay"/>
+                        <label>Y</label><input (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="startYear"/>
+                    </div>
+                    <div class="form-group" *ngIf="datesSelected"><label>End Date</label><br>
+                        <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="endMonth"/>
+                        <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="endDay"/>
+                        <label>Y</label><input  (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="endYear"/>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label>Product #</label>
+                                    </th>
+                                    <th>
+                                        <label>Name</label>
+                                    </th>
+                                    <th>
+                                        <label>Price</label>
+                                    </th>
+                                    <th>
+                                        <label>Quantity</label>
+                                    </th>
+                                    <th>
+                                        <label>Sales Tax Rate</label>
+                                    </th>
+                                    <th>
+                                        <label>Total Sales Tax</label>
+                                    </th>
+                                    <th>
+                                        <label>Date</label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="#sale of sales" (click)="edit(sale)">
+                                    <td>{{sale.itemId}}</td>
+                                    <td>{{itemNames[sale.itemId]}}</td>
+                                    <td>{{sale.price / 100 | currency:'USD':true:'1.2-2'}}</td>
+                                    <td>{{sale.quantity}}</td>
+                                    <td>{{sale.sTaxRate}}</td>
+                                    <td>{{sale.sTaxRate * sale.price * sale.quantity / 100 | currency:'USD':true:'1.2-2'}}</td>
+                                    <td>{{sale.date.getMonth()+1}}-{{sale.date.getDate()}}-{{sale.date.getFullYear()}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <label>Total Sales Tax:</label>{{total(sales) / 100 | currency:'USD':true:'1.2-2'}}
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

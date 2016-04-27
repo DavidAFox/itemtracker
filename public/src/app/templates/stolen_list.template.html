@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Stolen List</h1>
+                </div>
+                <div class="panel-body">
+                    <label>By Date: </label><input type="checkbox" [(ngModel)]="datesSelected" (ngModelChange)="updateStolens()"/>
+                    <div class="form-group" *ngIf="datesSelected"><label>Start Date</label><br>
+                        <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="startMonth"/>
+                        <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="startDay"/>
+                        <label>Y</label><input (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="startYear"/>
+                    </div>
+                    <div class="form-group" *ngIf="datesSelected"><label>End Date</label><br>
+                        <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="endMonth"/>
+                        <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="endDay"/>
+                        <label>Y</label><input  (ngModelChange)="updateDates()" type="number" min="1900" max="9999" [(ngModel)]="endYear"/>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th (click)="sortBy('itemId')">
+                                        <label>Product #</label>
+                                        <span *ngIf="(sort==='itemId' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='itemId' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </th>
+                                    <th (click)="sortBy('name')">
+                                        <label>Name</label>
+                                        <span *ngIf="(sort==='name' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='name' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </th>
+                                    <th (click)="sortBy('quantity')">    
+                                        <label>Quantity</label>
+                                        <span *ngIf="(sort==='quantity' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='quantity' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </th>
+                                    <th (click)="sortBy('price')">
+                                        <label>Price</label>
+                                        <span *ngIf="(sort==='price' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='price' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </th>
+                                    <th (click)="sortBy('totalStolen')">
+                                        <label>Total Stolen</label>
+                                        <span *ngIf="(sort==='totalStolen' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='totalStolen' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>                      
+                                    <th (click)="sortBy('date')">
+                                        <label>Date</label>
+                                        <span *ngIf="(sort==='date' && reversed)" class="glyphicon glyphicon-triangle-top"></span>
+                                        <span *ngIf="(sort==='date' && !reversed)" class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="#stolen of stolens" (click)="edit(stolen)">
+                                    <td>{{stolen.itemId}}</td>
+                                    <td>{{itemNames[stolen.itemId]}}</td>
+                                    <td>{{stolen.quantity}}</td>
+                                    <td>{{stolen.price / 100 | currency:'USD':true:'1.2-2'}}</td>
+                                    <td>{{stolen.price * stolen.quantity / 100 | currency:'USD':true:'1.2-2'}}</td>
+                                    <td>{{stolen.date.getMonth()+1}}-{{stolen.date.getDate()}}-{{stolen.date.getFullYear()}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <label>Total Stolen: </label>{{total(stolens) / 100 | currency:'USD':true:'1.2-2'}}
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
