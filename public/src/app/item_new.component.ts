@@ -18,9 +18,9 @@ import {Router} from 'angular2/router';
             <div class="form-group"><label>Sale Price</label><input ngControl="salePriceControl" class="form-control" type="number" min="0" step=".01" [(ngModel)] = "salePrice" (ngModelChange)="updateSalePrice(salePrice)"/></div>
             <div class="form-group"><label>Quantity</label><input required ngControl="quantityControl" class="form-control" type="number" min="0" [(ngModel)]="item.quantity"/></div>
             <div class="form-group"><label>Date Added</label>
-                <label>M</label><input type="number" min="1" max="12" [(ngModel)]="month"/>
-                <label>D</label><input type="number" min="1" max="31" [(ngModel)]="day"/>
-                <label>Y</label><input type="number" min="1900" max="9999" [(ngModel)]="year"/>
+                <label>M</label><input ngControl="monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
+                <label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
+                <label>Y</label><input ngControl="yearControl" type="number" min="1900" max="9999" [(ngModel)]="year"/>
             </div>
             <button class="btn btn-default" type="submit" [disabled]="!itemForm.form.valid">Save</button>
         </form>

@@ -3,32 +3,30 @@ import {Component} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 import {ItemService} from './item.service';
 import {OnInit} from 'angular2/core';
-import {ItemDetailComponent} from './item_detail.component';
 
 
 @Component({
     selector: 'item-edit',
     template: `
     <div class="container">
-        <form>
-            <div class="form-group"><label>Product #</label><input required class="form-control" type="number" [(ngModel)]="item.id"/></div>
-            <div class="form-group"><label>Name</label><input required class="form-control" type="text" [(ngModel)]="item.name"/></div>
-            <div class="form-group"><label>Description</label><textarea class="form-control" [(ngModel)]="item.description"></textarea></div>
-            <div class="form-group"><label>Price</label><input required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
-            <div class="form-group"><label>Sale Price</label><input class="form-control" type="number" min="0" [(ngModel)]="salePrice" (ngModelChange) = "updateSalePrice(salePrice)"/></div>
-            <div class="form-group"><label>Quantity</label><input required class="form-control" type="number" min="0" [(ngModel)]="item.quantity"/></div>
+        <form (ngSubmit)="save()" #itemForm="ngForm" >
+            <div class="form-group"><label>Product #</label><input ngControl="idControl" required class="form-control" type="number" [(ngModel)]="item.id"/></div>
+            <div class="form-group"><label>Name</label><input ngControl="nameControl" required class="form-control" type="text" [(ngModel)]="item.name"/></div>
+            <div class="form-group"><label>Description</label><textarea ngControl="descriptionControl" class="form-control" [(ngModel)]="item.description"></textarea></div>
+            <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
+            <div class="form-group"><label>Sale Price</label><input ngControl="salePriceControl" class="form-control" type="number" min="0" [(ngModel)]="salePrice" (ngModelChange) = "updateSalePrice(salePrice)"/></div>
+            <div class="form-group"><label>Quantity</label><input ngControl="quantityControl" required class="form-control" type="number" min="0" [(ngModel)]="item.quantity"/></div>
             <div class="form-group"><label>Date Added</label>
-                <label>M</label><input type="number" min="1" max="12" [(ngModel)]="month"/>
-                <label>D</label><input type="number" min="1" max="31" [(ngModel)]="day"/>
-                <label>Y</label><input type="number" min="1900" max="9999" [(ngModel)]="year"/>
+                <label>M</label><input ngControl= "monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
+                <label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
+                <label>Y</label><input ngControl="yearControl" type="number" min="1900" max="9999" [(ngModel)]="year"/>
             </div>
-            <button (click)="save()">Save</button>
+            <button type="submit" class="btn btn-default" [disabled]="!itemForm.form.valid">Save</button>
         </form>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
     </div>
-    `,
-    directives: [ItemDetailComponent]
+    `
 })
 export class ItemEditComponent {
     private item:Item = {id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: new Date()};

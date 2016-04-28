@@ -12,15 +12,15 @@ import {Stolen} from './stolen';
     template: `
         <div class="container">
         <h3>{{item.name}} #{{item.id}}</h3>
-            <form>
-            <div class="form-group"><label>Quantity</label><input class="form-control" type="number" min="0"[(ngModel)]="stolen.quantity"/></div>
+            <form (ngSubmit)="save()" #stolenForm="ngForm">
+            <div class="form-group"><label>Quantity</label><input ngControl="quantityControl" required class="form-control" type="number" min="0"[(ngModel)]="stolen.quantity"/></div>
             <div class="form-group"><label>Date</label>
-                <label>M</label><input type="number" min="1" max="12" [(ngModel)]="month"/>
-                -<label>D</label><input type="number" min="1" max="31" [(ngModel)]="day"/>
-                -<label>Y</label><input type="number" min="1900" [(ngModel)]="year"/>
+                <label>M</label><input ngControl="monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
+                -<label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
+                -<label>Y</label><input ngControl="yearControl" type="number" min="1900" [(ngModel)]="year"/>
             </div>
-            <div class="form-group"><label>Price</label><input class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
-            <button (click)="save()">Save</button>
+            <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
+            <button class="btn btn-default" type="submit" [disabled]="!stolenForm.form.valid">Save</button>
         </form>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 

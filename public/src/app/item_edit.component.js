@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './item.service', './item_detail.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './item.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './item.service', './item_d
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, item_service_1, item_detail_component_1;
+    var core_1, router_1, item_service_1;
     var ItemEditComponent;
     return {
         setters:[
@@ -22,9 +22,6 @@ System.register(['angular2/core', 'angular2/router', './item.service', './item_d
             },
             function (item_service_1_1) {
                 item_service_1 = item_service_1_1;
-            },
-            function (item_detail_component_1_1) {
-                item_detail_component_1 = item_detail_component_1_1;
             }],
         execute: function() {
             ItemEditComponent = (function () {
@@ -87,8 +84,7 @@ System.register(['angular2/core', 'angular2/router', './item.service', './item_d
                 ItemEditComponent = __decorate([
                     core_1.Component({
                         selector: 'item-edit',
-                        template: "\n    <div class=\"container\">\n        <form>\n            <div class=\"form-group\"><label>Product #</label><input required class=\"form-control\" type=\"number\" [(ngModel)]=\"item.id\"/></div>\n            <div class=\"form-group\"><label>Name</label><input required class=\"form-control\" type=\"text\" [(ngModel)]=\"item.name\"/></div>\n            <div class=\"form-group\"><label>Description</label><textarea class=\"form-control\" [(ngModel)]=\"item.description\"></textarea></div>\n            <div class=\"form-group\"><label>Price</label><input required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n            <div class=\"form-group\"><label>Sale Price</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"salePrice\" (ngModelChange) = \"updateSalePrice(salePrice)\"/></div>\n            <div class=\"form-group\"><label>Quantity</label><input required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"item.quantity\"/></div>\n            <div class=\"form-group\"><label>Date Added</label>\n                <label>M</label><input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                <label>D</label><input type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                <label>Y</label><input type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n            </div>\n            <button (click)=\"save()\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n\n    </div>\n    ",
-                        directives: [item_detail_component_1.ItemDetailComponent]
+                        template: "\n    <div class=\"container\">\n        <form (ngSubmit)=\"save()\" #itemForm=\"ngForm\" >\n            <div class=\"form-group\"><label>Product #</label><input ngControl=\"idControl\" required class=\"form-control\" type=\"number\" [(ngModel)]=\"item.id\"/></div>\n            <div class=\"form-group\"><label>Name</label><input ngControl=\"nameControl\" required class=\"form-control\" type=\"text\" [(ngModel)]=\"item.name\"/></div>\n            <div class=\"form-group\"><label>Description</label><textarea ngControl=\"descriptionControl\" class=\"form-control\" [(ngModel)]=\"item.description\"></textarea></div>\n            <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n            <div class=\"form-group\"><label>Sale Price</label><input ngControl=\"salePriceControl\" class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"salePrice\" (ngModelChange) = \"updateSalePrice(salePrice)\"/></div>\n            <div class=\"form-group\"><label>Quantity</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"item.quantity\"/></div>\n            <div class=\"form-group\"><label>Date Added</label>\n                <label>M</label><input ngControl= \"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n            </div>\n            <button type=\"submit\" class=\"btn btn-default\" [disabled]=\"!itemForm.form.valid\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n\n    </div>\n    "
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, router_1.RouteParams, router_1.Router])
                 ], ItemEditComponent);

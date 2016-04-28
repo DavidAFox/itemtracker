@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './item.service', './sale.service', './sale_detail.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './item.service', './sale.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './item.service', './sale.s
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, item_service_1, sale_service_1, router_2, sale_detail_component_1;
+    var core_1, router_1, item_service_1, sale_service_1, router_2;
     var SoldComponent;
     return {
         setters:[
@@ -26,9 +26,6 @@ System.register(['angular2/core', 'angular2/router', './item.service', './sale.s
             },
             function (sale_service_1_1) {
                 sale_service_1 = sale_service_1_1;
-            },
-            function (sale_detail_component_1_1) {
-                sale_detail_component_1 = sale_detail_component_1_1;
             }],
         execute: function() {
             SoldComponent = (function () {
@@ -127,9 +124,8 @@ System.register(['angular2/core', 'angular2/router', './item.service', './sale.s
                 };
                 SoldComponent = __decorate([
                     core_1.Component({
-                        template: "\n    <div class=\"container\">\n        <h3>{{item.name}} #{{item.id}}</h3>\n        <p>{{item.description}}</p>\n        <form>\n        <div class=\"form-group\"><label>Handling Fee</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"fee\" (ngModelChange)=\"updateFee(fee)\"/></div>\n        <div class=\"form-group\"><label>Quantity Sold</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"sale.quantity\"/></div>\n        <div class=\"form-group\"><label>Sales Tax Rate</label><input class=\"form-control\" type=\"number\" min=\"0\" step=\".0001\"[(ngModel)]=\"sale.sTaxRate\"/></div>\n        <div class=\"form-group\"><label>Price</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n        <div class=\"form-group\"><label>Date</label><br>\n            <label>M</label><input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n            <label>D</label><input  type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n            <label>Y</label><input  type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n        </div>\n        <div class=\"form-group\"><label>Where</label><input class=\"form-control\" type=\"text\" [(ngModel)]=\"sale.where\"/></div>\n        <div class=\"form-group\"><label>Comment</label><textarea class= \"form-control\" rows=\"5\" cols=\"30\"></textarea></div>\n        <button class=\"btn btn-default\" (click)=\"save()\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    </div>\n    ",
-                        selector: 'sold',
-                        directives: [sale_detail_component_1.SaleDetailComponent]
+                        template: "\n    <div class=\"container\">\n        <h3>{{item.name}} #{{item.id}}</h3>\n        <p>{{item.description}}</p>\n        <form (ngSubmit)=\"save()\" #saleForm=\"ngForm\">\n        <div class=\"form-group\"><label>Handling Fee</label><input ngControl=\"feeControl\" class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"fee\" (ngModelChange)=\"updateFee(fee)\"/></div>\n        <div class=\"form-group\"><label>Quantity Sold</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"sale.quantity\"/></div>\n        <div class=\"form-group\"><label>Sales Tax Rate</label><input ngControl=\"sTaxRateControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".0001\"[(ngModel)]=\"sale.sTaxRate\"/></div>\n        <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n        <div class=\"form-group\"><label>Date</label><br>\n            <label>M</label><input ngControl=\"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n            <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n            <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n        </div>\n        <div class=\"form-group\"><label>Where</label><input ngControl=\"whereControl\" class=\"form-control\" type=\"text\" [(ngModel)]=\"sale.where\"/></div>\n        <div class=\"form-group\"><label>Comment</label><textarea ngControl=\"commentControl\" class= \"form-control\" rows=\"5\" cols=\"30\"></textarea></div>\n        <button class=\"btn btn-default\" type=\"submit\" [disabled]=\"!saleForm.form.valid\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    </div>\n    ",
+                        selector: 'sold'
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, sale_service_1.SaleService, router_1.RouteParams, router_2.Router])
                 ], SoldComponent);
