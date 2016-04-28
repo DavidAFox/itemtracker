@@ -40,7 +40,7 @@
     <script src="node_modules/angular2/bundles/http.dev.js"></script>
 -->
     <script src="lib/es6-shim.min.js"></script>
-    <script src="lib/systemjs/dist/system-polyfills.js"></script>
+    <script src="lib/system-polyfills.js"></script>
     <script src="lib/shims_for_IE.js"></script>   
 
     <script src="lib/angular2-polyfills.js"></script>
