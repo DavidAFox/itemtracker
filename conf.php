@@ -7,7 +7,7 @@
 	define('DATABASE_USER', "user");
 	define('DATABASE_PASSWORD', "12345");
 	define('DATABASE_NAME', "tracker");
-	define('TEST_DATABASE_SERVER', "localhost");
+	define('TEST_DATABASE_SERVER', "localhost:5432");
 	define('TEST_DATABASE_USER', "user");
 	define('TEST_DATABASE_PASSWORD', "12345");
 	define('TEST_DATABASE_NAME', "trackertest");

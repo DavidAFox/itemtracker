@@ -53,6 +53,7 @@ System.register(['angular2/core', 'angular2/router', './item.service', './stolen
                                 that.month = d.getMonth() + 1;
                                 that.year = d.getFullYear();
                                 that.item = item;
+                                that.price = item.price / 100;
                                 that.stolen = { id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price };
                             }
                             else {
@@ -71,10 +72,13 @@ System.register(['angular2/core', 'angular2/router', './item.service', './stolen
                         that._router.navigate(link);
                     }, function (error) { return that.error = error; });
                 };
+                StolenComponent.prototype.updatePrice = function () {
+                    this.stolen.price = this.price * 100;
+                };
                 StolenComponent = __decorate([
                     core_1.Component({
                         selector: 'stolen',
-                        template: "\n        <div class=\"container\">\n        <h3>{{item.name}} #{{item.id}}</h3>\n            <form>\n            <div class=\"form-group\"><label>Quantity</label><input class=\"form-control\" type=\"number\" min=\"0\"[(ngModel)]=\"stolen.quantity\"/></div>\n            <div class=\"form-group\"><label>Date</label>\n                <label>M</label><input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                -<label>D</label><input type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                -<label>Y</label><input type=\"number\" min=\"1900\" [(ngModel)]=\"year\"/>\n            </div>\n            <div class=\"form-group\"><label>Price</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"stolen.price\"/></div>\n            <button (click)=\"save()\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n\n        </div>\n    "
+                        template: "\n        <div class=\"container\">\n        <h3>{{item.name}} #{{item.id}}</h3>\n            <form>\n            <div class=\"form-group\"><label>Quantity</label><input class=\"form-control\" type=\"number\" min=\"0\"[(ngModel)]=\"stolen.quantity\"/></div>\n            <div class=\"form-group\"><label>Date</label>\n                <label>M</label><input type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                -<label>D</label><input type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                -<label>Y</label><input type=\"number\" min=\"1900\" [(ngModel)]=\"year\"/>\n            </div>\n            <div class=\"form-group\"><label>Price</label><input class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n            <button (click)=\"save()\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n\n        </div>\n    "
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, stolen_service_1.StolenService, router_1.RouteParams, router_2.Router])
                 ], StolenComponent);

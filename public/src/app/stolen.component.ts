@@ -19,7 +19,7 @@ import {Stolen} from './stolen';
                 -<label>D</label><input type="number" min="1" max="31" [(ngModel)]="day"/>
                 -<label>Y</label><input type="number" min="1900" [(ngModel)]="year"/>
             </div>
-            <div class="form-group"><label>Price</label><input class="form-control" type="number" min="0" [(ngModel)]="stolen.price"/></div>
+            <div class="form-group"><label>Price</label><input class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
             <button (click)="save()">Save</button>
         </form>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
@@ -34,6 +34,7 @@ export class StolenComponent implements OnInit{
     private month: number;
     private year:number;
     private error;
+    private price:number;
     constructor(private _itemService: ItemService, private _stolenService: StolenService, private _routeParams: RouteParams, private _router: Router){
         
     }
@@ -52,6 +53,7 @@ export class StolenComponent implements OnInit{
                     that.month = d.getMonth()+1;
                     that.year = d.getFullYear();
                     that.item = item;
+                    that.price = item.price /100;
                     that.stolen = {id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price}
                 } else {
                     that.error = resp.error;
@@ -68,5 +70,8 @@ export class StolenComponent implements OnInit{
             var link = ['ItemList'];
             that._router.navigate(link);
         }, error=>that.error = error)
+    }
+    updatePrice() {
+        this.stolen.price = this.price *100;
     }
 }

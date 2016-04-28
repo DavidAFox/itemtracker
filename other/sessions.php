@@ -1,6 +1,6 @@
 <?php
 	require_once(dirname(dirname(__FILE__)) . "/conf.php");
-	require_once(OTHER_PATH . 'data.php');
+//	require_once(OTHER_PATH . 'data.php');
 	require_once(OTHER_PATH . 'functions.php');
 	class MySession {
 		private $data;
