@@ -1,5 +1,5 @@
 <?php
-//	set_include_path(__DIR__);
+	set_include_path(__DIR__);
 	define('VIEW_PATH' , "views/");
 	define('OTHER_PATH', "other/");
 	$url = getenv('DATABASE_URL');
