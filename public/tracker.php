@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="css/forms.css">
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
-    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+<!--    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
     <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
 
@@ -38,6 +38,17 @@
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
     <script src="node_modules/angular2/bundles/router.dev.js"></script>
     <script src="node_modules/angular2/bundles/http.dev.js"></script>
+-->
+    <script src="lib/es6-shim.min.js"></script>
+    <script src="lib/systemjs/dist/system-polyfills.js"></script>
+    <script src="lib/shims_for_IE.js"></script>   
+
+    <script src="lib/angular2-polyfills.js"></script>
+    <script src="lib/system.src.js"></script>
+    <script src="lib/Rx.js"></script>
+    <script src="lib/angular2.dev.js"></script>
+    <script src="lib/router.dev.js"></script>
+    <script src="lib/http.dev.js"></script>
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
