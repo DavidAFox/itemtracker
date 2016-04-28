@@ -6,7 +6,7 @@
   $ses = new MySession($data);
   $ses->startSession();
   if(!$ses->loggedIn()) {
-    header('Location: ' . BASE_PATH . "index.php");
+    header('Location: index.php');
     exit;
   }
   $ses->logout();
