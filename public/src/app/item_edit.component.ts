@@ -10,7 +10,7 @@ import {OnInit} from 'angular2/core';
     template: `
     <div class="container">
         <form (ngSubmit)="save()" #itemForm="ngForm" >
-            <div class="form-group"><label>Product #</label><input ngControl="idControl" required class="form-control" type="number" [(ngModel)]="item.id"/></div>
+            <div class="form-group"><label>Product #</label>{{item.id}}</div>
             <div class="form-group"><label>Name</label><input ngControl="nameControl" required class="form-control" type="text" [(ngModel)]="item.name"/></div>
             <div class="form-group"><label>Description</label><textarea ngControl="descriptionControl" class="form-control" [(ngModel)]="item.description"></textarea></div>
             <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>

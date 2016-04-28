@@ -1,0 +1,1 @@
+Item tracker is a simple web app for keeping track of inventory, sales, stolen items, and sales tax.
