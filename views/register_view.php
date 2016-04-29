@@ -1,5 +1,5 @@
 
-<form class= "well" class="register-form" action="register.php" method="post">
+<form class= "well register-form" action="register.php" method="post">
 	<table>
 		<tr>
 			<td><label>Name: </label></td>
