@@ -16,7 +16,7 @@ import {SaleService} from './sale.service';
         <div class="form-group"><label>Handling Fee</label><input ngControl="feeControl" class="form-control" type="number" min="0"[(ngModel)]="fee" (ngModelChange)="updateFee(fee)"/></div>
         <div class="form-group"><label>Quantity Sold</label><input ngControl="quantityControl" required class="form-control" type="number" min="0" [(ngModel)]="sale.quantity"/></div>
         <div class="form-group"><label>Sales Tax Rate</label><input ngControl="sTaxRateControl" required class="form-control" type="number" min="0" [(ngModel)]="sale.sTaxRate"/></div>
-        <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
+        <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" step=".01" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
         <div class="form-group"><label>Date</label><br>
             <label>M</label><input ngControl="monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
             <label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>

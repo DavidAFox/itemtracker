@@ -7,7 +7,7 @@
                 -<label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
                 -<label>Y</label><input ngControl="yearControl" type="number" min="1900" [(ngModel)]="year"/>
             </div>
-            <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
+            <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" step=".01" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
             <button class="btn btn-default" type="submit" [disabled]="!stolenForm.form.valid">Save</button>
         </form>
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
