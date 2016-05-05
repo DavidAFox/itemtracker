@@ -53,15 +53,13 @@
     <script>
       System.config({
         packages: {
-          src: {        
-              app: {
+              dist: {
                 format: 'register',
                 defaultExtension: 'js'
               }
-          }
         }
       });
-      System.import('src/app/main')
+      System.import('dist/main')
             .then(null, console.error.bind(console));
     </script>
   </head>
