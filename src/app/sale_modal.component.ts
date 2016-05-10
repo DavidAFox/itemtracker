@@ -17,6 +17,5 @@ export class SaleModalComponent {
     close(){
         $('#saleModal').modal('hide');
         this.reload.emit(this.sale.id);
-        console.log("closed");
     }
 }

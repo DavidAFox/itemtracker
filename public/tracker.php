@@ -75,7 +75,7 @@
       });
     </script>
     -->
-<script src="jspm_packages/system.js"></script>
+<!--<script src="jspm_packages/system.js"></script> -->
 <script src="config.js"></script>
 <script>
       System.import('dist/app/main')

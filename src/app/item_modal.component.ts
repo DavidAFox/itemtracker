@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter } from '@angular/core';
 import {Item} from './item';
 import {ItemDetailComponent} from './item_detail.component'
 
@@ -9,10 +9,13 @@ import {ItemDetailComponent} from './item_detail.component'
 })
 export class ItemModalComponent {
     @Input() item:Item;
+    @Output() reload= new EventEmitter<number>();
+
     constructor() {
     }
     close(){
         $('#itemModal').modal('hide');
+        this.reload.emit(this.item.id);
         console.log("closed");
     }
 }

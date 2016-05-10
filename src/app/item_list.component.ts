@@ -66,6 +66,22 @@ export class ItemListComponent implements OnInit{
 //        var link = ['ItemEdit', {id: item.id}];
 //        this._router.navigate(link);
     }
+    reload(id) {
+        var that = this;
+        this.items.forEach((item, index) => {
+            if(item.id === id) {
+                that._itemService.getItem(id).subscribe(resp => {
+                    if(resp.success) {
+                        that.items[index] = resp.data;
+                    } else {
+                        that.error = resp.error;
+                    }
+                }, error => that.error=error);
+            }
+        }
+        )
+    }
+
     sortBy(type) {
         var that = this;
         if(this.sort === type) {

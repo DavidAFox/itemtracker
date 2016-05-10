@@ -34,7 +34,6 @@ System.register(['@angular/core', './item', './sale', './sale_detail.component']
                 SaleModalComponent.prototype.close = function () {
                     $('#saleModal').modal('hide');
                     this.reload.emit(this.sale.id);
-                    console.log("closed");
                 };
                 __decorate([
                     core_1.Input(), 

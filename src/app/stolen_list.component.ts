@@ -4,15 +4,19 @@ import {ItemService} from './item.service';
 import {Router} from '@angular/router-deprecated';
 import {OnInit} from '@angular/core'
 import {Stolen} from './stolen';
+import {Item} from './item';
+import {StolenModalComponent} from './stolen_modal.component';
 
 @Component({
     selector: 'stolen-list',
-    templateUrl: '/dist/templates/stolen_list.template.html'
+    templateUrl: '/dist/templates/stolen_list.template.html',
+    directives: [StolenModalComponent]
 })
 export class StolenListComponent implements OnInit{
     private stolens: Stolen[] = [];
     private error;
-    private itemNames = {}
+    private itemNames = {};
+    private items = {};
     private sort = '';
     private reversed = false;
     private startMonth:number;
@@ -24,6 +28,8 @@ export class StolenListComponent implements OnInit{
     private startDate:Date;
     private endDate:Date;
     private datesSelected = false;
+    private selectedStolen = new Stolen();
+    private selectedItem = new Item();
     constructor(private _stolenService:StolenService, private _itemService: ItemService, private _router:Router) {
         this.startDate = new Date();
         this.startDate.setMonth(this.startDate.getMonth()-1);
@@ -50,7 +56,8 @@ export class StolenListComponent implements OnInit{
             that.stolens.forEach(stolen =>{
                 that._itemService.getItem(stolen.itemId).subscribe(resp =>{
                     if(resp.success) {
-                        that.itemNames[stolen.itemId] = resp.data.name
+                        that.itemNames[stolen.itemId] = resp.data.name;
+                        that.items[stolen.id] = resp.data;
                     } else {
                         that.error = resp.error;
                     }
@@ -67,7 +74,8 @@ export class StolenListComponent implements OnInit{
             that.stolens.forEach(stolen =>{
                 that._itemService.getItem(stolen.itemId).subscribe(resp =>{
                     if(resp.success) {
-                        that.itemNames[stolen.itemId] = resp.data.name
+                        that.itemNames[stolen.itemId] = resp.data.name;
+                        that.items[stolen.id] = resp.data;
                     } else {
                         that.error = resp.error;
                     }
@@ -107,8 +115,21 @@ export class StolenListComponent implements OnInit{
         }, 0)
     }
     edit(stolen:Stolen) {
-        var link = ['StolenEdit', {id: stolen.id}];
-        this._router.navigate(link);
+//        var link = ['StolenEdit', {id: stolen.id}];
+//        this._router.navigate(link);
+        this.selectedStolen = Stolen.copy(stolen);
+        this.selectedItem = Item.copy(this.items[stolen.id])
+        $('#stolenModal').modal('show');
+    }
+    reload(id) {
+        var that = this;
+        that.stolens.forEach( (stolen, index) => {
+            if(stolen.id === id) {
+                that._stolenService.getStolen(id).subscribe(stolen => {
+                    that.stolens[index] = stolen;
+                }, error => that.error = error);
+            }
+        });
     }
     sortBy(type) {
         if(this.sort === type) {

@@ -85,6 +85,21 @@ System.register(['@angular/core', './item.service', '@angular/router-deprecated'
                     //        var link = ['ItemEdit', {id: item.id}];
                     //        this._router.navigate(link);
                 };
+                ItemListComponent.prototype.reload = function (id) {
+                    var that = this;
+                    this.items.forEach(function (item, index) {
+                        if (item.id === id) {
+                            that._itemService.getItem(id).subscribe(function (resp) {
+                                if (resp.success) {
+                                    that.items[index] = resp.data;
+                                }
+                                else {
+                                    that.error = resp.error;
+                                }
+                            }, function (error) { return that.error = error; });
+                        }
+                    });
+                };
                 ItemListComponent.prototype.sortBy = function (type) {
                     var that = this;
                     if (this.sort === type) {

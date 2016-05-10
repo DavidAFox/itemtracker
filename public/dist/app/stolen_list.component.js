@@ -1,4 +1,4 @@
-System.register(['@angular/core', './stolen.service', './item.service', '@angular/router-deprecated'], function(exports_1, context_1) {
+System.register(['@angular/core', './stolen.service', './item.service', '@angular/router-deprecated', './stolen', './item', './stolen_modal.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, stolen_service_1, item_service_1, router_deprecated_1;
+    var core_1, stolen_service_1, item_service_1, router_deprecated_1, stolen_1, item_1, stolen_modal_component_1;
     var StolenListComponent;
     return {
         setters:[
@@ -25,6 +25,15 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
             },
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
+            },
+            function (stolen_1_1) {
+                stolen_1 = stolen_1_1;
+            },
+            function (item_1_1) {
+                item_1 = item_1_1;
+            },
+            function (stolen_modal_component_1_1) {
+                stolen_modal_component_1 = stolen_modal_component_1_1;
             }],
         execute: function() {
             StolenListComponent = (function () {
@@ -34,9 +43,12 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                     this._router = _router;
                     this.stolens = [];
                     this.itemNames = {};
+                    this.items = {};
                     this.sort = '';
                     this.reversed = false;
                     this.datesSelected = false;
+                    this.selectedStolen = new stolen_1.Stolen();
+                    this.selectedItem = new item_1.Item();
                     this.startDate = new Date();
                     this.startDate.setMonth(this.startDate.getMonth() - 1);
                     this.endDate = new Date();
@@ -62,6 +74,7 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                             that._itemService.getItem(stolen.itemId).subscribe(function (resp) {
                                 if (resp.success) {
                                     that.itemNames[stolen.itemId] = resp.data.name;
+                                    that.items[stolen.id] = resp.data;
                                 }
                                 else {
                                     that.error = resp.error;
@@ -80,6 +93,7 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                             that._itemService.getItem(stolen.itemId).subscribe(function (resp) {
                                 if (resp.success) {
                                     that.itemNames[stolen.itemId] = resp.data.name;
+                                    that.items[stolen.id] = resp.data;
                                 }
                                 else {
                                     that.error = resp.error;
@@ -122,8 +136,21 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                     }, 0);
                 };
                 StolenListComponent.prototype.edit = function (stolen) {
-                    var link = ['StolenEdit', { id: stolen.id }];
-                    this._router.navigate(link);
+                    //        var link = ['StolenEdit', {id: stolen.id}];
+                    //        this._router.navigate(link);
+                    this.selectedStolen = stolen_1.Stolen.copy(stolen);
+                    this.selectedItem = item_1.Item.copy(this.items[stolen.id]);
+                    $('#stolenModal').modal('show');
+                };
+                StolenListComponent.prototype.reload = function (id) {
+                    var that = this;
+                    that.stolens.forEach(function (stolen, index) {
+                        if (stolen.id === id) {
+                            that._stolenService.getStolen(id).subscribe(function (stolen) {
+                                that.stolens[index] = stolen;
+                            }, function (error) { return that.error = error; });
+                        }
+                    });
                 };
                 StolenListComponent.prototype.sortBy = function (type) {
                     if (this.sort === type) {
@@ -168,7 +195,8 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                 StolenListComponent = __decorate([
                     core_1.Component({
                         selector: 'stolen-list',
-                        templateUrl: '/dist/templates/stolen_list.template.html'
+                        templateUrl: '/dist/templates/stolen_list.template.html',
+                        directives: [stolen_modal_component_1.StolenModalComponent]
                     }), 
                     __metadata('design:paramtypes', [stolen_service_1.StolenService, item_service_1.ItemService, router_deprecated_1.Router])
                 ], StolenListComponent);

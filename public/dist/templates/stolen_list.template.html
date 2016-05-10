@@ -54,7 +54,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="#stolen of stolens" (click)="edit(stolen)">
+                                <tr *ngFor="let stolen of stolens" (click)="edit(stolen)">
                                     <td>{{stolen.itemId}}</td>
                                     <td>{{itemNames[stolen.itemId]}}</td>
                                     <td>{{stolen.quantity}}</td>
@@ -72,3 +72,4 @@
         </div>
     </div>
 </div>
+<stolen-modal [stolen]="selectedStolen" [item]="selectedItem" (reload)="reload($event)"></stolen-modal>
