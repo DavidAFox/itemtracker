@@ -16,14 +16,17 @@
     <base href="/">
     <title>Item Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>    
+    <script src="lib/jquery-1.12.3.min.js"></script>    
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cerulean/bootstrap.min.css">
 
 <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    -->
 <!-- Latest compiled and minified JavaScript -->
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/forms.css">
     <!-- 1. Load libraries -->
@@ -46,20 +49,53 @@
     <script src="lib/angular2-polyfills.js"></script>
     <script src="lib/system.src.js"></script>
     <script src="lib/Rx.js"></script>
-    <script src="lib/angular2.dev.js"></script>
-    <script src="lib/router.dev.js"></script>
-    <script src="lib/http.dev.js"></script>
+<!--    <script src="lib/angular2.dev.js"></script> -->
+<!--    <script src="lib/router.dev.js"></script>
+    <script src="lib/http.dev.js"></script> -->
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
-        packages: {
+        map: {
+          '@angular': '/lib/@angular',
+        },
+        packages: { 
               dist: {
-                format: 'register',
+                app: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+              },
+              '@angular/core': {
+                 main: 'index.js',
                 defaultExtension: 'js'
-              }
+              },
+    '@angular/compiler': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/common': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/platform-browser': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/platform-browser-dynamic': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/router-deprecated': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/http': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    }
         }
       });
-      System.import('dist/main')
+      System.import('dist/app/main')
             .then(null, console.error.bind(console));
     </script>
   </head>

@@ -29,3 +29,6 @@ table {
 	border-right: 5px solid transparent;
 	border-top: 5px solid black;
 }
+form {
+	max-width: 100%;
+}

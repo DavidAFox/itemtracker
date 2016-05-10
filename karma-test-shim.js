@@ -8,26 +8,76 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 // // we will call `__karma__.start()` later, once all the specs are loaded.
 __karma__.loaded = function() {};
 
+function isJsFile(path) {
+  return path.slice(-3) == '.js';
+}
 
-System.config({
+function isSpecFile(path) {
+  return path.slice(-8) == '_test.js';
+}
+
+function isBuiltFile(path) {
+  var builtPath = '/base/public/dist/';
+  return isJsFile(path) && (path.substr(0, builtPath.length) == builtPath);
+}
+
+System.config(
+{
+  baseURL: "/base/",
+  map: {
+    'rxjs': 'node_modules/rxjs',
+    '@angular': 'public/lib/@angular',
+    'src': 'dist'
+  },
   packages: {
-    'base/src/app': {
-      defaultExtension: false,
-      format: 'register',
-      map: Object.keys(window.__karma__.files).
-            filter(onlyAppFiles).
-            reduce(function createPathRecords(pathsMapping, appPath) {
+    'app': {
+      main: 'main.js',
+      defaultExtension: 'js'
+    },
+    '@angular/core': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/compiler': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/common': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/platform-browser': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    '@angular/platform-browser-dynamic': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    'rxjs': {
+      defaultExtension: 'js'
+    }
+  }
+});
+//System.config({
+//  packages: {
+//    'base/public/dist/app': {
+//      defaultExtension: false,
+//      format: 'register',
+//      map: Object.keys(window.__karma__.files).
+//            filter(onlyAppFiles).
+//           reduce(function createPathRecords(pathsMapping, appPath) {
               // creates local module name mapping to global path with karma's fingerprint in path, e.g.:
               // './hero.service': '/base/src/app/hero.service.js?f4523daf879cfb7310ef6242682ccf10b2041b3e'
-              var moduleName = appPath.replace(/^\/base\/src\/app\//, './').replace(/\.js$/, '');
-              pathsMapping[moduleName] = appPath + '?' + window.__karma__.files[appPath]
-              return pathsMapping;
-            }, {})
+//              var moduleName = appPath.replace(/^\/public\/dist\/app\//, './').replace(/\.js$/, '');
+//              pathsMapping[moduleName] = appPath + '?' + window.__karma__.files[appPath]
+//              return pathsMapping;
+//            }, {})
 
-      }
-    }
-});
-
+//      }
+//    }
+//});
+/*
 System.import('angular2/src/platform/browser/browser_adapter').then(function(browser_adapter) {
   browser_adapter.BrowserDomAdapter.makeCurrent();
 })
@@ -56,10 +106,30 @@ function filePath2moduleName(filePath) {
 
 
 function onlyAppFiles(filePath) {
-  return /^\/base\/src\/app\/.*\.js$/.test(filePath);
+//  return /^\/base\/src\/app\/.*\.js$/.test(filePath);
+  return /^\/base\/public\/dist\/app\/.*\.js$/.test(filePath);
 }
 
 
 function onlySpecFiles(path) {
   return /\.spec\.js$/.test(path);
 }
+*/
+Promise.all([
+  System.import('@angular/core/testing'),
+  System.import('@angular/platform-browser-dynamic/testing')
+]).then(function (providers) {
+  var testing = providers[0];
+  var testingBrowser = providers[1];
+
+  testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
+    testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
+
+}).then(function() {
+  // Finally, load all spec files.
+  // This will run the tests directly.
+  return Promise.all(
+    allSpecFiles.map(function (moduleName) {
+      return System.import(moduleName);
+    }));
+}).then(__karma__.start, __karma__.error);

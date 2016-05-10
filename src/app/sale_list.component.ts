@@ -1,7 +1,7 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 import {SaleService} from './sale.service';
 import {ItemService} from './item.service';
-import {Router} from 'angular2/router';
+import {Router} from '@angular/router-deprecated';
 import {Sale} from './sale';
 
 @Component({
@@ -114,10 +114,17 @@ export class SaleListComponent implements OnInit{
         var link = ['SaleEdit', {id: sale.id}];
         this._router.navigate(link);
     }
+    hidden(sale:Sale) :boolean {
+        var that = this;
+        if(that.locationSelected && !that.locMatch(sale.where)) {
+            return true;
+        }
+        return false;
+    }
     total(sales) {
         var that = this;        
         return sales.reduce(function(total, sale) {
-            if(that.locationSelected && !that.locMatch(sale.where)) {
+            if(that.hidden(sale)) {
                 return total;
             }
             return total+(sale.price * sale.quantity);

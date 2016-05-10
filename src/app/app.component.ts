@@ -1,5 +1,5 @@
-import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
+import {Component} from '@angular/core';
+import {RouteConfig, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 import {ItemListComponent} from './item_list.component';
 import {SoldComponent} from './sold.component';
 import {ItemService} from './item.service';
@@ -11,7 +11,7 @@ import {SaleListComponent} from './sale_list.component';
 import {SaleService} from './sale.service';
 import {SaleEditComponent} from './sale_edit.component';
 import {NavBarComponent} from './nav-bar.component';
-import {HTTP_PROVIDERS } from 'angular2/http';
+import {HTTP_PROVIDERS } from '@angular/http';
 import {StolenListComponent} from './stolen_list.component';
 import {StolenService} from './stolen.service';
 import {StolenEditComponent} from './stolen_edit.component';

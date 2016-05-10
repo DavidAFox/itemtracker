@@ -1,3 +1,4 @@
+<div class="container">
 <div class="panel panel-default">
     <div class="panel-heading" id="sales-heading">
         <h1>Sales</h1>
@@ -69,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="#sale of sales" (click)="edit(sale)" [hidden]="!(!locationSelected || locMatch(sale.where))">
+                    <tr *ngFor="#sale of sales" (click)="edit(sale)" [hidden]="hidden(sale)">
                         <td>{{sale.itemId}}</td>
                         <td>{{itemNames[sale.itemId]}}</td>
                         <td>{{sale.price / 100 | currency:'USD':true:'1.2-2'}}</td>
@@ -87,3 +88,4 @@
     </div>
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </div>    
+</div>

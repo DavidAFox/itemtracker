@@ -1,8 +1,8 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Item} from './item';
 import {Observable} from 'rxjs/Observable';
-import {Http, Response} from 'angular2/http';
-import {Headers, RequestOptions, URLSearchParams  } from 'angular2/http';
+import {Http, Response} from '@angular/http';
+import {Headers, RequestOptions, URLSearchParams  } from '@angular/http';
 import {Stolen} from './stolen';
 import 'rxjs/Rx';
 

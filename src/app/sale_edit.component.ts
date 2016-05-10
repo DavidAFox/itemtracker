@@ -1,34 +1,14 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Sale} from './sale';
-import {RouteParams, Router } from 'angular2/router';
+import {RouteParams, Router } from '@angular/router-deprecated';
 import {ItemService} from './item.service';
-import {OnInit} from 'angular2/core';
+import {OnInit} from '@angular/core';
 import {Item} from './item';
 import {SaleService} from './sale.service';
 
 @Component({
     selector: 'sale-edit',
-    template: `
-    <div class="container">
-        <h3>{{item.name}} #{{item.id}}</h3>
-        <p>{{item.description}}</p>
-        <form (ngSubmit)="save()" #saleForm="ngForm">
-        <div class="form-group"><label>Handling Fee</label><input ngControl="feeControl" class="form-control" type="number" min="0" step=".01" [(ngModel)]="fee" (ngModelChange)="updateFee(fee)"/></div>
-        <div class="form-group"><label>Quantity Sold</label><input ngControl="quantityControl" required class="form-control" type="number" min="0" [(ngModel)]="sale.quantity"/></div>
-        <div class="form-group"><label>Sales Tax Rate</label><input ngControl="sTaxRateControl" required class="form-control" type="number" min="0" step=".0001" [(ngModel)]="sale.sTaxRate"/></div>
-        <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" step=".01" [(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
-        <div class="form-group"><label>Date</label><br>
-            <label>M</label><input ngControl="monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
-            <label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
-            <label>Y</label><input ngControl="yearControl" type="number" min="1900" max="9999" [(ngModel)]="year"/>
-        </div>
-        <div class="form-group"><label>Where</label><input ngControl="whereControl" class="form-control" type="text" [(ngModel)]="sale.where"/></div>
-        <div class="form-group"><label>Comment</label><textarea ngControl="commentControl" class= "form-control" rows="5" cols="30"></textarea></div>
-        <button class="btn btn-default" type="submit" [disabled]="!saleForm.form.valid">Save</button>
-        </form>
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-    </div>
-    `
+    templateUrl: 'dist/templates/sale_edit.template.html'
 })
 export class SaleEditComponent {
     private sale:Sale = {

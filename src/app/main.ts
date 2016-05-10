@@ -1,8 +1,8 @@
-import {bootstrap} from 'angular2/platform/browser';
+import {bootstrap} from '@angular/platform-browser-dynamic';
 import {AppComponent} from './app.component';
-import {ROUTER_PROVIDERS } from 'angular2/router';
-import {provide} from 'angular2/core';
-import {LocationStrategy, HashLocationStrategy } from 'angular2/router';
+import {ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import {provide} from '@angular/core';
+import {LocationStrategy, HashLocationStrategy } from '@angular/common';
 import 'rxjs/Rx';
 
 bootstrap(AppComponent, [ROUTER_PROVIDERS, provide(LocationStrategy, {useClass: HashLocationStrategy})]);

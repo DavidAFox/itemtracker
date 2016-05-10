@@ -1,9 +1,9 @@
-import {Component, OnInit } from 'angular2/core';
+import {Component, OnInit } from '@angular/core';
 import {ItemService} from './item.service';
 import {SaleService} from './sale.service';
 import {Sale} from './sale';
 import {Item} from './item';
-import {Router} from 'angular2/router';
+import {Router} from '@angular/router-deprecated';
 
 @Component({
     selector: "sales-tax",

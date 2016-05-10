@@ -1,8 +1,8 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {StolenService} from './stolen.service';
 import {ItemService} from './item.service';
-import {Router} from 'angular2/router';
-import {OnInit} from 'angular2/core'
+import {Router} from '@angular/router-deprecated';
+import {OnInit} from '@angular/core'
 import {Stolen} from './stolen';
 
 @Component({

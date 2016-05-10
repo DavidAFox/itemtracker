@@ -1,31 +1,14 @@
-import {Component} from 'angular2/core';
-import {RouteParams } from 'angular2/router';
-import {Router } from 'angular2/router';
+import {Component} from '@angular/core';
+import {RouteParams, Router } from '@angular/router-deprecated';
 import {Item} from './item';
 import {ItemService} from './item.service';
-import {OnInit } from 'angular2/core';
+import {OnInit } from '@angular/core';
 import {StolenService} from './stolen.service';
 import {Stolen} from './stolen';
 
 @Component({
     selector: 'stolen',
-    template: `
-        <div class="container">
-        <h3>{{item.name}} #{{item.id}}</h3>
-            <form (ngSubmit)="save()" #stolenForm="ngForm">
-            <div class="form-group"><label>Quantity</label><input ngControl="quantityControl" required class="form-control" type="number" min="0"[(ngModel)]="stolen.quantity"/></div>
-            <div class="form-group"><label>Date</label>
-                <label>M</label><input ngControl="monthControl" type="number" min="1" max="12" [(ngModel)]="month"/>
-                -<label>D</label><input ngControl="dayControl" type="number" min="1" max="31" [(ngModel)]="day"/>
-                -<label>Y</label><input ngControl="yearControl" type="number" min="1900" [(ngModel)]="year"/>
-            </div>
-            <div class="form-group"><label>Price</label><input ngControl="priceControl" required class="form-control" type="number" min="0" step=".01"[(ngModel)]="price" (ngModelChange) = "updatePrice(price)"/></div>
-            <button class="btn btn-default" type="submit" [disabled]="!stolenForm.form.valid">Save</button>
-        </form>
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-
-        </div>
-    `
+    templateUrl: 'dist/templates/stolen.template.html'
 })
 export class StolenComponent implements OnInit{
     private item = {};
