@@ -29,14 +29,39 @@
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
-    "lite-server": "^2.2.0",
-    "typescript": "^1.8.10",
-    "typings": "^0.7.12",
     "jasmine": "2.3.2",
+    "jspm": "^0.16.34",
     "karma": "^0.12.23",
     "karma-chrome-launcher": "^0.1.4",
     "karma-cli": "^0.0.4",
     "karma-jasmine": "^0.3.6",
-    "rimraf": "^2.4.3"
+    "lite-server": "^2.2.0",
+    "rimraf": "^2.4.3",
+    "typescript": "^1.8.10",
+    "typings": "^0.7.12"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "public"
+    },
+    "dependencies": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.0",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.0",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.0",
+      "@angular/http": "npm:@angular/http@2.0.0-rc.0",
+      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.0",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.0",
+      "@angular/router-deprecated": "npm:@angular/router-deprecated@2.0.0-rc.0",
+      "bootstrap": "npm:bootstrap@^3.3.6",
+      "es6-promise": "npm:es6-promise@^3.0.2",
+      "es6-shim": "npm:es6-shim@^0.35.0",
+      "reflect-metadata": "npm:reflect-metadata@0.1.2",
+      "rxjs": "npm:rxjs@5.0.0-beta.6",
+      "systemjs": "npm:systemjs@0.19.26",
+      "zone.js": "npm:zone.js@0.6.12"
+    },
+    "devDependencies": {
+      "typescript": "npm:typescript@^1.6.2"
+    }
   }
 }

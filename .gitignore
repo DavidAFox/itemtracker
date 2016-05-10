@@ -5,3 +5,5 @@ typings/
 
 #vendor
 vendor/
+
+public/jspm_packages
