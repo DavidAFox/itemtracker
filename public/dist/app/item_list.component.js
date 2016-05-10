@@ -80,10 +80,8 @@ System.register(['@angular/core', './item.service', '@angular/router-deprecated'
                     this._router.navigate(link);
                 };
                 ItemListComponent.prototype.edit = function (item) {
-                    this.selectedItem = item;
+                    this.selectedItem = item_1.Item.copy(item);
                     $('#itemModal').modal('show');
-                    console.log(this.selectedItem);
-                    console.log(this.showModal);
                     //        var link = ['ItemEdit', {id: item.id}];
                     //        this._router.navigate(link);
                 };

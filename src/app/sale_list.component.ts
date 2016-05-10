@@ -3,15 +3,19 @@ import {SaleService} from './sale.service';
 import {ItemService} from './item.service';
 import {Router} from '@angular/router-deprecated';
 import {Sale} from './sale';
+import {Item} from './item';
+import {SaleModalComponent} from './sale_modal.component';
 
 @Component({
     selector: 'sale-list',
     templateUrl : `/dist/templates/sale_list.template.html`,
-    styleUrls: ['./css/sale_list.css']
+    styleUrls: ['./css/sale_list.css'],
+    directives: [SaleModalComponent]
 })
 export class SaleListComponent implements OnInit{
     private sales = [];
     private itemNames = {};
+    private items = {};
     private startMonth:number;
     private startDay:number;
     private startYear:number;
@@ -26,6 +30,8 @@ export class SaleListComponent implements OnInit{
     private locationSelected:boolean = false;
     private sort:string = '';
     private reversed: boolean = false;
+    private selectedSale = new Sale();
+    private selectedItem:Item = new Item();
     constructor(private _saleService: SaleService, private _itemService: ItemService, private _router: Router) {
         this.startDate = new Date();
         this.startDate.setMonth(this.startDate.getMonth()-1);
@@ -77,6 +83,7 @@ export class SaleListComponent implements OnInit{
                     that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
                         if(itemResp.success) {
                            that.itemNames[sale.itemId] = itemResp.data.name;
+                           that.items[sale.id] = itemResp.data;
                         } else {
                             that.error = itemResp.error
                         }
@@ -111,8 +118,11 @@ export class SaleListComponent implements OnInit{
         this.reversed = false;
     }
     edit(sale){
-        var link = ['SaleEdit', {id: sale.id}];
-        this._router.navigate(link);
+        this.selectedSale = Sale.copy(sale);
+        this.selectedItem = Item.copy(this.items[sale.id]);
+        $('#saleModal').modal('show');
+//        var link = ['SaleEdit', {id: sale.id}];
+//        this._router.navigate(link);
     }
     hidden(sale:Sale) :boolean {
         var that = this;
@@ -132,6 +142,21 @@ export class SaleListComponent implements OnInit{
     }
     locMatch(where:string) {
         return where.toLocaleLowerCase().search(this.location.toLocaleLowerCase()) != -1;
+    }
+    reload(id) {
+        var that = this;
+        this.sales.forEach((sale, index) => {
+            if(sale.id === id) {
+                that._saleService.getSale(id).subscribe(resp => {
+                    if(resp.success) {
+                        that.sales[index] = resp.data;
+                    } else {
+                        that.error = resp.error;
+                    }
+                }, error => that.error=error);
+            }
+        }
+        )
     }
     sortBy(type) {
         var that = this;

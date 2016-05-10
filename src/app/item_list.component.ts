@@ -60,11 +60,9 @@ export class ItemListComponent implements OnInit{
         var link = ["ItemNew"];
         this._router.navigate(link);
     }
-    edit(item) {
-        this.selectedItem = item;
+    edit(item:Item) {
+        this.selectedItem = Item.copy(item);
         $('#itemModal').modal('show');
-        console.log(this.selectedItem);
-        console.log(this.showModal);
 //        var link = ['ItemEdit', {id: item.id}];
 //        this._router.navigate(link);
     }

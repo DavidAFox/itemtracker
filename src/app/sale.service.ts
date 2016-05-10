@@ -26,6 +26,7 @@ export class SaleService {
     }
     updateSale(sale:Sale):Observable<{success: boolean, error: string}> {
         var body = JSON.stringify(sale);
+        console.log(body);
         var headers = new Headers({ 'Content-Type': 'application/json'});
         var options = new RequestOptions({headers: headers});
         return this.http.post(this.apiUrl + "update", body, options).map(this.extractData).catch(this.handleError);

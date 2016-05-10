@@ -46,6 +46,7 @@ System.register(['@angular/core', 'rxjs/Observable', '@angular/http', 'rxjs/Rx']
                 };
                 SaleService.prototype.updateSale = function (sale) {
                     var body = JSON.stringify(sale);
+                    console.log(body);
                     var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_2.RequestOptions({ headers: headers });
                     return this.http.post(this.apiUrl + "update", body, options).map(this.extractData).catch(this.handleError);

@@ -1,4 +1,4 @@
-System.register(['@angular/core', './sale.service', './item.service', '@angular/router-deprecated'], function(exports_1, context_1) {
+System.register(['@angular/core', './sale.service', './item.service', '@angular/router-deprecated', './sale', './item', './sale_modal.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, sale_service_1, item_service_1, router_deprecated_1;
+    var core_1, sale_service_1, item_service_1, router_deprecated_1, sale_1, item_1, sale_modal_component_1;
     var SaleListComponent;
     return {
         setters:[
@@ -25,6 +25,15 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
             },
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
+            },
+            function (sale_1_1) {
+                sale_1 = sale_1_1;
+            },
+            function (item_1_1) {
+                item_1 = item_1_1;
+            },
+            function (sale_modal_component_1_1) {
+                sale_modal_component_1 = sale_modal_component_1_1;
             }],
         execute: function() {
             SaleListComponent = (function () {
@@ -34,11 +43,14 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                     this._router = _router;
                     this.sales = [];
                     this.itemNames = {};
+                    this.items = {};
                     this.datesSelected = false;
                     this.location = '';
                     this.locationSelected = false;
                     this.sort = '';
                     this.reversed = false;
+                    this.selectedSale = new sale_1.Sale();
+                    this.selectedItem = new item_1.Item();
                     this.startDate = new Date();
                     this.startDate.setMonth(this.startDate.getMonth() - 1);
                     this.endDate = new Date();
@@ -91,6 +103,7 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                                 that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
                                     if (itemResp.success) {
                                         that.itemNames[sale.itemId] = itemResp.data.name;
+                                        that.items[sale.id] = itemResp.data;
                                     }
                                     else {
                                         that.error = itemResp.error;
@@ -129,8 +142,11 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                     this.reversed = false;
                 };
                 SaleListComponent.prototype.edit = function (sale) {
-                    var link = ['SaleEdit', { id: sale.id }];
-                    this._router.navigate(link);
+                    this.selectedSale = sale_1.Sale.copy(sale);
+                    this.selectedItem = item_1.Item.copy(this.items[sale.id]);
+                    $('#saleModal').modal('show');
+                    //        var link = ['SaleEdit', {id: sale.id}];
+                    //        this._router.navigate(link);
                 };
                 SaleListComponent.prototype.hidden = function (sale) {
                     var that = this;
@@ -150,6 +166,21 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                 };
                 SaleListComponent.prototype.locMatch = function (where) {
                     return where.toLocaleLowerCase().search(this.location.toLocaleLowerCase()) != -1;
+                };
+                SaleListComponent.prototype.reload = function (id) {
+                    var that = this;
+                    this.sales.forEach(function (sale, index) {
+                        if (sale.id === id) {
+                            that._saleService.getSale(id).subscribe(function (resp) {
+                                if (resp.success) {
+                                    that.sales[index] = resp.data;
+                                }
+                                else {
+                                    that.error = resp.error;
+                                }
+                            }, function (error) { return that.error = error; });
+                        }
+                    });
                 };
                 SaleListComponent.prototype.sortBy = function (type) {
                     var that = this;
@@ -198,7 +229,8 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                     core_1.Component({
                         selector: 'sale-list',
                         templateUrl: "/dist/templates/sale_list.template.html",
-                        styleUrls: ['./css/sale_list.css']
+                        styleUrls: ['./css/sale_list.css'],
+                        directives: [sale_modal_component_1.SaleModalComponent]
                     }), 
                     __metadata('design:paramtypes', [sale_service_1.SaleService, item_service_1.ItemService, router_deprecated_1.Router])
                 ], SaleListComponent);

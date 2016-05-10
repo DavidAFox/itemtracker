@@ -1,0 +1,10 @@
+<div class="modal fade" id="saleModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)='close()'><span aria-hidden="true">&times;</span></button>
+        <sale-detail [saleSet]="sale" [item]="item" (closer)="close()"></sale-detail>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

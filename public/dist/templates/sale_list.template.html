@@ -70,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="#sale of sales" (click)="edit(sale)" [hidden]="hidden(sale)">
+                    <tr *ngFor="let sale of sales" (click)="edit(sale)" [hidden]="hidden(sale)">
                         <td>{{sale.itemId}}</td>
                         <td>{{itemNames[sale.itemId]}}</td>
                         <td>{{sale.price / 100 | currency:'USD':true:'1.2-2'}}</td>
@@ -89,3 +89,4 @@
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </div>    
 </div>
+<sale-modal [sale]='selectedSale' [item]='selectedItem' (reload)="reload($event)"></sale-modal>

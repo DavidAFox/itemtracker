@@ -14,4 +14,15 @@ export class Item {
         this.description = "";
         this.date = new Date();
     }
+    public static copy(item) {
+        var newItem = new Item();
+        newItem.id = item.id;
+        newItem.name = item.name;
+        newItem.price = item.price;
+        newItem.salePrice = item.salePrice;
+        newItem.quantity = item.quantity;
+        newItem.description = item.description;
+        newItem.date = item.date;
+        return newItem;
+    }
 }
