@@ -17047,7 +17047,7 @@ System.register("dist/app/item_detail.component.js", ["npm:@angular/core@2.0.0-r
         __decorate([core_1.Output(), __metadata('design:type', Object)], ItemDetailComponent.prototype, "closer", void 0);
         ItemDetailComponent = __decorate([core_1.Component({
           selector: 'item-detail',
-          template: "\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\">\n                <h3>{{item.name}}  Product # {{item.id}}</h3>\n                <form (ngSubmit)=\"save()\" #itemForm=\"ngForm\" >\n                    <div class=\"form-group\"><label>Name</label><input ngControl=\"nameControl\" required class=\"form-control input-block-level\" type=\"text\" [(ngModel)]=\"item.name\"/></div>\n                    <div class=\"form-group\"><label>Description</label><textarea ngControl=\"descriptionControl\" class=\"form-control\" [(ngModel)]=\"item.description\"></textarea></div>\n                    <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n                    <div class=\"form-group\"><label>Sale Price</label><input ngControl=\"salePriceControl\" class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"salePrice\" (ngModelChange) = \"updateSalePrice(salePrice)\"/></div>\n                    <div class=\"form-group\"><label>Quantity</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"item.quantity\"/></div>\n                    <div class=\"form-group\"><label>Date Added</label>\n                        <label>M</label><input ngControl= \"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                        <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                        <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n                    </div>\n                    <button type=\"submit\" class=\"btn btn-default\" [disabled]=\"!itemForm.form.valid\">Save</button>\n                </form>\n            </div>\n        </div>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    "
+          template: "\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\">\n                <h3>{{item.name}}  Product # {{item.id}}</h3>\n                <form (ngSubmit)=\"save()\" #itemForm=\"ngForm\" >\n                    <div class=\"form-group\"><label>Name</label><input ngControl=\"nameControl\" required class=\"form-control input-block-level\" type=\"text\" [(ngModel)]=\"item.name\"/></div>\n                    <div class=\"form-group\"><label>Description</label><textarea ngControl=\"descriptionControl\" class=\"form-control\" [(ngModel)]=\"item.description\"></textarea></div>\n                    <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n                    <div class=\"form-group\"><label>Sale Price</label><input ngControl=\"salePriceControl\" class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"salePrice\" (ngModelChange) = \"updateSalePrice(salePrice)\"/></div>\n                    <div class=\"form-group\"><label>Quantity</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"item.quantity\"/></div>\n                    <div class=\"form-group\"><label>Date Added</label><br>\n                        <label>M</label><input ngControl= \"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n                        <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n                        <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n                    </div>\n                    <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!itemForm.form.valid\">Save</button>\n                </form>\n            </div>\n        </div>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    "
         }), __metadata('design:paramtypes', [item_service_1.ItemService])], ItemDetailComponent);
         return ItemDetailComponent;
       }());
@@ -17201,206 +17201,6 @@ System.register("dist/app/item_remove.component.js", ["npm:@angular/core@2.0.0-r
         return ItemRemoveComponent;
       }());
       exports_1("ItemRemoveComponent", ItemRemoveComponent);
-    }
-  };
-});
-
-System.register("dist/app/sale.js", [], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var Sale;
-  return {
-    setters: [],
-    execute: function() {
-      Sale = (function() {
-        function Sale() {
-          this.id = 0;
-          this.date = new Date();
-          this.price = 0;
-          this.originalPrice = 0;
-          this.originalSalePrice = 0;
-          this.sTaxRate = 0;
-          this.quantity = 0;
-          this.fee = 0;
-          this.itemId = 0;
-          this.where = "";
-          this.comment = "";
-        }
-        Sale.copy = function(sale) {
-          var newSale = new Sale();
-          newSale.id = sale.id;
-          newSale.date = sale.date;
-          newSale.price = sale.price;
-          newSale.originalPrice = sale.originalPrice;
-          newSale.originalSalePrice = sale.originalSalePrice;
-          newSale.sTaxRate = sale.sTaxRate;
-          newSale.quantity = sale.quantity;
-          newSale.fee = sale.fee;
-          newSale.itemId = sale.itemId;
-          newSale.where = sale.where;
-          newSale.comment = sale.comment;
-          return newSale;
-        };
-        return Sale;
-      }());
-      exports_1("Sale", Sale);
-    }
-  };
-});
-
-System.register("dist/app/sale_detail.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/sale.service.js", "dist/app/sale.js", "dist/app/item.js"], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
-      r = Reflect.decorate(decorators, target, key, desc);
-    else
-      for (var i = decorators.length - 1; i >= 0; i--)
-        if (d = decorators[i])
-          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  var __metadata = (this && this.__metadata) || function(k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
-      return Reflect.metadata(k, v);
-  };
-  var core_1,
-      sale_service_1,
-      sale_1,
-      item_1;
-  var SaleDetailComponent;
-  return {
-    setters: [function(core_1_1) {
-      core_1 = core_1_1;
-    }, function(sale_service_1_1) {
-      sale_service_1 = sale_service_1_1;
-    }, function(sale_1_1) {
-      sale_1 = sale_1_1;
-    }, function(item_1_1) {
-      item_1 = item_1_1;
-    }],
-    execute: function() {
-      SaleDetailComponent = (function() {
-        function SaleDetailComponent(_saleService) {
-          this._saleService = _saleService;
-          this.closer = new core_1.EventEmitter();
-          this.sale = new sale_1.Sale();
-        }
-        Object.defineProperty(SaleDetailComponent.prototype, "saleSet", {
-          set: function(sale) {
-            this.sale = sale;
-            this.day = this.sale.date.getDate();
-            this.month = this.sale.date.getMonth() + 1;
-            this.year = this.sale.date.getFullYear();
-            this.price = this.sale.price / 100;
-            this.fee = this.sale.fee / 100;
-          },
-          enumerable: true,
-          configurable: true
-        });
-        SaleDetailComponent.prototype.ngOnInit = function() {
-          var that = this;
-          that.day = that.sale.date.getDate();
-          that.month = that.sale.date.getMonth() + 1;
-          that.year = that.sale.date.getFullYear();
-          that.price = that.sale.price / 100;
-          that.fee = that.sale.fee / 100;
-        };
-        SaleDetailComponent.prototype.save = function() {
-          var that = this;
-          this.sale.date.setDate(this.day);
-          this.sale.date.setMonth(this.month - 1);
-          this.sale.date.setFullYear(this.year);
-          this._saleService.updateSale(this.sale).subscribe(function(resp) {
-            if (resp.success) {
-              that.close();
-            } else {
-              that.error = resp.error;
-            }
-          }, function(error) {
-            return that.error = error;
-          });
-        };
-        SaleDetailComponent.prototype.updatePrice = function(price) {
-          this.sale.price = price * 100;
-        };
-        SaleDetailComponent.prototype.updateFee = function(fee) {
-          this.sale.fee = fee * 100;
-        };
-        SaleDetailComponent.prototype.close = function() {
-          this.closer.emit(true);
-        };
-        __decorate([core_1.Input(), __metadata('design:type', sale_1.Sale), __metadata('design:paramtypes', [sale_1.Sale])], SaleDetailComponent.prototype, "saleSet", null);
-        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], SaleDetailComponent.prototype, "item", void 0);
-        __decorate([core_1.Output(), __metadata('design:type', Object)], SaleDetailComponent.prototype, "closer", void 0);
-        SaleDetailComponent = __decorate([core_1.Component({
-          selector: 'sale-detail',
-          template: "\n        <h3>{{item.name}} #{{item.id}}</h3>\n        <p>{{item.description}}</p>\n        <form (ngSubmit)=\"save()\" #saleForm=\"ngForm\">\n        <div class=\"form-group\"><label>Handling Fee</label><input ngControl=\"feeControl\" class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"fee\" (ngModelChange)=\"updateFee(fee)\"/></div>\n        <div class=\"form-group\"><label>Quantity Sold</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"sale.quantity\"/></div>\n        <div class=\"form-group\"><label>Sales Tax Rate</label><input ngControl=\"sTaxRateControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".0001\" [(ngModel)]=\"sale.sTaxRate\"/></div>\n        <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n        <div class=\"form-group\"><label>Date</label><br>\n            <label>M</label><input ngControl=\"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n            <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n            <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n        </div>\n        <div class=\"form-group\"><label>Where</label><input ngControl=\"whereControl\" class=\"form-control\" type=\"text\" [(ngModel)]=\"sale.where\"/></div>\n        <div class=\"form-group\"><label>Comment</label><textarea ngControl=\"commentControl\" class= \"form-control\" rows=\"5\" cols=\"30\" [(ngModel)]=\"sale.comment\"></textarea></div>\n        <button class=\"btn btn-default\" type=\"submit\" [disabled]=\"!saleForm.form.valid\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    "
-        }), __metadata('design:paramtypes', [sale_service_1.SaleService])], SaleDetailComponent);
-        return SaleDetailComponent;
-      }());
-      exports_1("SaleDetailComponent", SaleDetailComponent);
-    }
-  };
-});
-
-System.register("dist/app/sale_modal.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.js", "dist/app/sale.js", "dist/app/sale_detail.component.js"], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
-      r = Reflect.decorate(decorators, target, key, desc);
-    else
-      for (var i = decorators.length - 1; i >= 0; i--)
-        if (d = decorators[i])
-          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  var __metadata = (this && this.__metadata) || function(k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
-      return Reflect.metadata(k, v);
-  };
-  var core_1,
-      item_1,
-      sale_1,
-      sale_detail_component_1;
-  var SaleModalComponent;
-  return {
-    setters: [function(core_1_1) {
-      core_1 = core_1_1;
-    }, function(item_1_1) {
-      item_1 = item_1_1;
-    }, function(sale_1_1) {
-      sale_1 = sale_1_1;
-    }, function(sale_detail_component_1_1) {
-      sale_detail_component_1 = sale_detail_component_1_1;
-    }],
-    execute: function() {
-      SaleModalComponent = (function() {
-        function SaleModalComponent() {
-          this.reload = new core_1.EventEmitter();
-        }
-        SaleModalComponent.prototype.close = function() {
-          $('#saleModal').modal('hide');
-          this.reload.emit(this.sale.id);
-        };
-        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], SaleModalComponent.prototype, "item", void 0);
-        __decorate([core_1.Input(), __metadata('design:type', sale_1.Sale)], SaleModalComponent.prototype, "sale", void 0);
-        __decorate([core_1.Output(), __metadata('design:type', Object)], SaleModalComponent.prototype, "reload", void 0);
-        SaleModalComponent = __decorate([core_1.Component({
-          selector: 'sale-modal',
-          templateUrl: 'dist/templates/sale_modal.template.html',
-          directives: [sale_detail_component_1.SaleDetailComponent]
-        }), __metadata('design:paramtypes', [])], SaleModalComponent);
-        return SaleModalComponent;
-      }());
-      exports_1("SaleModalComponent", SaleModalComponent);
     }
   };
 });
@@ -17841,40 +17641,6 @@ System.register("dist/app/stolen.js", [], function(exports_1, context_1) {
   };
 });
 
-System.register("dist/app/item.js", [], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var Item;
-  return {
-    setters: [],
-    execute: function() {
-      Item = (function() {
-        function Item() {
-          this.id = null;
-          this.name = "";
-          this.price = 0;
-          this.salePrice = 0;
-          this.description = "";
-          this.date = new Date();
-        }
-        Item.copy = function(item) {
-          var newItem = new Item();
-          newItem.id = item.id;
-          newItem.name = item.name;
-          newItem.price = item.price;
-          newItem.salePrice = item.salePrice;
-          newItem.quantity = item.quantity;
-          newItem.description = item.description;
-          newItem.date = item.date;
-          return newItem;
-        };
-        return Item;
-      }());
-      exports_1("Item", Item);
-    }
-  };
-});
-
 System.register("dist/app/stolen_detail.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/stolen.js", "dist/app/item.js", "dist/app/stolen.service.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
@@ -18191,6 +17957,8 @@ System.register("dist/app/stolen_list.component.js", ["npm:@angular/core@2.0.0-r
         StolenListComponent.prototype.sortBy = function(type) {
           if (this.sort === type) {
             this.reversed = !this.reversed;
+          } else {
+            this.reversed = false;
           }
           var that = this;
           this.stolens.sort(function(a, b) {
@@ -20870,7 +20638,241 @@ System.register("dist/app/sale.service.js", ["npm:@angular/core@2.0.0-rc.0.js", 
   };
 });
 
-System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/sale.service.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js"], function(exports_1, context_1) {
+System.register("dist/app/sale.js", [], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var Sale;
+  return {
+    setters: [],
+    execute: function() {
+      Sale = (function() {
+        function Sale() {
+          this.id = 0;
+          this.date = new Date();
+          this.price = 0;
+          this.originalPrice = 0;
+          this.originalSalePrice = 0;
+          this.sTaxRate = 0;
+          this.quantity = 0;
+          this.fee = 0;
+          this.itemId = 0;
+          this.where = "";
+          this.comment = "";
+        }
+        Sale.copy = function(sale) {
+          var newSale = new Sale();
+          newSale.id = sale.id;
+          newSale.date = sale.date;
+          newSale.price = sale.price;
+          newSale.originalPrice = sale.originalPrice;
+          newSale.originalSalePrice = sale.originalSalePrice;
+          newSale.sTaxRate = sale.sTaxRate;
+          newSale.quantity = sale.quantity;
+          newSale.fee = sale.fee;
+          newSale.itemId = sale.itemId;
+          newSale.where = sale.where;
+          newSale.comment = sale.comment;
+          return newSale;
+        };
+        return Sale;
+      }());
+      exports_1("Sale", Sale);
+    }
+  };
+});
+
+System.register("dist/app/item.js", [], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var Item;
+  return {
+    setters: [],
+    execute: function() {
+      Item = (function() {
+        function Item() {
+          this.id = null;
+          this.name = "";
+          this.price = 0;
+          this.salePrice = 0;
+          this.description = "";
+          this.date = new Date();
+        }
+        Item.copy = function(item) {
+          var newItem = new Item();
+          newItem.id = item.id;
+          newItem.name = item.name;
+          newItem.price = item.price;
+          newItem.salePrice = item.salePrice;
+          newItem.quantity = item.quantity;
+          newItem.description = item.description;
+          newItem.date = item.date;
+          return newItem;
+        };
+        return Item;
+      }());
+      exports_1("Item", Item);
+    }
+  };
+});
+
+System.register("dist/app/sale_detail.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/sale.service.js", "dist/app/sale.js", "dist/app/item.js"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      sale_service_1,
+      sale_1,
+      item_1;
+  var SaleDetailComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(sale_service_1_1) {
+      sale_service_1 = sale_service_1_1;
+    }, function(sale_1_1) {
+      sale_1 = sale_1_1;
+    }, function(item_1_1) {
+      item_1 = item_1_1;
+    }],
+    execute: function() {
+      SaleDetailComponent = (function() {
+        function SaleDetailComponent(_saleService) {
+          this._saleService = _saleService;
+          this.closer = new core_1.EventEmitter();
+          this.sale = new sale_1.Sale();
+        }
+        Object.defineProperty(SaleDetailComponent.prototype, "saleSet", {
+          set: function(sale) {
+            this.sale = sale;
+            this.day = this.sale.date.getDate();
+            this.month = this.sale.date.getMonth() + 1;
+            this.year = this.sale.date.getFullYear();
+            this.price = this.sale.price / 100;
+            this.fee = this.sale.fee / 100;
+          },
+          enumerable: true,
+          configurable: true
+        });
+        SaleDetailComponent.prototype.ngOnInit = function() {
+          var that = this;
+          that.day = that.sale.date.getDate();
+          that.month = that.sale.date.getMonth() + 1;
+          that.year = that.sale.date.getFullYear();
+          that.price = that.sale.price / 100;
+          that.fee = that.sale.fee / 100;
+        };
+        SaleDetailComponent.prototype.save = function() {
+          var that = this;
+          this.sale.date.setDate(this.day);
+          this.sale.date.setMonth(this.month - 1);
+          this.sale.date.setFullYear(this.year);
+          this._saleService.updateSale(this.sale).subscribe(function(resp) {
+            if (resp.success) {
+              that.close();
+            } else {
+              that.error = resp.error;
+            }
+          }, function(error) {
+            return that.error = error;
+          });
+        };
+        SaleDetailComponent.prototype.updatePrice = function(price) {
+          this.sale.price = price * 100;
+        };
+        SaleDetailComponent.prototype.updateFee = function(fee) {
+          this.sale.fee = fee * 100;
+        };
+        SaleDetailComponent.prototype.close = function() {
+          this.closer.emit(true);
+        };
+        __decorate([core_1.Input(), __metadata('design:type', sale_1.Sale), __metadata('design:paramtypes', [sale_1.Sale])], SaleDetailComponent.prototype, "saleSet", null);
+        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], SaleDetailComponent.prototype, "item", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], SaleDetailComponent.prototype, "closer", void 0);
+        SaleDetailComponent = __decorate([core_1.Component({
+          selector: 'sale-detail',
+          template: "\n        <h3>{{item.name}} #{{item.id}}</h3>\n        <p>{{item.description}}</p>\n        <form (ngSubmit)=\"save()\" #saleForm=\"ngForm\">\n        <div class=\"form-group\"><label>Handling Fee</label><input ngControl=\"feeControl\" class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"fee\" (ngModelChange)=\"updateFee(fee)\"/></div>\n        <div class=\"form-group\"><label>Quantity Sold</label><input ngControl=\"quantityControl\" required class=\"form-control\" type=\"number\" min=\"0\" [(ngModel)]=\"sale.quantity\"/></div>\n        <div class=\"form-group\"><label>Sales Tax Rate</label><input ngControl=\"sTaxRateControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".0001\" [(ngModel)]=\"sale.sTaxRate\"/></div>\n        <div class=\"form-group\"><label>Price</label><input ngControl=\"priceControl\" required class=\"form-control\" type=\"number\" min=\"0\" step=\".01\" [(ngModel)]=\"price\" (ngModelChange) = \"updatePrice(price)\"/></div>\n        <div class=\"form-group\"><label>Date</label><br>\n            <label>M</label><input ngControl=\"monthControl\" type=\"number\" min=\"1\" max=\"12\" [(ngModel)]=\"month\"/>\n            <label>D</label><input ngControl=\"dayControl\" type=\"number\" min=\"1\" max=\"31\" [(ngModel)]=\"day\"/>\n            <label>Y</label><input ngControl=\"yearControl\" type=\"number\" min=\"1900\" max=\"9999\" [(ngModel)]=\"year\"/>\n        </div>\n        <div class=\"form-group\"><label>Where</label><input ngControl=\"whereControl\" class=\"form-control\" type=\"text\" [(ngModel)]=\"sale.where\"/></div>\n        <div class=\"form-group\"><label>Comment</label><textarea ngControl=\"commentControl\" class= \"form-control\" rows=\"5\" cols=\"30\" [(ngModel)]=\"sale.comment\"></textarea></div>\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!saleForm.form.valid\">Save</button>\n        </form>\n        <div *ngIf=\"error\" class=\"alert alert-danger\">{{error}}</div>\n    "
+        }), __metadata('design:paramtypes', [sale_service_1.SaleService])], SaleDetailComponent);
+        return SaleDetailComponent;
+      }());
+      exports_1("SaleDetailComponent", SaleDetailComponent);
+    }
+  };
+});
+
+System.register("dist/app/sale_modal.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.js", "dist/app/sale.js", "dist/app/sale_detail.component.js"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      item_1,
+      sale_1,
+      sale_detail_component_1;
+  var SaleModalComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(item_1_1) {
+      item_1 = item_1_1;
+    }, function(sale_1_1) {
+      sale_1 = sale_1_1;
+    }, function(sale_detail_component_1_1) {
+      sale_detail_component_1 = sale_detail_component_1_1;
+    }],
+    execute: function() {
+      SaleModalComponent = (function() {
+        function SaleModalComponent() {
+          this.reload = new core_1.EventEmitter();
+        }
+        SaleModalComponent.prototype.close = function() {
+          $('#saleModal').modal('hide');
+          this.reload.emit(this.sale.id);
+        };
+        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], SaleModalComponent.prototype, "item", void 0);
+        __decorate([core_1.Input(), __metadata('design:type', sale_1.Sale)], SaleModalComponent.prototype, "sale", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], SaleModalComponent.prototype, "reload", void 0);
+        SaleModalComponent = __decorate([core_1.Component({
+          selector: 'sale-modal',
+          templateUrl: 'dist/templates/sale_modal.template.html',
+          directives: [sale_detail_component_1.SaleDetailComponent]
+        }), __metadata('design:paramtypes', [])], SaleModalComponent);
+        return SaleModalComponent;
+      }());
+      exports_1("SaleModalComponent", SaleModalComponent);
+    }
+  };
+});
+
+System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/sale.service.js", "dist/app/sale.js", "dist/app/item.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/sale_modal.component.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -20892,7 +20894,10 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
   var core_1,
       item_service_1,
       sale_service_1,
-      router_deprecated_1;
+      sale_1,
+      item_1,
+      router_deprecated_1,
+      sale_modal_component_1;
   var SalesTaxComponent;
   return {
     setters: [function(core_1_1) {
@@ -20901,8 +20906,14 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
       item_service_1 = item_service_1_1;
     }, function(sale_service_1_1) {
       sale_service_1 = sale_service_1_1;
+    }, function(sale_1_1) {
+      sale_1 = sale_1_1;
+    }, function(item_1_1) {
+      item_1 = item_1_1;
     }, function(router_deprecated_1_1) {
       router_deprecated_1 = router_deprecated_1_1;
+    }, function(sale_modal_component_1_1) {
+      sale_modal_component_1 = sale_modal_component_1_1;
     }],
     execute: function() {
       SalesTaxComponent = (function() {
@@ -20912,6 +20923,9 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
           this._router = _router;
           this.sales = [];
           this.itemNames = {};
+          this.items = {};
+          this.selectedSale = new sale_1.Sale();
+          this.selectedItem = new item_1.Item();
           this.datesSelected = true;
           this.startDate = new Date();
           this.startDate.setMonth(Math.floor(this.startDate.getMonth() / 3) * 3);
@@ -20966,6 +20980,7 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
                 that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
                   if (itemResp.success) {
                     that.itemNames[sale.itemId] = itemResp.data.name;
+                    that.items[sale.id] = itemResp.data;
                   } else {
                     that.error = itemResp.error;
                   }
@@ -20978,6 +20993,22 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
             return that.error = error;
           });
         };
+        SalesTaxComponent.prototype.reload = function(id) {
+          var that = this;
+          this.sales.forEach(function(sale, index) {
+            if (sale.id === id) {
+              that._saleService.getSale(id).subscribe(function(resp) {
+                if (resp.success) {
+                  that.sales[index] = resp.data;
+                } else {
+                  that.error = resp.error;
+                }
+              }, function(error) {
+                return that.error = error;
+              });
+            }
+          });
+        };
         SalesTaxComponent.prototype.getSalesWithDates = function(start, end) {
           var that = this;
           this._saleService.getSales(start, end).subscribe(function(resp) {
@@ -20987,6 +21018,7 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
                 that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
                   if (itemResp.success) {
                     that.itemNames[sale.itemId] = itemResp.data.name;
+                    that.items[sale.id] = itemResp.data;
                   } else {
                     that.error = itemResp.error;
                   }
@@ -21005,12 +21037,14 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
           }, 0);
         };
         SalesTaxComponent.prototype.edit = function(sale) {
-          var link = ['SaleEdit', {id: sale.id}];
-          this._router.navigate(link);
+          this.selectedSale = sale_1.Sale.copy(sale);
+          this.selectedItem = item_1.Item.copy(this.items[sale.id]);
+          $('#saleModal').modal('show');
         };
         SalesTaxComponent = __decorate([core_1.Component({
           selector: "sales-tax",
-          templateUrl: "/dist/templates/sales_tax.template.html"
+          templateUrl: "/dist/templates/sales_tax.template.html",
+          directives: [sale_modal_component_1.SaleModalComponent]
         }), __metadata('design:paramtypes', [item_service_1.ItemService, sale_service_1.SaleService, router_deprecated_1.Router])], SalesTaxComponent);
         return SalesTaxComponent;
       }());
@@ -21117,11 +21151,11 @@ System.register("dist/app/app.component.js", ["npm:@angular/core@2.0.0-rc.0.js",
           name: 'Stolen',
           component: stolen_component_1.StolenComponent
         }, {
-          path: '/item/:id',
+          path: '/items/:id',
           name: 'ItemEdit',
           component: item_edit_component_1.ItemEditComponent
         }, {
-          path: '/item',
+          path: '/items',
           name: 'ItemNew',
           component: item_new_component_1.ItemNewComponent
         }, {
@@ -21133,7 +21167,7 @@ System.register("dist/app/app.component.js", ["npm:@angular/core@2.0.0-rc.0.js",
           name: 'SaleList',
           component: sale_list_component_1.SaleListComponent
         }, {
-          path: '/sale/:id',
+          path: '/sales/:id',
           name: 'SaleEdit',
           component: sale_edit_component_1.SaleEditComponent
         }, {

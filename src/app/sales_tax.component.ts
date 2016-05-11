@@ -4,14 +4,18 @@ import {SaleService} from './sale.service';
 import {Sale} from './sale';
 import {Item} from './item';
 import {Router} from '@angular/router-deprecated';
+import {SaleModalComponent} from './sale_modal.component';
+declare var $:any;
 
 @Component({
     selector: "sales-tax",
-    templateUrl: `/dist/templates/sales_tax.template.html`
+    templateUrl: `/dist/templates/sales_tax.template.html`,
+    directives: [SaleModalComponent]
 })
 export class SalesTaxComponent implements OnInit{
     private sales:Sale[] = [];
     private itemNames = {};
+    private items = {};
     private startMonth:number;
     private startDay:number;
     private startYear:number;
@@ -21,6 +25,8 @@ export class SalesTaxComponent implements OnInit{
     private startDate:Date;
     private endDate:Date;
     private error;
+    private selectedSale = new Sale();
+    private selectedItem = new Item();
     private datesSelected = true;
     constructor(private _itemService: ItemService, private _saleService: SaleService, private _router:Router ) {
         this.startDate = new Date();
@@ -76,6 +82,7 @@ export class SalesTaxComponent implements OnInit{
                     that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
                         if(itemResp.success) {
                            that.itemNames[sale.itemId] = itemResp.data.name;
+                           that.items[sale.id] = itemResp.data;
                         } else {
                             that.error = itemResp.error
                         }
@@ -86,6 +93,20 @@ export class SalesTaxComponent implements OnInit{
             }
         }, error=> that.error = error);
     }
+    reload(id) {
+        var that = this;
+        this.sales.forEach((sale, index) => {
+            if(sale.id === id) {
+                that._saleService.getSale(id).subscribe(resp => {
+                    if(resp.success) {
+                        that.sales[index] = resp.data;
+                    } else {
+                        that.error = resp.error;
+                    }
+                }, error => that.error=error);
+            }
+        });
+    }
     getSalesWithDates(start:Date, end:Date) {
         var that = this;
         this._saleService.getSales(start, end).subscribe(function(resp) {
@@ -95,6 +116,7 @@ export class SalesTaxComponent implements OnInit{
                     that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
                         if(itemResp.success) {
                            that.itemNames[sale.itemId] = itemResp.data.name;
+                           that.items[sale.id] = itemResp.data;
                         } else {
                             that.error = itemResp.error
                         }
@@ -111,7 +133,11 @@ export class SalesTaxComponent implements OnInit{
         }, 0)
     }
     edit(sale:Sale) {
-        var link = ['SaleEdit', {id: sale.id}];
-        this._router.navigate(link);
+        this.selectedSale = Sale.copy(sale);
+        this.selectedItem = Item.copy(this.items[sale.id]);
+        $('#saleModal').modal('show');
+
+//        var link = ['SaleEdit', {id: sale.id}];
+//        this._router.navigate(link);
     }
 }

@@ -97,12 +97,12 @@ System.register(['@angular/core', '@angular/router-deprecated', './item_list.com
                             component: stolen_component_1.StolenComponent
                         },
                         {
-                            path: '/item/:id',
+                            path: '/items/:id',
                             name: 'ItemEdit',
                             component: item_edit_component_1.ItemEditComponent
                         },
                         {
-                            path: '/item',
+                            path: '/items',
                             name: 'ItemNew',
                             component: item_new_component_1.ItemNewComponent
                         },
@@ -117,7 +117,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item_list.com
                             component: sale_list_component_1.SaleListComponent
                         },
                         {
-                            path: '/sale/:id',
+                            path: '/sales/:id',
                             name: 'SaleEdit',
                             component: sale_edit_component_1.SaleEditComponent
                         },

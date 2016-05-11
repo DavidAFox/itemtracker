@@ -5,7 +5,7 @@ import {Router} from '@angular/router-deprecated';
 import {Item} from './item';
 import {ItemModalComponent} from './item_modal.component';
 import 'rxjs/Rx'
-
+declare var $:any;
 
 @Component ({
     selector: 'item-list',

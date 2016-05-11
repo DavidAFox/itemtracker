@@ -156,6 +156,9 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                     if (this.sort === type) {
                         this.reversed = !this.reversed;
                     }
+                    else {
+                        this.reversed = false;
+                    }
                     var that = this;
                     this.stolens.sort(function (a, b) {
                         var x = 1;

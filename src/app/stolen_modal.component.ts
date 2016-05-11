@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Item} from './item';
 import {Stolen} from './stolen';
 import {StolenDetailComponent} from './stolen_detail.component'
+declare var $:any;
 
 @Component({
     selector: 'stolen-modal',

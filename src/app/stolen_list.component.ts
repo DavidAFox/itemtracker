@@ -6,6 +6,7 @@ import {OnInit} from '@angular/core'
 import {Stolen} from './stolen';
 import {Item} from './item';
 import {StolenModalComponent} from './stolen_modal.component';
+declare var $:any;
 
 @Component({
     selector: 'stolen-list',
@@ -134,6 +135,8 @@ export class StolenListComponent implements OnInit{
     sortBy(type) {
         if(this.sort === type) {
             this.reversed = !this.reversed;
+        } else {
+            this.reversed = false;
         }
         var that = this;
         this.stolens.sort(function(a:Stolen, b:Stolen){

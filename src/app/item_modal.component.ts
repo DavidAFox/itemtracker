@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter } from '@angular/core';
 import {Item} from './item';
 import {ItemDetailComponent} from './item_detail.component'
+declare var $:any;
 
 @Component({
     selector: 'item-modal',

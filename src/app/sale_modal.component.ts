@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Item} from './item';
 import {Sale} from './sale';
 import {SaleDetailComponent} from './sale_detail.component'
+declare var $:any;
 
 @Component({
     selector: 'sale-modal',

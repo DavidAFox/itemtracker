@@ -1,4 +1,4 @@
-System.register(['@angular/core', './item.service', './sale.service', '@angular/router-deprecated'], function(exports_1, context_1) {
+System.register(['@angular/core', './item.service', './sale.service', './sale', './item', '@angular/router-deprecated', './sale_modal.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, item_service_1, sale_service_1, router_deprecated_1;
+    var core_1, item_service_1, sale_service_1, sale_1, item_1, router_deprecated_1, sale_modal_component_1;
     var SalesTaxComponent;
     return {
         setters:[
@@ -23,8 +23,17 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
             function (sale_service_1_1) {
                 sale_service_1 = sale_service_1_1;
             },
+            function (sale_1_1) {
+                sale_1 = sale_1_1;
+            },
+            function (item_1_1) {
+                item_1 = item_1_1;
+            },
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
+            },
+            function (sale_modal_component_1_1) {
+                sale_modal_component_1 = sale_modal_component_1_1;
             }],
         execute: function() {
             SalesTaxComponent = (function () {
@@ -34,6 +43,9 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
                     this._router = _router;
                     this.sales = [];
                     this.itemNames = {};
+                    this.items = {};
+                    this.selectedSale = new sale_1.Sale();
+                    this.selectedItem = new item_1.Item();
                     this.datesSelected = true;
                     this.startDate = new Date();
                     this.startDate.setMonth(Math.floor(this.startDate.getMonth() / 3) * 3);
@@ -90,6 +102,7 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
                                 that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
                                     if (itemResp.success) {
                                         that.itemNames[sale.itemId] = itemResp.data.name;
+                                        that.items[sale.id] = itemResp.data;
                                     }
                                     else {
                                         that.error = itemResp.error;
@@ -102,6 +115,21 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
                         }
                     }, function (error) { return that.error = error; });
                 };
+                SalesTaxComponent.prototype.reload = function (id) {
+                    var that = this;
+                    this.sales.forEach(function (sale, index) {
+                        if (sale.id === id) {
+                            that._saleService.getSale(id).subscribe(function (resp) {
+                                if (resp.success) {
+                                    that.sales[index] = resp.data;
+                                }
+                                else {
+                                    that.error = resp.error;
+                                }
+                            }, function (error) { return that.error = error; });
+                        }
+                    });
+                };
                 SalesTaxComponent.prototype.getSalesWithDates = function (start, end) {
                     var that = this;
                     this._saleService.getSales(start, end).subscribe(function (resp) {
@@ -111,6 +139,7 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
                                 that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
                                     if (itemResp.success) {
                                         that.itemNames[sale.itemId] = itemResp.data.name;
+                                        that.items[sale.id] = itemResp.data;
                                     }
                                     else {
                                         that.error = itemResp.error;
@@ -129,13 +158,17 @@ System.register(['@angular/core', './item.service', './sale.service', '@angular/
                     }, 0);
                 };
                 SalesTaxComponent.prototype.edit = function (sale) {
-                    var link = ['SaleEdit', { id: sale.id }];
-                    this._router.navigate(link);
+                    this.selectedSale = sale_1.Sale.copy(sale);
+                    this.selectedItem = item_1.Item.copy(this.items[sale.id]);
+                    $('#saleModal').modal('show');
+                    //        var link = ['SaleEdit', {id: sale.id}];
+                    //        this._router.navigate(link);
                 };
                 SalesTaxComponent = __decorate([
                     core_1.Component({
                         selector: "sales-tax",
-                        templateUrl: "/dist/templates/sales_tax.template.html"
+                        templateUrl: "/dist/templates/sales_tax.template.html",
+                        directives: [sale_modal_component_1.SaleModalComponent]
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, sale_service_1.SaleService, router_deprecated_1.Router])
                 ], SalesTaxComponent);

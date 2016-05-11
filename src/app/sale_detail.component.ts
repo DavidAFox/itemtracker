@@ -20,7 +20,7 @@ import {Item} from './item';
         </div>
         <div class="form-group"><label>Where</label><input ngControl="whereControl" class="form-control" type="text" [(ngModel)]="sale.where"/></div>
         <div class="form-group"><label>Comment</label><textarea ngControl="commentControl" class= "form-control" rows="5" cols="30" [(ngModel)]="sale.comment"></textarea></div>
-        <button class="btn btn-default" type="submit" [disabled]="!saleForm.form.valid">Save</button>
+        <button class="btn btn-primary" type="submit" [disabled]="!saleForm.form.valid">Save</button>
         </form>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
     `

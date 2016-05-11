@@ -5,6 +5,7 @@ import {Router} from '@angular/router-deprecated';
 import {Sale} from './sale';
 import {Item} from './item';
 import {SaleModalComponent} from './sale_modal.component';
+declare var $:any;
 
 @Component({
     selector: 'sale-list',

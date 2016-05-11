@@ -47,12 +47,12 @@ import {SalesTaxComponent} from './sales_tax.component';
 		component: StolenComponent
 	},
 	{
-		path: '/item/:id',
+		path: '/items/:id',
 		name: 'ItemEdit',
 		component: ItemEditComponent
 	},
 	{
-		path: '/item',
+		path: '/items',
 		name: 'ItemNew',
 		component: ItemNewComponent
 	},
@@ -67,7 +67,7 @@ import {SalesTaxComponent} from './sales_tax.component';
 		component: SaleListComponent
 	},
 	{
-		path: '/sale/:id',
+		path: '/sales/:id',
 		name: 'SaleEdit',
 		component: SaleEditComponent
 	},

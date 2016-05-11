@@ -6,7 +6,7 @@
                     <h1>Sales Tax</h1>
                 </div>
                 <div class="panel-body">
-                    <label>By Date: </label><input type="checkbox" [(ngModel)]="datesSelected" (ngModelChange)="updateStolens()"/>
+                    <label>By Date: </label><input type="checkbox" [(ngModel)]="datesSelected" (ngModelChange)="updateSales()"/>
                     <div class="form-group" *ngIf="datesSelected"><label>Start Date</label><br>
                         <label>M</label><input (ngModelChange)="updateDates()" type="number" min="1" max="12" [(ngModel)]="startMonth"/>
                         <label>D</label><input (ngModelChange)="updateDates()" type="number" min="1" max="31" [(ngModel)]="startDay"/>
@@ -65,3 +65,4 @@
         </div>
     </div>
 </div>
+<sale-modal [sale]='selectedSale' [item]='selectedItem' (reload)="reload($event)"></sale-modal>
