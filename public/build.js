@@ -16855,7 +16855,7 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
   };
 });
 
-System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js"], function(exports_1, context_1) {
+System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/item_detail.component.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -16876,7 +16876,8 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
   };
   var core_1,
       router_deprecated_1,
-      item_service_1;
+      item_service_1,
+      item_detail_component_1;
   var ItemEditComponent;
   return {
     setters: [function(core_1_1) {
@@ -16885,6 +16886,8 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
       router_deprecated_1 = router_deprecated_1_1;
     }, function(item_service_1_1) {
       item_service_1 = item_service_1_1;
+    }, function(item_detail_component_1_1) {
+      item_detail_component_1 = item_detail_component_1_1;
     }],
     execute: function() {
       ItemEditComponent = (function() {
@@ -16911,13 +16914,7 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
           } else {
             this.getItem(id).subscribe(function(resp) {
               if (resp.success) {
-                var item = resp.data;
-                that.item = item;
-                that.day = item.date.getDate();
-                that.month = item.date.getMonth() + 1;
-                that.year = item.date.getFullYear();
-                that.price = item.price / 100.0;
-                that.salePrice = item.salePrice / 100.0;
+                that.item = resp.data;
               } else {
                 that.error = resp.error;
               }
@@ -16930,30 +16927,13 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
           return this._itemService.getItem(id);
         };
         ItemEditComponent.prototype.save = function() {
-          var _this = this;
-          this.item.date.setDate(this.day);
-          this.item.date.setMonth(this.month - 1);
-          this.item.date.setFullYear(this.year);
-          this._itemService.updateItem(this.item).subscribe(function(res) {
-            if (!res.success) {
-              _this.error = res.error;
-            } else {
-              var link = ["ItemList"];
-              _this._router.navigate(link);
-            }
-          }, function(error) {
-            return _this.error = error;
-          });
-        };
-        ItemEditComponent.prototype.updatePrice = function(price) {
-          this.item.price = price * 100;
-        };
-        ItemEditComponent.prototype.updateSalePrice = function(price) {
-          this.item.salePrice = price * 100;
+          var link = ["ItemList"];
+          this._router.navigate(link);
         };
         ItemEditComponent = __decorate([core_1.Component({
           selector: 'item-edit',
-          templateUrl: 'dist/templates/item_edit.template.html'
+          templateUrl: 'dist/templates/item_edit.template.html',
+          directives: [item_detail_component_1.ItemDetailComponent]
         }), __metadata('design:paramtypes', [item_service_1.ItemService, router_deprecated_1.RouteParams, router_deprecated_1.Router])], ItemEditComponent);
         return ItemEditComponent;
       }());
@@ -17442,7 +17422,7 @@ System.register("dist/app/sale_list.component.js", ["npm:@angular/core@2.0.0-rc.
   };
 });
 
-System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/sale.service.js"], function(exports_1, context_1) {
+System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/sale.service.js", "dist/app/sale_detail.component.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -17464,7 +17444,8 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
   var core_1,
       router_deprecated_1,
       item_service_1,
-      sale_service_1;
+      sale_service_1,
+      sale_detail_component_1;
   var SaleEditComponent;
   return {
     setters: [function(core_1_1) {
@@ -17475,6 +17456,8 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
       item_service_1 = item_service_1_1;
     }, function(sale_service_1_1) {
       sale_service_1 = sale_service_1_1;
+    }, function(sale_detail_component_1_1) {
+      sale_detail_component_1 = sale_detail_component_1_1;
     }],
     execute: function() {
       SaleEditComponent = (function() {
@@ -17484,7 +17467,7 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
           this._routeParams = _routeParams;
           this._router = _router;
           this.sale = {
-            id: 0,
+            id: null,
             price: 0,
             originalPrice: 0,
             originalSalePrice: 0,
@@ -17518,11 +17501,6 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
                 }, function(error) {
                   return that.error = error;
                 });
-                that.day = sale.date.getDate();
-                that.month = sale.date.getMonth() + 1;
-                that.year = sale.date.getFullYear();
-                that.price = sale.price / 100;
-                that.fee = sale.fee / 100;
               } else {
                 that.error = resp.error;
               }
@@ -17533,29 +17511,13 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
         };
         SaleEditComponent.prototype.save = function() {
           var that = this;
-          this.sale.date.setDate(this.day);
-          this.sale.date.setMonth(this.month - 1);
-          this.sale.date.setFullYear(this.year);
-          this._saleService.updateSale(this.sale).subscribe(function(resp) {
-            if (resp.success) {
-              var link = ['SaleList'];
-              that._router.navigate(link);
-            } else {
-              that.error = resp.error;
-            }
-          }, function(error) {
-            return that.error = error;
-          });
-        };
-        SaleEditComponent.prototype.updatePrice = function(price) {
-          this.sale.price = price * 100;
-        };
-        SaleEditComponent.prototype.updateFee = function(fee) {
-          this.sale.fee = fee * 100;
+          var link = ['SaleList'];
+          that._router.navigate(link);
         };
         SaleEditComponent = __decorate([core_1.Component({
           selector: 'sale-edit',
-          templateUrl: 'dist/templates/sale_edit.template.html'
+          templateUrl: 'dist/templates/sale_edit.template.html',
+          directives: [sale_detail_component_1.SaleDetailComponent]
         }), __metadata('design:paramtypes', [item_service_1.ItemService, sale_service_1.SaleService, router_deprecated_1.RouteParams, router_deprecated_1.Router])], SaleEditComponent);
         return SaleEditComponent;
       }());
@@ -17606,127 +17568,6 @@ System.register("dist/app/nav-bar.component.js", ["npm:@angular/core@2.0.0-rc.0.
         return NavBarComponent;
       }());
       exports_1("NavBarComponent", NavBarComponent);
-    }
-  };
-});
-
-System.register("dist/app/stolen.js", [], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var Stolen;
-  return {
-    setters: [],
-    execute: function() {
-      Stolen = (function() {
-        function Stolen() {
-          this.id = 0;
-          this.itemId = 0;
-          this.quantity = 0;
-          this.date = new Date();
-          this.price = 0;
-        }
-        Stolen.copy = function(stolen) {
-          var newStolen = new Stolen();
-          newStolen.id = stolen.id;
-          newStolen.itemId = stolen.itemId;
-          newStolen.quantity = stolen.quantity;
-          newStolen.date = stolen.date;
-          newStolen.price = stolen.price;
-          return newStolen;
-        };
-        return Stolen;
-      }());
-      exports_1("Stolen", Stolen);
-    }
-  };
-});
-
-System.register("dist/app/stolen_detail.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/stolen.js", "dist/app/item.js", "dist/app/stolen.service.js"], function(exports_1, context_1) {
-  "use strict";
-  var __moduleName = context_1 && context_1.id;
-  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
-      r = Reflect.decorate(decorators, target, key, desc);
-    else
-      for (var i = decorators.length - 1; i >= 0; i--)
-        if (d = decorators[i])
-          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  var __metadata = (this && this.__metadata) || function(k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
-      return Reflect.metadata(k, v);
-  };
-  var core_1,
-      stolen_1,
-      item_1,
-      stolen_service_1;
-  var StolenDetailComponent;
-  return {
-    setters: [function(core_1_1) {
-      core_1 = core_1_1;
-    }, function(stolen_1_1) {
-      stolen_1 = stolen_1_1;
-    }, function(item_1_1) {
-      item_1 = item_1_1;
-    }, function(stolen_service_1_1) {
-      stolen_service_1 = stolen_service_1_1;
-    }],
-    execute: function() {
-      StolenDetailComponent = (function() {
-        function StolenDetailComponent(_stolenService) {
-          this._stolenService = _stolenService;
-          this.closer = new core_1.EventEmitter();
-          this.stolen = new stolen_1.Stolen();
-        }
-        Object.defineProperty(StolenDetailComponent.prototype, "stolenSet", {
-          set: function(stolen) {
-            this.stolen = stolen;
-            this.day = this.stolen.date.getDate();
-            this.month = this.stolen.date.getMonth() + 1;
-            this.year = this.stolen.date.getFullYear();
-            this.price = this.stolen.price / 100;
-          },
-          enumerable: true,
-          configurable: true
-        });
-        StolenDetailComponent.prototype.ngOnInit = function() {
-          var that = this;
-          that.day = that.stolen.date.getDate();
-          that.month = that.stolen.date.getMonth() + 1;
-          that.year = that.stolen.date.getFullYear();
-          that.price = that.stolen.price / 100;
-        };
-        StolenDetailComponent.prototype.save = function() {
-          var that = this;
-          this.stolen.date.setDate(this.day);
-          this.stolen.date.setMonth(this.month - 1);
-          this.stolen.date.setFullYear(this.year);
-          this._stolenService.updateStolen(this.stolen).subscribe(function(resp) {
-            that.close();
-          }, function(error) {
-            return that.error = error;
-          });
-        };
-        StolenDetailComponent.prototype.updatePrice = function(price) {
-          this.stolen.price = price * 100;
-        };
-        StolenDetailComponent.prototype.close = function() {
-          this.closer.emit(true);
-        };
-        __decorate([core_1.Input(), __metadata('design:type', stolen_1.Stolen), __metadata('design:paramtypes', [stolen_1.Stolen])], StolenDetailComponent.prototype, "stolenSet", null);
-        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], StolenDetailComponent.prototype, "item", void 0);
-        __decorate([core_1.Output(), __metadata('design:type', Object)], StolenDetailComponent.prototype, "closer", void 0);
-        StolenDetailComponent = __decorate([core_1.Component({
-          selector: 'stolen-detail',
-          templateUrl: 'dist/templates/stolen_detail.template.html'
-        }), __metadata('design:paramtypes', [stolen_service_1.StolenService])], StolenDetailComponent);
-        return StolenDetailComponent;
-      }());
-      exports_1("StolenDetailComponent", StolenDetailComponent);
     }
   };
 });
@@ -18003,6 +17844,37 @@ System.register("dist/app/stolen_list.component.js", ["npm:@angular/core@2.0.0-r
   };
 });
 
+System.register("dist/app/stolen.js", [], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var Stolen;
+  return {
+    setters: [],
+    execute: function() {
+      Stolen = (function() {
+        function Stolen() {
+          this.id = 0;
+          this.itemId = 0;
+          this.quantity = 0;
+          this.date = new Date();
+          this.price = 0;
+        }
+        Stolen.copy = function(stolen) {
+          var newStolen = new Stolen();
+          newStolen.id = stolen.id;
+          newStolen.itemId = stolen.itemId;
+          newStolen.quantity = stolen.quantity;
+          newStolen.date = stolen.date;
+          newStolen.price = stolen.price;
+          return newStolen;
+        };
+        return Stolen;
+      }());
+      exports_1("Stolen", Stolen);
+    }
+  };
+});
+
 System.register("dist/app/stolen.service.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:rxjs@5.0.0-beta.6/Observable.js", "npm:@angular/http@2.0.0-rc.0.js", "npm:rxjs@5.0.0-beta.6/Rx.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
@@ -18101,7 +17973,97 @@ System.register("dist/app/stolen.service.js", ["npm:@angular/core@2.0.0-rc.0.js"
   };
 });
 
-System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/stolen.service.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js"], function(exports_1, context_1) {
+System.register("dist/app/stolen_detail.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/stolen.js", "dist/app/item.js", "dist/app/stolen.service.js"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      stolen_1,
+      item_1,
+      stolen_service_1;
+  var StolenDetailComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(stolen_1_1) {
+      stolen_1 = stolen_1_1;
+    }, function(item_1_1) {
+      item_1 = item_1_1;
+    }, function(stolen_service_1_1) {
+      stolen_service_1 = stolen_service_1_1;
+    }],
+    execute: function() {
+      StolenDetailComponent = (function() {
+        function StolenDetailComponent(_stolenService) {
+          this._stolenService = _stolenService;
+          this.closer = new core_1.EventEmitter();
+          this.stolen = new stolen_1.Stolen();
+        }
+        Object.defineProperty(StolenDetailComponent.prototype, "stolenSet", {
+          set: function(stolen) {
+            this.stolen = stolen;
+            this.day = this.stolen.date.getDate();
+            this.month = this.stolen.date.getMonth() + 1;
+            this.year = this.stolen.date.getFullYear();
+            this.price = this.stolen.price / 100;
+          },
+          enumerable: true,
+          configurable: true
+        });
+        StolenDetailComponent.prototype.ngOnInit = function() {
+          var that = this;
+          that.day = that.stolen.date.getDate();
+          that.month = that.stolen.date.getMonth() + 1;
+          that.year = that.stolen.date.getFullYear();
+          that.price = that.stolen.price / 100;
+        };
+        StolenDetailComponent.prototype.save = function() {
+          var that = this;
+          this.stolen.date.setDate(this.day);
+          this.stolen.date.setMonth(this.month - 1);
+          this.stolen.date.setFullYear(this.year);
+          this._stolenService.updateStolen(this.stolen).subscribe(function(resp) {
+            that.close();
+          }, function(error) {
+            return that.error = error;
+          });
+        };
+        StolenDetailComponent.prototype.updatePrice = function(price) {
+          this.stolen.price = price * 100;
+        };
+        StolenDetailComponent.prototype.close = function() {
+          this.closer.emit(true);
+        };
+        __decorate([core_1.Input(), __metadata('design:type', stolen_1.Stolen), __metadata('design:paramtypes', [stolen_1.Stolen])], StolenDetailComponent.prototype, "stolenSet", null);
+        __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], StolenDetailComponent.prototype, "item", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], StolenDetailComponent.prototype, "closer", void 0);
+        StolenDetailComponent = __decorate([core_1.Component({
+          selector: 'stolen-detail',
+          templateUrl: 'dist/templates/stolen_detail.template.html'
+        }), __metadata('design:paramtypes', [stolen_service_1.StolenService])], StolenDetailComponent);
+        return StolenDetailComponent;
+      }());
+      exports_1("StolenDetailComponent", StolenDetailComponent);
+    }
+  };
+});
+
+System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/stolen.service.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/stolen_detail.component.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -18123,7 +18085,8 @@ System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-r
   var core_1,
       item_service_1,
       stolen_service_1,
-      router_deprecated_1;
+      router_deprecated_1,
+      stolen_detail_component_1;
   var StolenEditComponent;
   return {
     setters: [function(core_1_1) {
@@ -18134,6 +18097,8 @@ System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-r
       stolen_service_1 = stolen_service_1_1;
     }, function(router_deprecated_1_1) {
       router_deprecated_1 = router_deprecated_1_1;
+    }, function(stolen_detail_component_1_1) {
+      stolen_detail_component_1 = stolen_detail_component_1_1;
     }],
     execute: function() {
       StolenEditComponent = (function() {
@@ -18160,10 +18125,6 @@ System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-r
           } else {
             that._stolenService.getStolen(id).subscribe(function(data) {
               that.stolen = data;
-              that.month = that.stolen.date.getMonth() + 1;
-              that.day = that.stolen.date.getDate();
-              that.year = that.stolen.date.getFullYear();
-              that.price = that.stolen.price / 100;
               that._itemService.getItem(that.stolen.itemId).subscribe(function(resp) {
                 if (resp.success) {
                   that.item = resp.data;
@@ -18179,23 +18140,14 @@ System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-r
           }
         };
         StolenEditComponent.prototype.save = function() {
-          this.stolen.date.setDate(this.day);
-          this.stolen.date.setMonth(this.month - 1);
-          this.stolen.date.setFullYear(this.year);
           var that = this;
-          that._stolenService.updateStolen(that.stolen).subscribe(function(resp) {
-            var link = ['StolenList'];
-            that._router.navigate(link);
-          }, function(error) {
-            return that.error = error;
-          });
-        };
-        StolenEditComponent.prototype.updatePrice = function(price) {
-          this.stolen.price = price * 100;
+          var link = ['StolenList'];
+          that._router.navigate(link);
         };
         StolenEditComponent = __decorate([core_1.Component({
           selector: 'stolen-edit',
-          templateUrl: "/dist/templates/stolen_edit.template.html"
+          templateUrl: "/dist/templates/stolen_edit.template.html",
+          directives: [stolen_detail_component_1.StolenDetailComponent]
         }), __metadata('design:paramtypes', [item_service_1.ItemService, stolen_service_1.StolenService, router_deprecated_1.Router, router_deprecated_1.RouteParams])], StolenEditComponent);
         return StolenEditComponent;
       }());

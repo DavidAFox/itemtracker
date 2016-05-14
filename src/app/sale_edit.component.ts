@@ -5,14 +5,16 @@ import {ItemService} from './item.service';
 import {OnInit} from '@angular/core';
 import {Item} from './item';
 import {SaleService} from './sale.service';
+import {SaleDetailComponent} from './sale_detail.component';
 
 @Component({
     selector: 'sale-edit',
-    templateUrl: 'dist/templates/sale_edit.template.html'
+    templateUrl: 'dist/templates/sale_edit.template.html',
+    directives: [SaleDetailComponent]
 })
 export class SaleEditComponent {
     private sale:Sale = {
-                    id: 0, 
+                    id: null, 
                     price: 0, 
                     originalPrice: 0, 
                     originalSalePrice: 0, 
@@ -24,12 +26,7 @@ export class SaleEditComponent {
                     where: "", 
                     comment: ""
                 };
-    private day:number;
-    private month:number;
-    private year:number;
     private item = {};
-    private price:number;
-    private fee:number;
     private error;
     constructor(private _itemService: ItemService, private _saleService: SaleService, private _routeParams: RouteParams, private _router: Router) {
         
@@ -52,11 +49,6 @@ export class SaleEditComponent {
                             that.error = itemResp.error;
                         }
                     }, error=>that.error = error)
-                    that.day = sale.date.getDate();
-                    that.month = sale.date.getMonth() +1;
-                    that.year = sale.date.getFullYear();
-                    that.price = sale.price / 100;
-                    that.fee = sale.fee / 100;
                 } else {
                     that.error = resp.error;
                 }
@@ -65,22 +57,7 @@ export class SaleEditComponent {
     }
     save() {
         var that = this;
-        this.sale.date.setDate(this.day);
-        this.sale.date.setMonth(this.month-1);
-        this.sale.date.setFullYear(this.year);
-        this._saleService.updateSale(this.sale).subscribe(function(resp) {
-            if(resp.success) {
                 var link = ['SaleList'];
                 that._router.navigate(link);
-            } else {
-                that.error = resp.error;
-            }    
-        }, error => that.error = error)
-    }
-    updatePrice(price) {
-        this.sale.price = price * 100;
-    }
-    updateFee(fee) {
-        this.sale.fee = fee * 100;
-    }
+  }
 }

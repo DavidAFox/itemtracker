@@ -1,4 +1,4 @@
-System.register(['@angular/core', './item.service', './stolen.service', '@angular/router-deprecated'], function(exports_1, context_1) {
+System.register(['@angular/core', './item.service', './stolen.service', '@angular/router-deprecated', './stolen_detail.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, item_service_1, stolen_service_1, router_deprecated_1;
+    var core_1, item_service_1, stolen_service_1, router_deprecated_1, stolen_detail_component_1;
     var StolenEditComponent;
     return {
         setters:[
@@ -25,9 +25,16 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
             },
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
+            },
+            function (stolen_detail_component_1_1) {
+                stolen_detail_component_1 = stolen_detail_component_1_1;
             }],
         execute: function() {
             StolenEditComponent = (function () {
+                //    private month:number;
+                //    private day: number;
+                //    private year: number;
+                //    private price: number;
                 function StolenEditComponent(_itemService, _stolenService, _router, _routeParams) {
                     this._itemService = _itemService;
                     this._stolenService = _stolenService;
@@ -46,10 +53,10 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
                     else {
                         that._stolenService.getStolen(id).subscribe(function (data) {
                             that.stolen = data;
-                            that.month = that.stolen.date.getMonth() + 1;
-                            that.day = that.stolen.date.getDate();
-                            that.year = that.stolen.date.getFullYear();
-                            that.price = that.stolen.price / 100;
+                            //                that.month = that.stolen.date.getMonth() + 1;
+                            //                that.day = that.stolen.date.getDate();
+                            //                that.year = that.stolen.date.getFullYear();
+                            //                that.price = that.stolen.price / 100;
                             that._itemService.getItem(that.stolen.itemId).subscribe(function (resp) {
                                 if (resp.success) {
                                     that.item = resp.data;
@@ -62,22 +69,20 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
                     }
                 };
                 StolenEditComponent.prototype.save = function () {
-                    this.stolen.date.setDate(this.day);
-                    this.stolen.date.setMonth(this.month - 1);
-                    this.stolen.date.setFullYear(this.year);
+                    //        this.stolen.date.setDate(this.day);
+                    //        this.stolen.date.setMonth(this.month-1);
+                    //        this.stolen.date.setFullYear(this.year);
                     var that = this;
-                    that._stolenService.updateStolen(that.stolen).subscribe(function (resp) {
-                        var link = ['StolenList'];
-                        that._router.navigate(link);
-                    }, function (error) { return that.error = error; });
-                };
-                StolenEditComponent.prototype.updatePrice = function (price) {
-                    this.stolen.price = price * 100;
+                    //        that._stolenService.updateStolen(that.stolen).subscribe(resp=>{
+                    var link = ['StolenList'];
+                    that._router.navigate(link);
+                    //        }, error=>that.error = error)
                 };
                 StolenEditComponent = __decorate([
                     core_1.Component({
                         selector: 'stolen-edit',
-                        templateUrl: "/dist/templates/stolen_edit.template.html"
+                        templateUrl: "/dist/templates/stolen_edit.template.html",
+                        directives: [stolen_detail_component_1.StolenDetailComponent]
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, stolen_service_1.StolenService, router_deprecated_1.Router, router_deprecated_1.RouteParams])
                 ], StolenEditComponent);

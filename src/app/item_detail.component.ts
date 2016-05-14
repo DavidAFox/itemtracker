@@ -8,8 +8,7 @@ import {ItemService} from './item.service';
 
 })
 export class ItemDetailComponent {
-    @Input()
-    set itemSet(item:Item) {
+    @Input() set itemSet(item:Item) {
         this.item = item;
         this.price = item.price /100;
         this.salePrice = item.salePrice /100;
@@ -18,8 +17,8 @@ export class ItemDetailComponent {
         this.year = this.item.date.getFullYear();
 
     }
-    @Output()
-    closer = new EventEmitter<boolean>();
+    @Output() closer = new EventEmitter<boolean>();
+    
     private item: Item;    
     private day:number;
     private month:number;

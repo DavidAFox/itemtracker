@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './item.service', './sale.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', './item.service', './sale.service', './sale_detail.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, item_service_1, sale_service_1;
+    var core_1, router_deprecated_1, item_service_1, sale_service_1, sale_detail_component_1;
     var SaleEditComponent;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
             },
             function (sale_service_1_1) {
                 sale_service_1 = sale_service_1_1;
+            },
+            function (sale_detail_component_1_1) {
+                sale_detail_component_1 = sale_detail_component_1_1;
             }],
         execute: function() {
             SaleEditComponent = (function () {
@@ -34,7 +37,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     this._routeParams = _routeParams;
                     this._router = _router;
                     this.sale = {
-                        id: 0,
+                        id: null,
                         price: 0,
                         originalPrice: 0,
                         originalSalePrice: 0,
@@ -68,11 +71,6 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                                         that.error = itemResp.error;
                                     }
                                 }, function (error) { return that.error = error; });
-                                that.day = sale.date.getDate();
-                                that.month = sale.date.getMonth() + 1;
-                                that.year = sale.date.getFullYear();
-                                that.price = sale.price / 100;
-                                that.fee = sale.fee / 100;
                             }
                             else {
                                 that.error = resp.error;
@@ -82,29 +80,14 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                 };
                 SaleEditComponent.prototype.save = function () {
                     var that = this;
-                    this.sale.date.setDate(this.day);
-                    this.sale.date.setMonth(this.month - 1);
-                    this.sale.date.setFullYear(this.year);
-                    this._saleService.updateSale(this.sale).subscribe(function (resp) {
-                        if (resp.success) {
-                            var link = ['SaleList'];
-                            that._router.navigate(link);
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
-                    }, function (error) { return that.error = error; });
-                };
-                SaleEditComponent.prototype.updatePrice = function (price) {
-                    this.sale.price = price * 100;
-                };
-                SaleEditComponent.prototype.updateFee = function (fee) {
-                    this.sale.fee = fee * 100;
+                    var link = ['SaleList'];
+                    that._router.navigate(link);
                 };
                 SaleEditComponent = __decorate([
                     core_1.Component({
                         selector: 'sale-edit',
-                        templateUrl: 'dist/templates/sale_edit.template.html'
+                        templateUrl: 'dist/templates/sale_edit.template.html',
+                        directives: [sale_detail_component_1.SaleDetailComponent]
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, sale_service_1.SaleService, router_deprecated_1.RouteParams, router_deprecated_1.Router])
                 ], SaleEditComponent);

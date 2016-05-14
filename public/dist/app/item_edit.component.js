@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './item.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', './item.service', './item_detail.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, item_service_1;
+    var core_1, router_deprecated_1, item_service_1, item_detail_component_1;
     var ItemEditComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
             },
             function (item_service_1_1) {
                 item_service_1 = item_service_1_1;
+            },
+            function (item_detail_component_1_1) {
+                item_detail_component_1 = item_detail_component_1_1;
             }],
         execute: function() {
             ItemEditComponent = (function () {
@@ -41,13 +44,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     else {
                         this.getItem(id).subscribe(function (resp) {
                             if (resp.success) {
-                                var item = resp.data;
-                                that.item = item;
-                                that.day = item.date.getDate();
-                                that.month = item.date.getMonth() + 1;
-                                that.year = item.date.getFullYear();
-                                that.price = item.price / 100.0;
-                                that.salePrice = item.salePrice / 100.0;
+                                that.item = resp.data;
                             }
                             else {
                                 that.error = resp.error;
@@ -59,31 +56,14 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     return this._itemService.getItem(id);
                 };
                 ItemEditComponent.prototype.save = function () {
-                    var _this = this;
-                    this.item.date.setDate(this.day);
-                    this.item.date.setMonth(this.month - 1);
-                    this.item.date.setFullYear(this.year);
-                    //save item changes to database
-                    this._itemService.updateItem(this.item).subscribe(function (res) {
-                        if (!res.success) {
-                            _this.error = res.error;
-                        }
-                        else {
-                            var link = ["ItemList"];
-                            _this._router.navigate(link);
-                        }
-                    }, function (error) { return _this.error = error; });
-                };
-                ItemEditComponent.prototype.updatePrice = function (price) {
-                    this.item.price = price * 100;
-                };
-                ItemEditComponent.prototype.updateSalePrice = function (price) {
-                    this.item.salePrice = price * 100;
+                    var link = ["ItemList"];
+                    this._router.navigate(link);
                 };
                 ItemEditComponent = __decorate([
                     core_1.Component({
                         selector: 'item-edit',
-                        templateUrl: 'dist/templates/item_edit.template.html'
+                        templateUrl: 'dist/templates/item_edit.template.html',
+                        directives: [item_detail_component_1.ItemDetailComponent]
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, router_deprecated_1.RouteParams, router_deprecated_1.Router])
                 ], ItemEditComponent);
