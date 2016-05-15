@@ -59,22 +59,11 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                         that._router.navigate(link);
                     }
                     else {
-                        that._saleService.getSale(id).subscribe(function (resp) {
-                            if (resp.success) {
-                                var sale = resp.data;
-                                that.sale = sale;
-                                that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
-                                    if (itemResp.success) {
-                                        that.item = itemResp.data;
-                                    }
-                                    else {
-                                        that.error = itemResp.error;
-                                    }
-                                }, function (error) { return that.error = error; });
-                            }
-                            else {
-                                that.error = resp.error;
-                            }
+                        that._saleService.getSale(id).subscribe(function (sale) {
+                            that.sale = sale;
+                            that._itemService.getItem(sale.itemId).subscribe(function (item) {
+                                that.item = item;
+                            }, function (error) { return that.error = error; });
                         }, function (error) { return that.error = error; });
                     }
                 };

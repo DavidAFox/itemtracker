@@ -42,13 +42,8 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                         that._router.navigate(link);
                     }
                     else {
-                        this.getItem(id).subscribe(function (resp) {
-                            if (resp.success) {
-                                that.item = resp.data;
-                            }
-                            else {
-                                that.error = resp.error;
-                            }
+                        this.getItem(id).subscribe(function (item) {
+                            that.item = item;
                         }, function (error) { return that.error = error; });
                     }
                 };

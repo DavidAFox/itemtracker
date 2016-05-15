@@ -38,6 +38,14 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
                     this.salePrice = 0;
                     this.item = { id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: d };
                 }
+                ItemNewComponent.prototype.ngOnInit = function () {
+                    var that = this;
+                    that._itemService.getNextId().subscribe(function (id) {
+                        that.item.id = id;
+                    }, function (error) {
+                        that.error = error;
+                    });
+                };
                 ItemNewComponent.prototype.save = function () {
                     var _this = this;
                     var that = this;
@@ -45,13 +53,8 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
                     this.item.date.setMonth(this.month - 1);
                     this.item.date.setFullYear(this.year);
                     this._itemService.newItem(this.item).subscribe(function (res) {
-                        if (!res.success) {
-                            that.error = res.error;
-                        }
-                        else {
-                            var link = ["ItemList"];
-                            _this._router.navigate(link);
-                        }
+                        var link = ["ItemList"];
+                        _this._router.navigate(link);
                     }, function (error) {
                         that.error = error;
                     });

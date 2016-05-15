@@ -71,14 +71,9 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                     this._stolenService.getStolens().subscribe(function (data) {
                         that.stolens = data;
                         that.stolens.forEach(function (stolen) {
-                            that._itemService.getItem(stolen.itemId).subscribe(function (resp) {
-                                if (resp.success) {
-                                    that.itemNames[stolen.itemId] = resp.data.name;
-                                    that.items[stolen.id] = resp.data;
-                                }
-                                else {
-                                    that.error = resp.error;
-                                }
+                            that._itemService.getItem(stolen.itemId).subscribe(function (item) {
+                                that.itemNames[stolen.itemId] = item.name;
+                                that.items[stolen.id] = item;
                             }, function (error) { return that.error = error; });
                         });
                     }, function (error) { return that.error = error; });
@@ -90,14 +85,9 @@ System.register(['@angular/core', './stolen.service', './item.service', '@angula
                     this._stolenService.getStolens(starting, ending).subscribe(function (data) {
                         that.stolens = data;
                         that.stolens.forEach(function (stolen) {
-                            that._itemService.getItem(stolen.itemId).subscribe(function (resp) {
-                                if (resp.success) {
-                                    that.itemNames[stolen.itemId] = resp.data.name;
-                                    that.items[stolen.id] = resp.data;
-                                }
-                                else {
-                                    that.error = resp.error;
-                                }
+                            that._itemService.getItem(stolen.itemId).subscribe(function (item) {
+                                that.itemNames[stolen.itemId] = item.name;
+                                that.items[stolen.id] = item;
                             }, function (error) { return that.error = error; });
                         });
                     }, function (error) { return that.error = error; });

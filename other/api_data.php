@@ -66,7 +66,7 @@
             $stmt->close();
             return $item;
         }
-        public function validItemId($id) {
+        public function existingItemId($id) {
             $stmt = $this->conn->prepare("SELECT id FROM items WHERE user_id = ? AND id = ?");
             $stmt->bind_param("ii", $this->user_id, $id);
             if(!$stmt->execute()) {
@@ -77,9 +77,20 @@
             $stmt->fetch();
             return $stmt->num_rows > 0;
         }
+        //return a suggested id for the next item insertion but does not control for concurrency
+        public function nextItemId() {
+                $stmt = $this->conn->prepare("SELECT * FROM (SELECT t1.id as id FROM items t1 WHERE NOT EXISTS(SELECT * FROM items t2 WHERE t2.id=t1.id + 1 AND user_id = ?)UNION SELECT 1 AS id WHERE NOT EXISTS (SELECT* FROM items t3 WHERE t3.id=1 AND user_id = ?)) ot ORDER BY 1");
+                $stmt->bind_param("ii", $this->user_id, $this->user_id);
+                if(!$stmt->execute()) {
+                    throw new Exception("Error getting next id");
+                }
+                $stmt->bind_result($lastid);
+                return $lastid + 1;
+        }
+        
         public function newItem($item) {
             $this->validateItem($item);
-            if($this->validItemId($item['id'])) {
+            if($this->existingItemId($item['id'])) {
                 throw new Exception("An item with that id already exists");
             }
             $stmt = $this->conn->prepare("INSERT INTO items (user_id, id, name, price, salePrice, quantity, description, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -91,7 +102,7 @@
         }
         public function updateItem($item) {
             $this->validateItem($item);
-            if(!$this->validItemId($item['id'])) {
+            if(!$this->existingItemId($item['id'])) {
                 throw new Exception("No item with that id found");
             }
             $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, salePrice = ?, quantity = ?, description = ?, date = ? WHERE user_id = ? AND id = ?");
@@ -172,7 +183,7 @@
         }
         public function newSale($sale) {
             $this->validateSale($sale);
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("Item not found");
             }
             $this->conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
@@ -212,7 +223,7 @@
             if(!$this->validSaleId($sale['id'])) {
                 throw new Exception("No sale with that id exists");
             }
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("No item with that id exists");
             }
             $stmt = $this->conn->prepare("UPDATE sales SET date = ?, price = ?, originalPrice = ?, originalSalePrice = ?, sTaxRate = ?, quantity = ?, fee = ?, itemId = ?, whereSold = ?, comment = ? WHERE user_id = ? AND id = ?");
@@ -271,7 +282,7 @@
         }
         public function newStolen($stolen) {
             $this->validateStolen($stolen);
-            if(!$this->validItemId($stolen['itemId'])) {
+            if(!$this->existingItemId($stolen['itemId'])) {
                 throw new Exception("Item not found");
             }
             $stmt2 = $this->conn->prepare("SELECT quantity FROM items WHERE user_id = ? AND id = ?");
@@ -424,7 +435,7 @@
             if(preg_match("/[\"<>&]+/", $sale['comment']) !== 0) {
                 throw new Exception("Comment cannot contain \" < > &");
             }
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("Invalid item id");
             }
         }

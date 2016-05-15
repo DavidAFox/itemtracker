@@ -31,10 +31,6 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
             }],
         execute: function() {
             StolenEditComponent = (function () {
-                //    private month:number;
-                //    private day: number;
-                //    private year: number;
-                //    private price: number;
                 function StolenEditComponent(_itemService, _stolenService, _router, _routeParams) {
                     this._itemService = _itemService;
                     this._stolenService = _stolenService;
@@ -53,30 +49,16 @@ System.register(['@angular/core', './item.service', './stolen.service', '@angula
                     else {
                         that._stolenService.getStolen(id).subscribe(function (data) {
                             that.stolen = data;
-                            //                that.month = that.stolen.date.getMonth() + 1;
-                            //                that.day = that.stolen.date.getDate();
-                            //                that.year = that.stolen.date.getFullYear();
-                            //                that.price = that.stolen.price / 100;
-                            that._itemService.getItem(that.stolen.itemId).subscribe(function (resp) {
-                                if (resp.success) {
-                                    that.item = resp.data;
-                                }
-                                else {
-                                    that.error = resp.error;
-                                }
+                            that._itemService.getItem(that.stolen.itemId).subscribe(function (item) {
+                                that.item = item;
                             }, function (error) { return that.error = error; });
                         }, function (error) { return that.error = error; });
                     }
                 };
                 StolenEditComponent.prototype.save = function () {
-                    //        this.stolen.date.setDate(this.day);
-                    //        this.stolen.date.setMonth(this.month-1);
-                    //        this.stolen.date.setFullYear(this.year);
                     var that = this;
-                    //        that._stolenService.updateStolen(that.stolen).subscribe(resp=>{
                     var link = ['StolenList'];
                     that._router.navigate(link);
-                    //        }, error=>that.error = error)
                 };
                 StolenEditComponent = __decorate([
                     core_1.Component({

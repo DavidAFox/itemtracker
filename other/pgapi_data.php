@@ -61,7 +61,7 @@
             $item['date'] = $row['date'];
             return $item;
         }
-        public function validItemId($id) {
+        public function existingItemId($id) {
             try {
             $stmt = $this->conn->prepare("SELECT id FROM items WHERE user_id = ? AND id = ?");
             $stmt->execute(array($this->user_id, $id));
@@ -71,9 +71,23 @@
             $row = $stmt->fetch();
             return $row;
         }
+        //return a suggested id for the next item insertion but does not control for concurrency
+        public function nextItemId() {
+            try{
+                $stmt = $this->conn->prepare("SELECT * FROM (SELECT t1.id as id FROM items t1 WHERE NOT EXISTS(SELECT * FROM items t2 WHERE t2.id=t1.id + 1 AND user_id = ?)UNION SELECT 1 AS id WHERE NOT EXISTS (SELECT* FROM items t3 WHERE t3.id=1 AND user_id = ?)) ot ORDER BY 1");
+                $stmt->execute(array($this->user_id, $this->user_id));
+            } catch(PDOException $e) {
+                throw new Exception("Error getting next id");
+            }
+            $row = $stmt->fetch();
+            if(isset($row[0])) {
+                return $row[0] + 1;
+            }
+            return null;
+        }
         public function newItem($item) {
             $this->validateItem($item);
-            if($this->validItemId($item['id'])) {
+            if($this->existingItemId($item['id'])) {
                 throw new Exception("An item with that id already exists");
             }
             try {
@@ -82,10 +96,11 @@
             } catch(PDOException $e) {
                 throw new Exception("Error adding item");
             }
+            return $stmt->fetch();
         }
         public function updateItem($item) {
             $this->validateItem($item);
-            if(!$this->validItemId($item['id'])) {
+            if(!$this->existingItemId($item['id'])) {
                 throw new Exception("No item with that id found");
             }
             try {
@@ -94,6 +109,7 @@
             } catch(PDOException $e) {
                 throw new Exception("Error adding item");
             }
+            return $stmt->fetch();
         }
         public function getSales($req) {
             if(isset($req->getQuery()['starting']) && isset($req->getQuery()['ending'])) {
@@ -165,7 +181,7 @@
         }
         public function newSale($sale) {
             $this->validateSale($sale);
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("Item not found");
             }
             try {
@@ -202,7 +218,7 @@
             if(!$this->validSaleId($sale['id'])) {
                 throw new Exception("No sale with that id exists");
             }
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("No item with that id exists");
             }
             try {
@@ -259,7 +275,7 @@
         }
         public function newStolen($stolen) {
             $this->validateStolen($stolen);
-            if(!$this->validItemId($stolen['itemId'])) {
+            if(!$this->existingItemId($stolen['itemId'])) {
                 throw new Exception("Item not found");
             }
             try {
@@ -411,7 +427,7 @@
             if(preg_match("/[\"<>&]+/", $sale['comment']) !== 0) {
                 throw new Exception("Comment cannot contain \" < > &");
             }
-            if(!$this->validItemId($sale['itemId'])) {
+            if(!$this->existingItemId($sale['itemId'])) {
                 throw new Exception("Invalid item id");
             }
         }

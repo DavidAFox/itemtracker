@@ -55,13 +55,9 @@ export class StolenListComponent implements OnInit{
         this._stolenService.getStolens().subscribe(data =>{
             that.stolens = data;
             that.stolens.forEach(stolen =>{
-                that._itemService.getItem(stolen.itemId).subscribe(resp =>{
-                    if(resp.success) {
-                        that.itemNames[stolen.itemId] = resp.data.name;
-                        that.items[stolen.id] = resp.data;
-                    } else {
-                        that.error = resp.error;
-                    }
+                that._itemService.getItem(stolen.itemId).subscribe(item =>{
+                        that.itemNames[stolen.itemId] = item.name;
+                        that.items[stolen.id] = item;
                 }, error => that.error = error)
             })    
         }, error=>that.error = error);
@@ -73,13 +69,9 @@ export class StolenListComponent implements OnInit{
         this._stolenService.getStolens(starting, ending).subscribe(data =>{
             that.stolens = data;
             that.stolens.forEach(stolen =>{
-                that._itemService.getItem(stolen.itemId).subscribe(resp =>{
-                    if(resp.success) {
-                        that.itemNames[stolen.itemId] = resp.data.name;
-                        that.items[stolen.id] = resp.data;
-                    } else {
-                        that.error = resp.error;
-                    }
+                that._itemService.getItem(stolen.itemId).subscribe(item =>{
+                        that.itemNames[stolen.itemId] = item.name;
+                        that.items[stolen.id] = item;
                 }, error => that.error = error)
             })    
         }, error=>that.error=error);

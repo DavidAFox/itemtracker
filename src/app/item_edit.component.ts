@@ -22,12 +22,8 @@ export class ItemEditComponent {
             var link = ['ItemList'];
             that._router.navigate(link);
         } else {
-            this.getItem(id).subscribe(function(resp) {
-                if(resp.success) {
-                    that.item = resp.data
-               } else {
-                    that.error = resp.error
-                }
+            this.getItem(id).subscribe(function(item) {
+                    that.item = item;
             }, error=> that.error = error)
         }
     }

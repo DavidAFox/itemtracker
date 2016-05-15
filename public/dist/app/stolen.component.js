@@ -44,20 +44,14 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                         that._router.navigate(link);
                     }
                     else {
-                        that._itemService.getItem(id).subscribe(function (resp) {
-                            if (resp.success) {
-                                var item = resp.data;
-                                var d = new Date();
-                                that.day = d.getDate();
-                                that.month = d.getMonth() + 1;
-                                that.year = d.getFullYear();
-                                that.item = item;
-                                that.price = item.price / 100;
-                                that.stolen = { id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price };
-                            }
-                            else {
-                                that.error = resp.error;
-                            }
+                        that._itemService.getItem(id).subscribe(function (item) {
+                            var d = new Date();
+                            that.day = d.getDate();
+                            that.month = d.getMonth() + 1;
+                            that.year = d.getFullYear();
+                            that.item = item;
+                            that.price = item.price / 100;
+                            that.stolen = { id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price };
                         }, function (error) { return that.error = error; });
                     }
                 };

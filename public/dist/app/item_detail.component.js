@@ -56,12 +56,7 @@ System.register(['@angular/core', './item', './item.service'], function(exports_
                     this.item.date.setFullYear(this.year);
                     //save item changes to database
                     this._itemService.updateItem(this.item).subscribe(function (res) {
-                        if (!res.success) {
-                            _this.error = res.error;
-                        }
-                        else {
-                            _this.close();
-                        }
+                        _this.close();
                     }, function (error) { return _this.error = error; });
                 };
                 ItemDetailComponent.prototype.close = function () {

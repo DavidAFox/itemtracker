@@ -27,12 +27,8 @@ export class ItemListComponent implements OnInit{
     }
     getItems() {
         var that = this;
-        this._itemService.getItems().subscribe(resp => {
-            if(resp.success) {
-                that.items = resp.data;
-            } else {
-                that.error = resp.error;
-            }
+        this._itemService.getItems().subscribe(items => {
+                that.items = items;
         }, error => that.error = <any>error);
     }
     ngOnInit() {
@@ -63,19 +59,13 @@ export class ItemListComponent implements OnInit{
     edit(item:Item) {
         this.selectedItem = Item.copy(item);
         $('#itemModal').modal('show');
-//        var link = ['ItemEdit', {id: item.id}];
-//        this._router.navigate(link);
     }
     reload(id) {
         var that = this;
         this.items.forEach((item, index) => {
             if(item.id === id) {
-                that._itemService.getItem(id).subscribe(resp => {
-                    if(resp.success) {
-                        that.items[index] = resp.data;
-                    } else {
-                        that.error = resp.error;
-                    }
+                that._itemService.getItem(id).subscribe(item => {
+                        that.items[index] = item;
                 }, error => that.error=error);
             }
         }

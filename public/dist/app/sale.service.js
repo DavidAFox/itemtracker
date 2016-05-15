@@ -77,7 +77,7 @@ System.register(['@angular/core', 'rxjs/Observable', '@angular/http', 'rxjs/Rx']
                             }
                         }
                     }
-                    return body || {};
+                    return body.data || {};
                 };
                 SaleService.prototype.handleError = function (error) {
                     var errMsg = error.message || 'Server error';

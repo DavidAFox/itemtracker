@@ -62,12 +62,12 @@
                 sendResult(false, "invalid item", NULL);
             }
             try {
-                $data->newItem($item);
+                $item2 = $data->newItem($item);
             }
             catch(Exception $e) {
                 sendResult(false, $e->getMessage(), NULL);
             }
-            sendResult(true, "", NULL);
+            sendResult(true, "", $item2);
             break;
           case 'update':
             $item = json_decode($req->getBody(), true);
@@ -75,31 +75,39 @@
                 sendResult(false, "invalid item");
             }
             try {
-                $data->updateItem($item);
+                $item2 = $data->updateItem($item);
             }
             catch(Exception $e) {
                 sendResult(false, $e->getMessage(), NULL);
             }
-            sendResult(true, "", NULL);
+            sendResult(true, "", $item2);
             break;
-          case 'validid':
+          case 'existingid':
             if(!isset($req->getPath()[4]) || preg_match("/[^0-9]+/", $req->getPath()[4]) === 1) {
                 sendResult(false, "invalid id", NULL);
             }
             try {
-                $valid = $data->isValidItem($req->getPath()[4]);
+                $valid = $data->existingItemId($req->getPath()[4]);
             }
             catch(Exception $e) {
-                sendResult(false, $e->sendMessage(), NULL);
+                sendResult(false, $e->getMessage(), NULL);
             }
             sendResult(true, "", $valid);
+            break;
+          case 'nextid':
+            try {
+                $id = $data->nextItemId();
+            } catch(Exception $e) {
+                sendResult(false, $e->getMessage(), NULL);
+            }
+            sendResult(true, "", $id);
             break;
           default:
             if(!isset($req->getPath()[3]) || preg_match("/[^0-9]+/", $req->getPath()[3]) === 1) {
                 sendResult(false, "invalid id", NULL);
             }
             try {
-                $valid = $data->validItemId($req->getPath()[3]);
+                $valid = $data->existingItemId($req->getPath()[3]);
             }
             catch(Exception $e) {
                 sendResult(false, $e->getMessage(), NULL);

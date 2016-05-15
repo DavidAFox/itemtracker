@@ -38,20 +38,11 @@ export class SaleEditComponent {
             var link = ['SaleList'];
             that._router.navigate(link);
         } else {
-            that._saleService.getSale(id).subscribe(function(resp) {
-                if(resp.success) {
-                    var sale = resp.data;
+            that._saleService.getSale(id).subscribe(function(sale) {
                     that.sale = sale;
-                    that._itemService.getItem(sale.itemId).subscribe(function(itemResp){
-                        if(itemResp.success) {
-                            that.item = itemResp.data;
-                        } else {
-                            that.error = itemResp.error;
-                        }
+                    that._itemService.getItem(sale.itemId).subscribe(function(item){
+                            that.item = item;
                     }, error=>that.error = error)
-                } else {
-                    that.error = resp.error;
-                }
             }, error=>that.error = error)
         }
     }

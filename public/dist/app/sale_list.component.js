@@ -96,47 +96,27 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                 };
                 SaleListComponent.prototype.getSales = function () {
                     var that = this;
-                    this._saleService.getSales().subscribe(function (resp) {
-                        if (resp.success) {
-                            that.sales = resp.data;
-                            that.sales.forEach(function (sale) {
-                                that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
-                                    if (itemResp.success) {
-                                        that.itemNames[sale.itemId] = itemResp.data.name;
-                                        that.items[sale.id] = itemResp.data;
-                                    }
-                                    else {
-                                        that.error = itemResp.error;
-                                    }
-                                });
+                    this._saleService.getSales().subscribe(function (sales) {
+                        that.sales = sales;
+                        that.sales.forEach(function (sale) {
+                            that._itemService.getItem(sale.itemId).subscribe(function (item) {
+                                that.itemNames[sale.itemId] = item.name;
+                                that.items[sale.id] = item;
                             });
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
+                        }, function (error) { return that.error = error; });
                     }, function (error) { return that.error = error; });
                     this.sort = '';
                     this.reversed = false;
                 };
                 SaleListComponent.prototype.getSalesWithDates = function (start, end) {
                     var that = this;
-                    this._saleService.getSales(start, end).subscribe(function (resp) {
-                        if (resp.success) {
-                            that.sales = resp.data;
-                            that.sales.forEach(function (sale) {
-                                that._itemService.getItem(sale.itemId).subscribe(function (itemResp) {
-                                    if (itemResp.success) {
-                                        that.itemNames[sale.itemId] = itemResp.data.name;
-                                    }
-                                    else {
-                                        that.error = itemResp.error;
-                                    }
-                                });
+                    this._saleService.getSales(start, end).subscribe(function (sales) {
+                        that.sales = sales;
+                        that.sales.forEach(function (sale) {
+                            that._itemService.getItem(sale.itemId).subscribe(function (item) {
+                                that.itemNames[sale.itemId] = item.name;
                             });
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
+                        });
                     }, function (error) { return that.error = error; });
                     this.sort = '';
                     this.reversed = false;
@@ -145,8 +125,6 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                     this.selectedSale = sale_1.Sale.copy(sale);
                     this.selectedItem = item_1.Item.copy(this.items[sale.id]);
                     $('#saleModal').modal('show');
-                    //        var link = ['SaleEdit', {id: sale.id}];
-                    //        this._router.navigate(link);
                 };
                 SaleListComponent.prototype.hidden = function (sale) {
                     var that = this;
@@ -171,13 +149,8 @@ System.register(['@angular/core', './sale.service', './item.service', '@angular/
                     var that = this;
                     this.sales.forEach(function (sale, index) {
                         if (sale.id === id) {
-                            that._saleService.getSale(id).subscribe(function (resp) {
-                                if (resp.success) {
-                                    that.sales[index] = resp.data;
-                                }
-                                else {
-                                    that.error = resp.error;
-                                }
+                            that._saleService.getSale(id).subscribe(function (sale) {
+                                that.sales[index] = sale;
                             }, function (error) { return that.error = error; });
                         }
                     });

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ItemDetailComponent} from './item_detail.component';
 import {Item} from './item';
 import {NgForm} from '@angular/common';
@@ -11,7 +11,7 @@ import {Router} from '@angular/router-deprecated';
     templateUrl: 'dist/templates/item_new.template.html',
     directives: [ItemDetailComponent]
 })
-export class ItemNewComponent {
+export class ItemNewComponent implements OnInit{
     private item: Item;
     private day: number;
     private month: number;
@@ -27,18 +27,22 @@ export class ItemNewComponent {
         this.salePrice = 0;
         this.item = {id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: d};
     }
+    ngOnInit() {
+        var that = this;
+        that._itemService.getNextId().subscribe(id => {
+            that.item.id = id;
+        }, error => {
+            that.error = error;
+        })
+    }
     save(){
         var that = this;
         this.item.date.setDate(this.day);
         this.item.date.setMonth(this.month-1);
         this.item.date.setFullYear(this.year);
         this._itemService.newItem(this.item).subscribe(res => {
-            if(!res.success) {
-                that.error = res.error;
-            } else {
                 var link = ["ItemList"];
                 this._router.navigate(link);                
-            }
         }, error => {
             that.error = error;
         })

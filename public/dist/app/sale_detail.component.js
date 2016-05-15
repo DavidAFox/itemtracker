@@ -58,13 +58,8 @@ System.register(['@angular/core', './sale.service', './sale', './item'], functio
                     this.sale.date.setDate(this.day);
                     this.sale.date.setMonth(this.month - 1);
                     this.sale.date.setFullYear(this.year);
-                    this._saleService.updateSale(this.sale).subscribe(function (resp) {
-                        if (resp.success) {
-                            that.close();
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
+                    this._saleService.updateSale(this.sale).subscribe(function (sale) {
+                        that.close();
                     }, function (error) { return that.error = error; });
                 };
                 SaleDetailComponent.prototype.updatePrice = function (price) {

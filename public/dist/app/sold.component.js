@@ -56,41 +56,35 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                         that._router.navigate(link);
                     }
                     else {
-                        that.getItem(id).subscribe(function (resp) {
-                            if (resp.success) {
-                                var item = resp.data;
-                                that.item = item;
-                                var d = new Date();
-                                var price = 0;
-                                if (item.salePrice > 0) {
-                                    price = item.salePrice;
-                                }
-                                else {
-                                    price = item.price;
-                                }
-                                that.price = price / 100;
-                                that.fee = 0;
-                                var s = {
-                                    id: 0,
-                                    price: price,
-                                    originalPrice: item.price,
-                                    originalSalePrice: item.salePrice,
-                                    sTaxRate: .0725,
-                                    quantity: 1,
-                                    fee: 0,
-                                    itemId: item.id,
-                                    date: d,
-                                    where: "",
-                                    comment: ""
-                                };
-                                that.sale = s;
-                                that.day = d.getDate();
-                                that.month = d.getMonth() + 1;
-                                that.year = d.getFullYear();
+                        that.getItem(id).subscribe(function (item) {
+                            that.item = item;
+                            var d = new Date();
+                            var price = 0;
+                            if (item.salePrice > 0) {
+                                price = item.salePrice;
                             }
                             else {
-                                that.error = resp.error;
+                                price = item.price;
                             }
+                            that.price = price / 100;
+                            that.fee = 0;
+                            var s = {
+                                id: 0,
+                                price: price,
+                                originalPrice: item.price,
+                                originalSalePrice: item.salePrice,
+                                sTaxRate: .0725,
+                                quantity: 1,
+                                fee: 0,
+                                itemId: item.id,
+                                date: d,
+                                where: "",
+                                comment: ""
+                            };
+                            that.sale = s;
+                            that.day = d.getDate();
+                            that.month = d.getMonth() + 1;
+                            that.year = d.getFullYear();
                         }, function (error) { return that.error = error; });
                     }
                 };
@@ -104,14 +98,9 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     this.sale.date.setMonth(this.month - 1);
                     this.sale.date.setFullYear(this.year);
                     var that = this;
-                    this._saleService.newSale(this.sale).subscribe(function (resp) {
-                        if (resp.success) {
-                            var link = ['SaleList'];
-                            that._router.navigate(link);
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
+                    this._saleService.newSale(this.sale).subscribe(function (sale) {
+                        var link = ['SaleList'];
+                        that._router.navigate(link);
                     }, function (error) { return that.error = error; });
                 };
                 SoldComponent.prototype.updatePrice = function (price) {

@@ -11,22 +11,25 @@ export class ItemService {
     constructor(private http:Http){
         
     }
-    takenId(id:number):Observable<{success: boolean, error: string, data: boolean}> {
-        return this.http.get(this._apiUrl + 'validid' + '/' + id).map(this.extractData).catch(this.handleError);
+    takenId(id:number):Observable<boolean> {
+        return this.http.get(this._apiUrl + 'existingid' + '/' + id).map(this.extractData).catch(this.handleError);
     }
-    getItems():Observable<{success: boolean, error: string, data: Item[]}> {
+    getNextId():Observable<number> {
+        return this.http.get(this._apiUrl + 'nextid').map(this.extractData).catch(this.handleError);
+    }
+    getItems():Observable<Item[]> {
         return this.http.get(this._apiUrl + 'list').map(this.extractData).catch(this.handleError);
     }
-    getItem(id:number):Observable<{success: boolean, error: string, data: Item}> {
+    getItem(id:number):Observable<Item> {
         return this.http.get(this._apiUrl + String(id)).map(this.extractData).catch(this.handleError);
     }
-    updateItem(item:Item):Observable<{error:string, success:boolean}> {
+    updateItem(item:Item):Observable<Item> {
         var body = JSON.stringify(item);
         var headers = new Headers({ 'Content-Type': 'application/json'});
         var options = new RequestOptions({headers: headers});
         return this.http.post(this._apiUrl + 'update', body, options).map(this.extractData).catch(this.handleError);
     }
-    newItem(item:Item):Observable<{error:string, success:boolean}> {
+    newItem(item:Item):Observable<Item> {
         var body = JSON.stringify(item);
         var headers = new Headers({ 'Content-Type': 'application/json'});
         var options = new RequestOptions({headers: headers}); 
@@ -51,7 +54,7 @@ export class ItemService {
                 }
             }
         }
-        return body || {};
+        return body.data || {};
     }
     private handleError (error: any) {
         let errMsg = error.message || 'Server error';

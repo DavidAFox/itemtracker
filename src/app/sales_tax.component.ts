@@ -75,56 +75,36 @@ export class SalesTaxComponent implements OnInit{
     }
     getSales() {
         var that = this;
-        this._saleService.getSales().subscribe(function(resp) {
-            if(resp.success) {
-                that.sales = resp.data;
+        this._saleService.getSales().subscribe(function(sales) {
+                that.sales = sales;
                 that.sales.forEach(function(sale) {
-                    that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                        if(itemResp.success) {
-                           that.itemNames[sale.itemId] = itemResp.data.name;
-                           that.items[sale.id] = itemResp.data;
-                        } else {
-                            that.error = itemResp.error
-                        }
+                    that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                           that.itemNames[sale.itemId] = item.name;
+                           that.items[sale.id] = item;
                     })
                 })
-            } else {
-                that.error = resp.error
-            }
         }, error=> that.error = error);
     }
     reload(id) {
         var that = this;
         this.sales.forEach((sale, index) => {
             if(sale.id === id) {
-                that._saleService.getSale(id).subscribe(resp => {
-                    if(resp.success) {
-                        that.sales[index] = resp.data;
-                    } else {
-                        that.error = resp.error;
-                    }
+                that._saleService.getSale(id).subscribe(sale => {
+                        that.sales[index] = sale;
                 }, error => that.error=error);
             }
         });
     }
     getSalesWithDates(start:Date, end:Date) {
         var that = this;
-        this._saleService.getSales(start, end).subscribe(function(resp) {
-            if(resp.success) {
-                that.sales = resp.data;
+        this._saleService.getSales(start, end).subscribe(function(sales) {
+                that.sales = sales;
                 that.sales.forEach(function(sale) {
-                    that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                        if(itemResp.success) {
-                           that.itemNames[sale.itemId] = itemResp.data.name;
-                           that.items[sale.id] = itemResp.data;
-                        } else {
-                            that.error = itemResp.error
-                        }
+                    that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                           that.itemNames[sale.itemId] = item.name;
+                           that.items[sale.id] = item;
                     })
                 })
-            } else {
-                that.error = resp.error
-            }
         }, error=> that.error = error)
     }
     total(sales:Sale[]) {
@@ -137,7 +117,5 @@ export class SalesTaxComponent implements OnInit{
         this.selectedItem = Item.copy(this.items[sale.id]);
         $('#saleModal').modal('show');
 
-//        var link = ['SaleEdit', {id: sale.id}];
-//        this._router.navigate(link);
     }
 }

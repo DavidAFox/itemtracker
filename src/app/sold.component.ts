@@ -40,9 +40,7 @@ export class SoldComponent implements OnInit{
             var link = ['ItemList']
             that._router.navigate(link);
         }else {
-            that.getItem(id).subscribe(function(resp) {                
-                if(resp.success) {
-                    var item = resp.data;
+            that.getItem(id).subscribe(function(item) {                
                     that.item = item;
                     var d = new Date();
                     var price = 0;
@@ -70,9 +68,6 @@ export class SoldComponent implements OnInit{
                     that.day = d.getDate();
                     that.month = d.getMonth() +1;
                     that.year = d.getFullYear();
-                } else {
-                    that.error = resp.error;
-                }
             }, error => that.error = error)
         }
     }
@@ -86,13 +81,9 @@ export class SoldComponent implements OnInit{
         this.sale.date.setMonth(this.month-1);
         this.sale.date.setFullYear(this.year);
         var that = this;
-        this._saleService.newSale(this.sale).subscribe(function(resp){
-            if(resp.success) {
+        this._saleService.newSale(this.sale).subscribe(function(sale){
                 var link = ['SaleList']
                 that._router.navigate(link);                
-            } else {
-                that.error = resp.error;
-            }
         }, error => that.error = error)
     }
     updatePrice(price) {

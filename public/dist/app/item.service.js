@@ -32,7 +32,10 @@ System.register(['@angular/core', 'rxjs/Observable', '@angular/http', 'rxjs/Rx']
                     this._apiUrl = "api/items/";
                 }
                 ItemService.prototype.takenId = function (id) {
-                    return this.http.get(this._apiUrl + 'validid' + '/' + id).map(this.extractData).catch(this.handleError);
+                    return this.http.get(this._apiUrl + 'existingid' + '/' + id).map(this.extractData).catch(this.handleError);
+                };
+                ItemService.prototype.getNextId = function () {
+                    return this.http.get(this._apiUrl + 'nextid').map(this.extractData).catch(this.handleError);
                 };
                 ItemService.prototype.getItems = function () {
                     return this.http.get(this._apiUrl + 'list').map(this.extractData).catch(this.handleError);
@@ -72,7 +75,7 @@ System.register(['@angular/core', 'rxjs/Observable', '@angular/http', 'rxjs/Rx']
                             }
                         }
                     }
-                    return body || {};
+                    return body.data || {};
                 };
                 ItemService.prototype.handleError = function (error) {
                     var errMsg = error.message || 'Server error';

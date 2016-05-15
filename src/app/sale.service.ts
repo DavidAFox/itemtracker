@@ -11,7 +11,7 @@ export class SaleService {
     constructor(private http:Http){
         
     }    
-    getSales(starting?:Date, ending?:Date):Observable<{success: boolean, error: string, data: Sale[]}> {
+    getSales(starting?:Date, ending?:Date):Observable<Sale[]> {
         if(starting && ending) {
             var params = new URLSearchParams();
             params.set('starting', starting.toISOString());
@@ -21,17 +21,17 @@ export class SaleService {
         }
         return this.http.get(this.apiUrl + 'list').map(this.extractData).catch(this.handleError);
     }
-    getSale(id:number):Observable<{success: boolean, error: string, data: Sale}> {
+    getSale(id:number):Observable<Sale> {
         return this.http.get(this.apiUrl + id).map(this.extractData).catch(this.handleError);
     }
-    updateSale(sale:Sale):Observable<{success: boolean, error: string}> {
+    updateSale(sale:Sale):Observable<Sale> {
         var body = JSON.stringify(sale);
         console.log(body);
         var headers = new Headers({ 'Content-Type': 'application/json'});
         var options = new RequestOptions({headers: headers});
         return this.http.post(this.apiUrl + "update", body, options).map(this.extractData).catch(this.handleError);
     }
-    newSale(sale:Sale):Observable<{success: boolean, error: string}> {
+    newSale(sale:Sale):Observable<Sale> {
         var body = JSON.stringify(sale);
         var headers = new Headers({ 'Content-Type': 'application/json'});
         var options = new RequestOptions({headers: headers});
@@ -56,7 +56,7 @@ export class SaleService {
                 }
             }
         }
-        return body || {};
+        return body.data || {};
     }
     private handleError (error: any) {
         let errMsg = error.message || 'Server error';

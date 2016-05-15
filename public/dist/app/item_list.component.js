@@ -45,13 +45,8 @@ System.register(['@angular/core', './item.service', '@angular/router-deprecated'
                 }
                 ItemListComponent.prototype.getItems = function () {
                     var that = this;
-                    this._itemService.getItems().subscribe(function (resp) {
-                        if (resp.success) {
-                            that.items = resp.data;
-                        }
-                        else {
-                            that.error = resp.error;
-                        }
+                    this._itemService.getItems().subscribe(function (items) {
+                        that.items = items;
                     }, function (error) { return that.error = error; });
                 };
                 ItemListComponent.prototype.ngOnInit = function () {
@@ -82,20 +77,13 @@ System.register(['@angular/core', './item.service', '@angular/router-deprecated'
                 ItemListComponent.prototype.edit = function (item) {
                     this.selectedItem = item_1.Item.copy(item);
                     $('#itemModal').modal('show');
-                    //        var link = ['ItemEdit', {id: item.id}];
-                    //        this._router.navigate(link);
                 };
                 ItemListComponent.prototype.reload = function (id) {
                     var that = this;
                     this.items.forEach(function (item, index) {
                         if (item.id === id) {
-                            that._itemService.getItem(id).subscribe(function (resp) {
-                                if (resp.success) {
-                                    that.items[index] = resp.data;
-                                }
-                                else {
-                                    that.error = resp.error;
-                                }
+                            that._itemService.getItem(id).subscribe(function (item) {
+                                that.items[index] = item;
                             }, function (error) { return that.error = error; });
                         }
                     });

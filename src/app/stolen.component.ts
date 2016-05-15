@@ -28,9 +28,7 @@ export class StolenComponent implements OnInit{
             var link = ['ItemList'];
             that._router.navigate(link);
         } else {
-            that._itemService.getItem(id).subscribe(function(resp) {
-                if(resp.success) {
-                    var item = resp.data;
+            that._itemService.getItem(id).subscribe(function(item) {           
                     var d = new Date();
                     that.day = d.getDate();
                     that.month = d.getMonth()+1;
@@ -38,9 +36,6 @@ export class StolenComponent implements OnInit{
                     that.item = item;
                     that.price = item.price /100;
                     that.stolen = {id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price}
-                } else {
-                    that.error = resp.error;
-                }
             }, error => that.error = error)
         }
     }

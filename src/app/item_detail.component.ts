@@ -42,11 +42,7 @@ export class ItemDetailComponent {
         this.item.date.setFullYear(this.year);
         //save item changes to database
         this._itemService.updateItem(this.item).subscribe(res => {
-            if(!res.success) {
-                this.error = res.error;
-            } else {
-                this.close()
-            }
+            this.close()
         }, error=>this.error = error)
     }
     close() {
