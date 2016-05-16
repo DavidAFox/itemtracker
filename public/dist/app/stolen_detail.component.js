@@ -57,6 +57,7 @@ System.register(['@angular/core', './stolen', './item', './stolen.service'], fun
                     this.stolen.date.setMonth(this.month - 1);
                     this.stolen.date.setFullYear(this.year);
                     this._stolenService.updateStolen(this.stolen).subscribe(function (resp) {
+                        that.error = "";
                         that.close();
                     }, function (error) { return that.error = error; });
                 };

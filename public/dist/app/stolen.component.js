@@ -61,6 +61,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     this.stolen.date.setFullYear(this.year);
                     var that = this;
                     this._stolenService.newStolen(that.stolen).subscribe(function (resp) {
+                        that.error = "";
                         var link = ['ItemList'];
                         that._router.navigate(link);
                     }, function (error) { return that.error = error; });

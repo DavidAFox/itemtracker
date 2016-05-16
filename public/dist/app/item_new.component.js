@@ -1,4 +1,4 @@
-System.register(['@angular/core', './item_detail.component', './item.service', '@angular/router-deprecated'], function(exports_1, context_1) {
+System.register(['@angular/core', './item_detail.component', './item', './item.service', '@angular/router-deprecated'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, item_detail_component_1, item_service_1, router_deprecated_1;
+    var core_1, item_detail_component_1, item_1, item_service_1, router_deprecated_1;
     var ItemNewComponent;
     return {
         setters:[
@@ -19,6 +19,9 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
             },
             function (item_detail_component_1_1) {
                 item_detail_component_1 = item_detail_component_1_1;
+            },
+            function (item_1_1) {
+                item_1 = item_1_1;
             },
             function (item_service_1_1) {
                 item_service_1 = item_service_1_1;
@@ -36,7 +39,7 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
                     this.month = d.getMonth() + 1;
                     this.year = d.getFullYear();
                     this.salePrice = 0;
-                    this.item = { id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: d };
+                    this.item = new item_1.Item();
                 }
                 ItemNewComponent.prototype.ngOnInit = function () {
                     var that = this;
@@ -53,6 +56,7 @@ System.register(['@angular/core', './item_detail.component', './item.service', '
                     this.item.date.setMonth(this.month - 1);
                     this.item.date.setFullYear(this.year);
                     this._itemService.newItem(this.item).subscribe(function (res) {
+                        _this.error = "";
                         var link = ["ItemList"];
                         _this._router.navigate(link);
                     }, function (error) {

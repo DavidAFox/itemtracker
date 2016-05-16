@@ -63,7 +63,7 @@ export class ItemListComponent implements OnInit{
     reload(id) {
         var that = this;
         this.items.forEach((item, index) => {
-            if(item.id === id) {
+            if(item.index === id) {
                 that._itemService.getItem(id).subscribe(item => {
                         that.items[index] = item;
                 }, error => that.error=error);

@@ -16,7 +16,6 @@ export class ItemModalComponent {
     }
     close(){
         $('#itemModal').modal('hide');
-        this.reload.emit(this.item.id);
-        console.log("closed");
+        this.reload.emit(this.item.index);
     }
 }

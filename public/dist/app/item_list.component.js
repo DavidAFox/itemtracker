@@ -81,7 +81,7 @@ System.register(['@angular/core', './item.service', '@angular/router-deprecated'
                 ItemListComponent.prototype.reload = function (id) {
                     var that = this;
                     this.items.forEach(function (item, index) {
-                        if (item.id === id) {
+                        if (item.index === id) {
                             that._itemService.getItem(id).subscribe(function (item) {
                                 that.items[index] = item;
                             }, function (error) { return that.error = error; });

@@ -15,22 +15,26 @@ describe("Item Service", function(){
     });
     var items:Item[] = [
             {
+                index: 1,
                 id: 1,
                 name: "hat",
                 price: 10.50,
                 salePrice: 9.50,
                 quantity: 5,
                 description: "This is a hat.",
-                date: new Date()
+                date: new Date(),
+                didntsell: false
             },
             {
+                index: 1,
                 id: 2,
                 name: "shoe",
                 price: 3.50,
                 salePrice: 2.49,
                 quantity: 3,
                 description: "This is a pair of shoes.",
-                date: new Date()
+                date: new Date(),
+                didntsell: false
             }
         ]
     describe("takenId", function() {

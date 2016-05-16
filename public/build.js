@@ -16443,8 +16443,7 @@ System.register("dist/app/item_modal.component.js", ["npm:@angular/core@2.0.0-rc
         }
         ItemModalComponent.prototype.close = function() {
           $('#itemModal').modal('hide');
-          this.reload.emit(this.item.id);
-          console.log("closed");
+          this.reload.emit(this.item.index);
         };
         __decorate([core_1.Input(), __metadata('design:type', item_1.Item)], ItemModalComponent.prototype, "item", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], ItemModalComponent.prototype, "reload", void 0);
@@ -16512,12 +16511,8 @@ System.register("dist/app/item_list.component.js", ["npm:@angular/core@2.0.0-rc.
         }
         ItemListComponent.prototype.getItems = function() {
           var that = this;
-          this._itemService.getItems().subscribe(function(resp) {
-            if (resp.success) {
-              that.items = resp.data;
-            } else {
-              that.error = resp.error;
-            }
+          this._itemService.getItems().subscribe(function(items) {
+            that.items = items;
           }, function(error) {
             return that.error = error;
           });
@@ -16554,13 +16549,9 @@ System.register("dist/app/item_list.component.js", ["npm:@angular/core@2.0.0-rc.
         ItemListComponent.prototype.reload = function(id) {
           var that = this;
           this.items.forEach(function(item, index) {
-            if (item.id === id) {
-              that._itemService.getItem(id).subscribe(function(resp) {
-                if (resp.success) {
-                  that.items[index] = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+            if (item.index === id) {
+              that._itemService.getItem(id).subscribe(function(item) {
+                that.items[index] = item;
               }, function(error) {
                 return that.error = error;
               });
@@ -16674,39 +16665,34 @@ System.register("dist/app/sold.component.js", ["npm:@angular/core@2.0.0-rc.0.js"
             var link = ['ItemList'];
             that._router.navigate(link);
           } else {
-            that.getItem(id).subscribe(function(resp) {
-              if (resp.success) {
-                var item = resp.data;
-                that.item = item;
-                var d = new Date();
-                var price = 0;
-                if (item.salePrice > 0) {
-                  price = item.salePrice;
-                } else {
-                  price = item.price;
-                }
-                that.price = price / 100;
-                that.fee = 0;
-                var s = {
-                  id: 0,
-                  price: price,
-                  originalPrice: item.price,
-                  originalSalePrice: item.salePrice,
-                  sTaxRate: .0725,
-                  quantity: 1,
-                  fee: 0,
-                  itemId: item.id,
-                  date: d,
-                  where: "",
-                  comment: ""
-                };
-                that.sale = s;
-                that.day = d.getDate();
-                that.month = d.getMonth() + 1;
-                that.year = d.getFullYear();
+            that.getItem(id).subscribe(function(item) {
+              that.item = item;
+              var d = new Date();
+              var price = 0;
+              if (item.salePrice > 0) {
+                price = item.salePrice;
               } else {
-                that.error = resp.error;
+                price = item.price;
               }
+              that.price = price / 100;
+              that.fee = 0;
+              var s = {
+                id: 0,
+                price: price,
+                originalPrice: item.price,
+                originalSalePrice: item.salePrice,
+                sTaxRate: .0725,
+                quantity: 1,
+                fee: 0,
+                itemId: item.id,
+                date: d,
+                where: "",
+                comment: ""
+              };
+              that.sale = s;
+              that.day = d.getDate();
+              that.month = d.getMonth() + 1;
+              that.year = d.getFullYear();
             }, function(error) {
               return that.error = error;
             });
@@ -16720,13 +16706,10 @@ System.register("dist/app/sold.component.js", ["npm:@angular/core@2.0.0-rc.0.js"
           this.sale.date.setMonth(this.month - 1);
           this.sale.date.setFullYear(this.year);
           var that = this;
-          this._saleService.newSale(this.sale).subscribe(function(resp) {
-            if (resp.success) {
-              var link = ['SaleList'];
-              that._router.navigate(link);
-            } else {
-              that.error = resp.error;
-            }
+          this._saleService.newSale(this.sale).subscribe(function(sale) {
+            that.error = "";
+            var link = ['SaleList'];
+            that._router.navigate(link);
           }, function(error) {
             return that.error = error;
           });
@@ -16805,25 +16788,20 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
             var link = ['ItemList'];
             that._router.navigate(link);
           } else {
-            that._itemService.getItem(id).subscribe(function(resp) {
-              if (resp.success) {
-                var item = resp.data;
-                var d = new Date();
-                that.day = d.getDate();
-                that.month = d.getMonth() + 1;
-                that.year = d.getFullYear();
-                that.item = item;
-                that.price = item.price / 100;
-                that.stolen = {
-                  id: 0,
-                  quantity: item.quantity,
-                  itemId: item.id,
-                  date: d,
-                  price: item.price
-                };
-              } else {
-                that.error = resp.error;
-              }
+            that._itemService.getItem(id).subscribe(function(item) {
+              var d = new Date();
+              that.day = d.getDate();
+              that.month = d.getMonth() + 1;
+              that.year = d.getFullYear();
+              that.item = item;
+              that.price = item.price / 100;
+              that.stolen = {
+                id: 0,
+                quantity: item.quantity,
+                itemId: item.id,
+                date: d,
+                price: item.price
+              };
             }, function(error) {
               return that.error = error;
             });
@@ -16835,6 +16813,7 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
           this.stolen.date.setFullYear(this.year);
           var that = this;
           this._stolenService.newStolen(that.stolen).subscribe(function(resp) {
+            that.error = "";
             var link = ['ItemList'];
             that._router.navigate(link);
           }, function(error) {
@@ -16855,7 +16834,7 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
   };
 });
 
-System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/item_detail.component.js"], function(exports_1, context_1) {
+System.register("dist/app/item_edit.component.js", ["dist/app/item.js", "npm:@angular/core@2.0.0-rc.0.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js", "dist/app/item.service.js", "dist/app/item_detail.component.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -16874,13 +16853,16 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1,
+  var item_1,
+      core_1,
       router_deprecated_1,
       item_service_1,
       item_detail_component_1;
   var ItemEditComponent;
   return {
-    setters: [function(core_1_1) {
+    setters: [function(item_1_1) {
+      item_1 = item_1_1;
+    }, function(core_1_1) {
       core_1 = core_1_1;
     }, function(router_deprecated_1_1) {
       router_deprecated_1 = router_deprecated_1_1;
@@ -16895,15 +16877,7 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
           this._itemService = _itemService;
           this._routeParams = _routeParams;
           this._router = _router;
-          this.item = {
-            id: null,
-            name: "",
-            price: null,
-            salePrice: 0,
-            quantity: 1,
-            description: "",
-            date: new Date()
-          };
+          this.item = new item_1.Item();
         }
         ItemEditComponent.prototype.ngOnInit = function() {
           var id = +this._routeParams.get('id');
@@ -16912,19 +16886,15 @@ System.register("dist/app/item_edit.component.js", ["npm:@angular/core@2.0.0-rc.
             var link = ['ItemList'];
             that._router.navigate(link);
           } else {
-            this.getItem(id).subscribe(function(resp) {
-              if (resp.success) {
-                that.item = resp.data;
-              } else {
-                that.error = resp.error;
-              }
+            this.getItem(id).subscribe(function(item) {
+              that.item = item;
             }, function(error) {
               return that.error = error;
             });
           }
         };
         ItemEditComponent.prototype.getItem = function(id) {
-          return this._itemService.getItem(id);
+          return this._itemService.getItemById(id);
         };
         ItemEditComponent.prototype.save = function() {
           var link = ["ItemList"];
@@ -17005,11 +16975,8 @@ System.register("dist/app/item_detail.component.js", ["npm:@angular/core@2.0.0-r
           this.item.date.setMonth(this.month - 1);
           this.item.date.setFullYear(this.year);
           this._itemService.updateItem(this.item).subscribe(function(res) {
-            if (!res.success) {
-              _this.error = res.error;
-            } else {
-              _this.close();
-            }
+            _this.error = "";
+            _this.close();
           }, function(error) {
             return _this.error = error;
           });
@@ -17036,7 +17003,7 @@ System.register("dist/app/item_detail.component.js", ["npm:@angular/core@2.0.0-r
   };
 });
 
-System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item_detail.component.js", "dist/app/item.service.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js"], function(exports_1, context_1) {
+System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0.js", "dist/app/item_detail.component.js", "dist/app/item.js", "dist/app/item.service.js", "npm:@angular/router-deprecated@2.0.0-rc.0.js"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -17057,6 +17024,7 @@ System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0
   };
   var core_1,
       item_detail_component_1,
+      item_1,
       item_service_1,
       router_deprecated_1;
   var ItemNewComponent;
@@ -17065,6 +17033,8 @@ System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0
       core_1 = core_1_1;
     }, function(item_detail_component_1_1) {
       item_detail_component_1 = item_detail_component_1_1;
+    }, function(item_1_1) {
+      item_1 = item_1_1;
     }, function(item_service_1_1) {
       item_service_1 = item_service_1_1;
     }, function(router_deprecated_1_1) {
@@ -17080,16 +17050,16 @@ System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0
           this.month = d.getMonth() + 1;
           this.year = d.getFullYear();
           this.salePrice = 0;
-          this.item = {
-            id: null,
-            name: "",
-            price: null,
-            salePrice: 0,
-            quantity: 1,
-            description: "",
-            date: d
-          };
+          this.item = new item_1.Item();
         }
+        ItemNewComponent.prototype.ngOnInit = function() {
+          var that = this;
+          that._itemService.getNextId().subscribe(function(id) {
+            that.item.id = id;
+          }, function(error) {
+            that.error = error;
+          });
+        };
         ItemNewComponent.prototype.save = function() {
           var _this = this;
           var that = this;
@@ -17097,12 +17067,9 @@ System.register("dist/app/item_new.component.js", ["npm:@angular/core@2.0.0-rc.0
           this.item.date.setMonth(this.month - 1);
           this.item.date.setFullYear(this.year);
           this._itemService.newItem(this.item).subscribe(function(res) {
-            if (!res.success) {
-              that.error = res.error;
-            } else {
-              var link = ["ItemList"];
-              _this._router.navigate(link);
-            }
+            _this.error = "";
+            var link = ["ItemList"];
+            _this._router.navigate(link);
           }, function(error) {
             that.error = error;
           });
@@ -17287,22 +17254,16 @@ System.register("dist/app/sale_list.component.js", ["npm:@angular/core@2.0.0-rc.
         };
         SaleListComponent.prototype.getSales = function() {
           var that = this;
-          this._saleService.getSales().subscribe(function(resp) {
-            if (resp.success) {
-              that.sales = resp.data;
-              that.sales.forEach(function(sale) {
-                that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                  if (itemResp.success) {
-                    that.itemNames[sale.itemId] = itemResp.data.name;
-                    that.items[sale.id] = itemResp.data;
-                  } else {
-                    that.error = itemResp.error;
-                  }
-                });
+          this._saleService.getSales().subscribe(function(sales) {
+            that.sales = sales;
+            that.sales.forEach(function(sale) {
+              that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                that.itemNames[sale.itemId] = item.name;
+                that.items[sale.id] = item;
               });
-            } else {
-              that.error = resp.error;
-            }
+            }, function(error) {
+              return that.error = error;
+            });
           }, function(error) {
             return that.error = error;
           });
@@ -17311,21 +17272,13 @@ System.register("dist/app/sale_list.component.js", ["npm:@angular/core@2.0.0-rc.
         };
         SaleListComponent.prototype.getSalesWithDates = function(start, end) {
           var that = this;
-          this._saleService.getSales(start, end).subscribe(function(resp) {
-            if (resp.success) {
-              that.sales = resp.data;
-              that.sales.forEach(function(sale) {
-                that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                  if (itemResp.success) {
-                    that.itemNames[sale.itemId] = itemResp.data.name;
-                  } else {
-                    that.error = itemResp.error;
-                  }
-                });
+          this._saleService.getSales(start, end).subscribe(function(sales) {
+            that.sales = sales;
+            that.sales.forEach(function(sale) {
+              that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                that.itemNames[sale.itemId] = item.name;
               });
-            } else {
-              that.error = resp.error;
-            }
+            });
           }, function(error) {
             return that.error = error;
           });
@@ -17360,12 +17313,8 @@ System.register("dist/app/sale_list.component.js", ["npm:@angular/core@2.0.0-rc.
           var that = this;
           this.sales.forEach(function(sale, index) {
             if (sale.id === id) {
-              that._saleService.getSale(id).subscribe(function(resp) {
-                if (resp.success) {
-                  that.sales[index] = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+              that._saleService.getSale(id).subscribe(function(sale) {
+                that.sales[index] = sale;
               }, function(error) {
                 return that.error = error;
               });
@@ -17488,22 +17437,13 @@ System.register("dist/app/sale_edit.component.js", ["npm:@angular/core@2.0.0-rc.
             var link = ['SaleList'];
             that._router.navigate(link);
           } else {
-            that._saleService.getSale(id).subscribe(function(resp) {
-              if (resp.success) {
-                var sale = resp.data;
-                that.sale = sale;
-                that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                  if (itemResp.success) {
-                    that.item = itemResp.data;
-                  } else {
-                    that.error = itemResp.error;
-                  }
-                }, function(error) {
-                  return that.error = error;
-                });
-              } else {
-                that.error = resp.error;
-              }
+            that._saleService.getSale(id).subscribe(function(sale) {
+              that.sale = sale;
+              that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                that.item = item;
+              }, function(error) {
+                return that.error = error;
+              });
             }, function(error) {
               return that.error = error;
             });
@@ -17710,13 +17650,9 @@ System.register("dist/app/stolen_list.component.js", ["npm:@angular/core@2.0.0-r
           this._stolenService.getStolens().subscribe(function(data) {
             that.stolens = data;
             that.stolens.forEach(function(stolen) {
-              that._itemService.getItem(stolen.itemId).subscribe(function(resp) {
-                if (resp.success) {
-                  that.itemNames[stolen.itemId] = resp.data.name;
-                  that.items[stolen.id] = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+              that._itemService.getItem(stolen.itemId).subscribe(function(item) {
+                that.itemNames[stolen.itemId] = item.name;
+                that.items[stolen.id] = item;
               }, function(error) {
                 return that.error = error;
               });
@@ -17732,13 +17668,9 @@ System.register("dist/app/stolen_list.component.js", ["npm:@angular/core@2.0.0-r
           this._stolenService.getStolens(starting, ending).subscribe(function(data) {
             that.stolens = data;
             that.stolens.forEach(function(stolen) {
-              that._itemService.getItem(stolen.itemId).subscribe(function(resp) {
-                if (resp.success) {
-                  that.itemNames[stolen.itemId] = resp.data.name;
-                  that.items[stolen.id] = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+              that._itemService.getItem(stolen.itemId).subscribe(function(item) {
+                that.itemNames[stolen.itemId] = item.name;
+                that.items[stolen.id] = item;
               }, function(error) {
                 return that.error = error;
               });
@@ -18038,6 +17970,7 @@ System.register("dist/app/stolen_detail.component.js", ["npm:@angular/core@2.0.0
           this.stolen.date.setMonth(this.month - 1);
           this.stolen.date.setFullYear(this.year);
           this._stolenService.updateStolen(this.stolen).subscribe(function(resp) {
+            that.error = "";
             that.close();
           }, function(error) {
             return that.error = error;
@@ -18125,12 +18058,8 @@ System.register("dist/app/stolen_edit.component.js", ["npm:@angular/core@2.0.0-r
           } else {
             that._stolenService.getStolen(id).subscribe(function(data) {
               that.stolen = data;
-              that._itemService.getItem(that.stolen.itemId).subscribe(function(resp) {
-                if (resp.success) {
-                  that.item = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+              that._itemService.getItem(that.stolen.itemId).subscribe(function(item) {
+                that.item = item;
               }, function(error) {
                 return that.error = error;
               });
@@ -18196,13 +18125,19 @@ System.register("dist/app/item.service.js", ["npm:@angular/core@2.0.0-rc.0.js", 
           this._apiUrl = "api/items/";
         }
         ItemService.prototype.takenId = function(id) {
-          return this.http.get(this._apiUrl + 'validid' + '/' + id).map(this.extractData).catch(this.handleError);
+          return this.http.get(this._apiUrl + 'existingid' + '/' + id).map(this.extractData).catch(this.handleError);
+        };
+        ItemService.prototype.getNextId = function() {
+          return this.http.get(this._apiUrl + 'nextid').map(this.extractData).catch(this.handleError);
         };
         ItemService.prototype.getItems = function() {
           return this.http.get(this._apiUrl + 'list').map(this.extractData).catch(this.handleError);
         };
-        ItemService.prototype.getItem = function(id) {
-          return this.http.get(this._apiUrl + String(id)).map(this.extractData).catch(this.handleError);
+        ItemService.prototype.getItem = function(index) {
+          return this.http.get(this._apiUrl + String(index)).map(this.extractData).catch(this.handleError);
+        };
+        ItemService.prototype.getItemById = function(id) {
+          return this.http.get(this._apiUrl + "byid" + '/' + id).map(this.extractData).catch(this.handleError);
         };
         ItemService.prototype.updateItem = function(item) {
           var body = JSON.stringify(item);
@@ -18235,7 +18170,7 @@ System.register("dist/app/item.service.js", ["npm:@angular/core@2.0.0-rc.0.js", 
               }
             }
           }
-          return body || {};
+          return body.data || {};
         };
         ItemService.prototype.handleError = function(error) {
           var errMsg = error.message || 'Server error';
@@ -20575,7 +20510,7 @@ System.register("dist/app/sale.service.js", ["npm:@angular/core@2.0.0-rc.0.js", 
               }
             }
           }
-          return body || {};
+          return body.data || {};
         };
         SaleService.prototype.handleError = function(error) {
           var errMsg = error.message || 'Server error';
@@ -20642,15 +20577,18 @@ System.register("dist/app/item.js", [], function(exports_1, context_1) {
     execute: function() {
       Item = (function() {
         function Item() {
+          this.index = null;
           this.id = null;
           this.name = "";
           this.price = 0;
           this.salePrice = 0;
           this.description = "";
           this.date = new Date();
+          this.didntsell = false;
         }
         Item.copy = function(item) {
           var newItem = new Item();
+          newItem.index = item.index;
           newItem.id = item.id;
           newItem.name = item.name;
           newItem.price = item.price;
@@ -20658,6 +20596,7 @@ System.register("dist/app/item.js", [], function(exports_1, context_1) {
           newItem.quantity = item.quantity;
           newItem.description = item.description;
           newItem.date = item.date;
+          newItem.didntsell = item.didntsell;
           return newItem;
         };
         return Item;
@@ -20733,12 +20672,9 @@ System.register("dist/app/sale_detail.component.js", ["npm:@angular/core@2.0.0-r
           this.sale.date.setDate(this.day);
           this.sale.date.setMonth(this.month - 1);
           this.sale.date.setFullYear(this.year);
-          this._saleService.updateSale(this.sale).subscribe(function(resp) {
-            if (resp.success) {
-              that.close();
-            } else {
-              that.error = resp.error;
-            }
+          this._saleService.updateSale(this.sale).subscribe(function(sale) {
+            that.error = "";
+            that.close();
           }, function(error) {
             return that.error = error;
           });
@@ -20925,22 +20861,14 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
         };
         SalesTaxComponent.prototype.getSales = function() {
           var that = this;
-          this._saleService.getSales().subscribe(function(resp) {
-            if (resp.success) {
-              that.sales = resp.data;
-              that.sales.forEach(function(sale) {
-                that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                  if (itemResp.success) {
-                    that.itemNames[sale.itemId] = itemResp.data.name;
-                    that.items[sale.id] = itemResp.data;
-                  } else {
-                    that.error = itemResp.error;
-                  }
-                });
+          this._saleService.getSales().subscribe(function(sales) {
+            that.sales = sales;
+            that.sales.forEach(function(sale) {
+              that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                that.itemNames[sale.itemId] = item.name;
+                that.items[sale.id] = item;
               });
-            } else {
-              that.error = resp.error;
-            }
+            });
           }, function(error) {
             return that.error = error;
           });
@@ -20949,12 +20877,8 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
           var that = this;
           this.sales.forEach(function(sale, index) {
             if (sale.id === id) {
-              that._saleService.getSale(id).subscribe(function(resp) {
-                if (resp.success) {
-                  that.sales[index] = resp.data;
-                } else {
-                  that.error = resp.error;
-                }
+              that._saleService.getSale(id).subscribe(function(sale) {
+                that.sales[index] = sale;
               }, function(error) {
                 return that.error = error;
               });
@@ -20963,22 +20887,14 @@ System.register("dist/app/sales_tax.component.js", ["npm:@angular/core@2.0.0-rc.
         };
         SalesTaxComponent.prototype.getSalesWithDates = function(start, end) {
           var that = this;
-          this._saleService.getSales(start, end).subscribe(function(resp) {
-            if (resp.success) {
-              that.sales = resp.data;
-              that.sales.forEach(function(sale) {
-                that._itemService.getItem(sale.itemId).subscribe(function(itemResp) {
-                  if (itemResp.success) {
-                    that.itemNames[sale.itemId] = itemResp.data.name;
-                    that.items[sale.id] = itemResp.data;
-                  } else {
-                    that.error = itemResp.error;
-                  }
-                });
+          this._saleService.getSales(start, end).subscribe(function(sales) {
+            that.sales = sales;
+            that.sales.forEach(function(sale) {
+              that._itemService.getItem(sale.itemId).subscribe(function(item) {
+                that.itemNames[sale.itemId] = item.name;
+                that.items[sale.id] = item;
               });
-            } else {
-              that.error = resp.error;
-            }
+            });
           }, function(error) {
             return that.error = error;
           });

@@ -45,6 +45,7 @@ export class StolenComponent implements OnInit{
         this.stolen.date.setFullYear(this.year);
         var that = this;
         this._stolenService.newStolen(that.stolen).subscribe(resp => {
+            that.error = "";
             var link = ['ItemList'];
             that._router.navigate(link);
         }, error=>that.error = error)

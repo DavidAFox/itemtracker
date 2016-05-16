@@ -25,7 +25,7 @@ export class ItemNewComponent implements OnInit{
         this.month = d.getMonth()+1;
         this.year = d.getFullYear();
         this.salePrice = 0;
-        this.item = {id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: d};
+        this.item = new Item();
     }
     ngOnInit() {
         var that = this;
@@ -41,6 +41,7 @@ export class ItemNewComponent implements OnInit{
         this.item.date.setMonth(this.month-1);
         this.item.date.setFullYear(this.year);
         this._itemService.newItem(this.item).subscribe(res => {
+                this.error = "";
                 var link = ["ItemList"];
                 this._router.navigate(link);                
         }, error => {

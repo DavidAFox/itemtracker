@@ -82,6 +82,7 @@ export class SoldComponent implements OnInit{
         this.sale.date.setFullYear(this.year);
         var that = this;
         this._saleService.newSale(this.sale).subscribe(function(sale){
+                that.error = "";
                 var link = ['SaleList']
                 that._router.navigate(link);                
         }, error => that.error = error)

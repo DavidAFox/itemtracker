@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './item.service', './item_detail.component'], function(exports_1, context_1) {
+System.register(['./item', '@angular/core', '@angular/router-deprecated', './item.service', './item_detail.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,10 +10,13 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, item_service_1, item_detail_component_1;
+    var item_1, core_1, router_deprecated_1, item_service_1, item_detail_component_1;
     var ItemEditComponent;
     return {
         setters:[
+            function (item_1_1) {
+                item_1 = item_1_1;
+            },
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -32,7 +35,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     this._itemService = _itemService;
                     this._routeParams = _routeParams;
                     this._router = _router;
-                    this.item = { id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: new Date() };
+                    this.item = new item_1.Item();
                 }
                 ItemEditComponent.prototype.ngOnInit = function () {
                     var id = +this._routeParams.get('id');
@@ -48,7 +51,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     }
                 };
                 ItemEditComponent.prototype.getItem = function (id) {
-                    return this._itemService.getItem(id);
+                    return this._itemService.getItemById(id);
                 };
                 ItemEditComponent.prototype.save = function () {
                     var link = ["ItemList"];

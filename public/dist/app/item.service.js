@@ -40,8 +40,11 @@ System.register(['@angular/core', 'rxjs/Observable', '@angular/http', 'rxjs/Rx']
                 ItemService.prototype.getItems = function () {
                     return this.http.get(this._apiUrl + 'list').map(this.extractData).catch(this.handleError);
                 };
-                ItemService.prototype.getItem = function (id) {
-                    return this.http.get(this._apiUrl + String(id)).map(this.extractData).catch(this.handleError);
+                ItemService.prototype.getItem = function (index) {
+                    return this.http.get(this._apiUrl + String(index)).map(this.extractData).catch(this.handleError);
+                };
+                ItemService.prototype.getItemById = function (id) {
+                    return this.http.get(this._apiUrl + "byid" + '/' + id).map(this.extractData).catch(this.handleError);
                 };
                 ItemService.prototype.updateItem = function (item) {
                     var body = JSON.stringify(item);

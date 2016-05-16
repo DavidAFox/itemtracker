@@ -19,7 +19,7 @@
 		}
         public function getItems() {
             try {
-                $stmt = $this->conn->prepare("SELECT id, name, price, salePrice, quantity, description, date FROM items WHERE user_id = ?");
+                $stmt = $this->conn->prepare("SELECT index, id, name, price, salePrice, quantity, description, date, didntsell FROM items WHERE user_id = ?");
                 $stmt->execute(array($this->user_id));
             } catch(PDOException $e) {
                 throw new Exception("Error getting items: " . $e->getMessage());
@@ -28,6 +28,7 @@
             $i = 0;
             while($row = $stmt->fetch()) {
                 $item = array();
+                $item['index'] = $row['index'];
                 $item['id'] = $row['id'];
                 $item['name'] = $row['name'];
                 $item['price'] =  $row['price'];
@@ -35,14 +36,15 @@
                 $item['quantity'] = $row['quantity'];
                 $item['description'] = $row['description'];
                 $item['date'] = $row['date'];
+                $item['didntsell'] = $row['didntsell'];
                 $items[$i] = $item;
                 $i += 1;
             }            
             return $items;
         }
-        public function getItem($id) {
+        public function getItemById($id) {
             try {
-                $stmt = $this->conn->prepare("SELECT id, name, price, salePrice, quantity, description, date FROM items WHERE user_id = ? AND id = ?");
+                $stmt = $this->conn->prepare("SELECT index, id, name, price, salePrice, quantity, description, date, didntsell FROM items WHERE user_id = ? AND id = ?");
                 $stmt->execute(array($this->user_id, $id));
             } catch(PDOException $e) {           
                 throw new Exception("Error getting item");
@@ -52,6 +54,7 @@
                 throw new Exception("No item with that id found");
             }
             $item = array();
+            $item['index'] = $row['index'];
             $item['id'] = $row['id'];
             $item['name'] = $row['name'];
             $item['price'] =  $row['price'];
@@ -59,7 +62,41 @@
             $item['quantity'] = $row['quantity'];
             $item['description'] = $row['description'];
             $item['date'] = $row['date'];
+            $item['didntsell'] = $row['didntsell'];
             return $item;
+        }
+        public function getItem($index) {
+            try {
+                $stmt = $this->conn->prepare("SELECT index, id, name, price, salePrice, quantity, description, date, didntsell FROM items WHERE user_id = ? AND index = ?");
+                $stmt->execute(array($this->user_id, $index));
+            } catch(PDOException $e) {           
+                throw new Exception("Error getting item");
+            }
+            $row = $stmt->fetch();
+            if(!$row) {
+                throw new Exception("No item with that id found");
+            }
+            $item = array();
+            $item['index'] = $row['index'];
+            $item['id'] = $row['id'];
+            $item['name'] = $row['name'];
+            $item['price'] =  $row['price'];
+            $item['salePrice'] =  $row['saleprice'];
+            $item['quantity'] = $row['quantity'];
+            $item['description'] = $row['description'];
+            $item['date'] = $row['date'];
+            $item['didntsell'] = $row['didntsell'];
+            return $item;
+        }
+        public function existingItem($index) {
+            try {
+                $stmt = $this->conn->prepare("SELECT index FROM items WHERE index = ? AND user_id = ?");
+                $stmt->execute(array($index, $this->user_id));
+            } catch(PDOException $e) {
+                throw new Exception("Error checking index");
+            }
+            $row = $stmt->fetch();
+            return $row;
         }
         public function existingItemId($id) {
             try {
@@ -90,24 +127,34 @@
             if($this->existingItemId($item['id'])) {
                 throw new Exception("An item with that id already exists");
             }
+            if($item['didntsell']) {
+                $didntsell = 1;
+            } else {
+                $didntsell = 0;
+            }
             try {
-                $stmt = $this->conn->prepare("INSERT INTO items (user_id, id, name, price, salePrice, quantity, description, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->execute(array($this->user_id, $item['id'], $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date']));
+                $stmt = $this->conn->prepare("INSERT INTO items (user_id, id, name, price, salePrice, quantity, description, date, didntsell) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute(array($this->user_id, $item['id'], $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $didntsell));
             } catch(PDOException $e) {
-                throw new Exception("Error adding item");
+                throw new Exception($e->getMessage());
             }
             return $stmt->fetch();
         }
         public function updateItem($item) {
             $this->validateItem($item);
-            if(!$this->existingItemId($item['id'])) {
+            if(!$this->existingItem($item['index'])) {
                 throw new Exception("No item with that id found");
             }
+            if($item['didntsell']) {
+                $didntsell = 1;
+            } else {
+                $didntsell = 0;
+            }
             try {
-                $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, salePrice = ?, quantity = ?, description = ?, date = ? WHERE user_id = ? AND id = ?");
-                $stmt->execute(array($item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $this->user_id, $item['id']));
+                $stmt = $this->conn->prepare("UPDATE items SET id = ?, name = ?, price = ?, salePrice = ?, quantity = ?, description = ?, date = ?, didntsell = ? WHERE user_id = ? AND index = ?");
+                $stmt->execute(array($item['id'], $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $didntsell , $this->user_id, $item['index']));
             } catch(PDOException $e) {
-                throw new Exception("Error adding item");
+                throw new Exception("Error updating item");
             }
             return $stmt->fetch();
         }
@@ -181,12 +228,12 @@
         }
         public function newSale($sale) {
             $this->validateSale($sale);
-            if(!$this->existingItemId($sale['itemId'])) {
+            if(!$this->existingItem($sale['itemId'])) {
                 throw new Exception("Item not found");
             }
             try {
                 $this->conn->beginTransaction();
-                $stmt2 = $this->conn->prepare("SELECT quantity FROM items WHERE user_id = ? AND id = ?");
+                $stmt2 = $this->conn->prepare("SELECT quantity FROM items WHERE user_id = ? AND index = ?");
                 $stmt2->execute(array($this->user_id, $sale['itemId']));
             } catch(PDOException $e) {
                 throw new Exception("Error getting item quantity");
@@ -198,7 +245,7 @@
             }
             $newQuantity = $row['quantity'] - $sale['quantity'];
             try {
-                $stmt3 = $this->conn->prepare("UPDATE items SET quantity = ? WHERE user_id = ? AND id = ?");
+                $stmt3 = $this->conn->prepare("UPDATE items SET quantity = ? WHERE user_id = ? AND index = ?");
                 $stmt3->execute(array($newQuantity, $this->user_id, $sale['itemId']));
             } catch(PDOException $e) {
                 $this->conn->rollback();
@@ -218,7 +265,7 @@
             if(!$this->validSaleId($sale['id'])) {
                 throw new Exception("No sale with that id exists");
             }
-            if(!$this->existingItemId($sale['itemId'])) {
+            if(!$this->existingItem($sale['itemId'])) {
                 throw new Exception("No item with that id exists");
             }
             try {
@@ -275,11 +322,11 @@
         }
         public function newStolen($stolen) {
             $this->validateStolen($stolen);
-            if(!$this->existingItemId($stolen['itemId'])) {
+            if(!$this->existingItem($stolen['itemId'])) {
                 throw new Exception("Item not found");
             }
             try {
-                $stmt2 = $this->conn->prepare("SELECT quantity FROM items WHERE user_id = ? AND id = ?");
+                $stmt2 = $this->conn->prepare("SELECT quantity FROM items WHERE user_id = ? AND index = ?");
                 $stmt2->execute(array($this->user_id, $stolen['itemId']));
             } catch(PDOException $e) {
                 throw new Exception("Error getting item quantity");
@@ -292,7 +339,7 @@
             $newQuantity = $startingQuantity - $stolen['quantity'];
             $this->conn->beginTransaction();
             try {
-                $stmt3 = $this->conn->prepare("UPDATE items SET quantity = ? WHERE user_id = ? AND id = ?");
+                $stmt3 = $this->conn->prepare("UPDATE items SET quantity = ? WHERE user_id = ? AND index = ?");
                 $stmt3->execute(array($newQuantity, $this->user_id, $stolen['itemId']));
             } catch(PDOException $e) {
                 $this->conn->rollback();
@@ -427,7 +474,7 @@
             if(preg_match("/[\"<>&]+/", $sale['comment']) !== 0) {
                 throw new Exception("Comment cannot contain \" < > &");
             }
-            if(!$this->existingItemId($sale['itemId'])) {
+            if(!$this->existingItem($sale['itemId'])) {
                 throw new Exception("Invalid item id");
             }
         }

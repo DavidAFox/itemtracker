@@ -36,6 +36,9 @@
                                             <span [hidden]="!(sort==='quantity' && reversed)"><span class="glyphicon glyphicon-triangle-top"></span></span>
                                             <span [hidden]="!(sort==='quantity' && !reversed)"><span class="glyphicon glyphicon-triangle-bottom"></span></span>
                                         </th>
+                                        <th (click)="sortBy('didntsell')"><label>Didn't Sell</label>
+                                            <span [hidden]="!(sort==='didntsell' && reversed)"><span class="glyphicon glyphicon-triangle-top"></span></span>
+                                            <span [hidden]="!(sort==='didntsell' && !reversed)"><span class="glyphicon glyphicon-triangle-bottom"></span></span>
                                         <th><label>Actions</label></th>
                                     </tr>
                                 </thead>
@@ -46,6 +49,7 @@
                                         <td>{{item.price/100 | currency:'USD':true:'1.2-2'}}</td>
                                         <td>{{item.salePrice/100 | currency:'USD':true:'1.2-2'}}</td>
                                         <td>{{item.quantity}}</td>
+                                        <td><span [hidden]="!item.didntsell">DS</span></td>
                                         <td><button class="btn btn-primary" (click)="sold(item)">Sold</button>
                                         <button class="btn btn-primary" (click)="stolen(item)">Stolen</button></td>
                                     </tr>

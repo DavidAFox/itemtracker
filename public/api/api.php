@@ -102,12 +102,24 @@
             }
             sendResult(true, "", $id);
             break;
+          case 'byid':
+            if(!isset($req->getPath()[4]) || preg_match("/[^0-9]+/", $req->getPath()[4]) === 1) {
+                sendResult(false, "invalid id", NULL);
+            }
+            try {
+                $item = $data->getItemById($req->getPath()[4]);
+            }
+            catch(Exception $e) {
+                sendResult(false, $e->getMessage(), NULL);
+            }
+            sendResult(true, "", $item);
+            break;
           default:
             if(!isset($req->getPath()[3]) || preg_match("/[^0-9]+/", $req->getPath()[3]) === 1) {
                 sendResult(false, "invalid id", NULL);
             }
             try {
-                $valid = $data->existingItemId($req->getPath()[3]);
+                $valid = $data->existingItem($req->getPath()[3]);
             }
             catch(Exception $e) {
                 sendResult(false, $e->getMessage(), NULL);

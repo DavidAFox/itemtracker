@@ -46,6 +46,7 @@ export class SaleDetailComponent {
         this.sale.date.setMonth(this.month-1);
         this.sale.date.setFullYear(this.year);
         this._saleService.updateSale(this.sale).subscribe(function(sale) {
+                that.error = "";
                 that.close()
         }, error => that.error = error)
     }

@@ -30,8 +30,7 @@ System.register(['@angular/core', './item', './item_detail.component'], function
                 }
                 ItemModalComponent.prototype.close = function () {
                     $('#itemModal').modal('hide');
-                    this.reload.emit(this.item.id);
-                    console.log("closed");
+                    this.reload.emit(this.item.index);
                 };
                 __decorate([
                     core_1.Input(), 

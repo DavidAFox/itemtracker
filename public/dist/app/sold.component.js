@@ -99,6 +99,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     this.sale.date.setFullYear(this.year);
                     var that = this;
                     this._saleService.newSale(this.sale).subscribe(function (sale) {
+                        that.error = "";
                         var link = ['SaleList'];
                         that._router.navigate(link);
                     }, function (error) { return that.error = error; });

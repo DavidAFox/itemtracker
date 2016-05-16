@@ -43,7 +43,8 @@ export class StolenDetailComponent {
         this.stolen.date.setMonth(this.month-1);
         this.stolen.date.setFullYear(this.year);
         this._stolenService.updateStolen(this.stolen).subscribe(function(resp) {
-            that.close()
+            that.error = "";
+            that.close();
         }, error => that.error = error)
     }
     updatePrice(price) {

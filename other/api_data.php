@@ -93,8 +93,13 @@
             if($this->existingItemId($item['id'])) {
                 throw new Exception("An item with that id already exists");
             }
-            $stmt = $this->conn->prepare("INSERT INTO items (user_id, id, name, price, salePrice, quantity, description, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("iisiiiss", $this->user_id, $item['id'], $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date']);
+            if($item['didntsell']) {
+                $didntsell = 1;
+            } else {
+                $didntsell = 0;
+            }            
+            $stmt = $this->conn->prepare("INSERT INTO items (user_id, id, name, price, salePrice, quantity, description, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("iisiiiss", $this->user_id, $item['id'], $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $didntsell);
             if(!$stmt->execute()) {
                 throw new Exception("Error adding item");
             }
@@ -105,8 +110,13 @@
             if(!$this->existingItemId($item['id'])) {
                 throw new Exception("No item with that id found");
             }
-            $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, salePrice = ?, quantity = ?, description = ?, date = ? WHERE user_id = ? AND id = ?");
-            $stmt->bind_param("siiissii", $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $this->user_id, $item['id']);
+            if($item['didntsell']) {
+                $didntsell = 1;
+            } else {
+                $didntsell = 0;
+            }
+            $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, salePrice = ?, quantity = ?, description = ?, date = ? didntsell = ? WHERE user_id = ? AND id = ?");
+            $stmt->bind_param("siiissii", $item['name'], $item['price'], $item['salePrice'], $item['quantity'], $item['description'], $item['date'], $didntsell, $this->user_id, $item['id']);
             if(!$stmt->execute()) {
                 throw new Exception("Error adding item");
             }

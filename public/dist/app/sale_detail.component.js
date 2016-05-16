@@ -59,6 +59,7 @@ System.register(['@angular/core', './sale.service', './sale', './item'], functio
                     this.sale.date.setMonth(this.month - 1);
                     this.sale.date.setFullYear(this.year);
                     this._saleService.updateSale(this.sale).subscribe(function (sale) {
+                        that.error = "";
                         that.close();
                     }, function (error) { return that.error = error; });
                 };

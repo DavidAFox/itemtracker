@@ -20,8 +20,11 @@ export class ItemService {
     getItems():Observable<Item[]> {
         return this.http.get(this._apiUrl + 'list').map(this.extractData).catch(this.handleError);
     }
-    getItem(id:number):Observable<Item> {
-        return this.http.get(this._apiUrl + String(id)).map(this.extractData).catch(this.handleError);
+    getItem(index:number):Observable<Item> {
+        return this.http.get(this._apiUrl + String(index)).map(this.extractData).catch(this.handleError);
+    }
+    getItemById(id:number):Observable<Item> {
+        return this.http.get(this._apiUrl + "byid" + '/' + id).map(this.extractData).catch(this.handleError);
     }
     updateItem(item:Item):Observable<Item> {
         var body = JSON.stringify(item);

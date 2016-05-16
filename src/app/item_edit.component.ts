@@ -11,7 +11,7 @@ import {ItemDetailComponent} from './item_detail.component';
     directives: [ItemDetailComponent]
 })
 export class ItemEditComponent {
-    private item:Item = {id: null, name: "", price: null, salePrice: 0, quantity: 1, description: "", date: new Date()};
+    private item:Item = new Item();
     private error;
     constructor(private _itemService:ItemService, private _routeParams: RouteParams, private _router: Router) {        
     }
@@ -28,7 +28,7 @@ export class ItemEditComponent {
         }
     }
     getItem(id: number) {
-        return this._itemService.getItem(id);
+        return this._itemService.getItemById(id);
     }
     save() {
         var link = ["ItemList"];
