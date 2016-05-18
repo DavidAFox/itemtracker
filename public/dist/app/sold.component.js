@@ -89,7 +89,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                     }
                 };
                 SoldComponent.prototype.getItem = function (id) {
-                    return this._itemService.getItem(id);
+                    return this._itemService.getItemById(id);
                 };
                 SoldComponent.prototype.save = function () {
                     //check that item quantity >= sold quantity

@@ -16699,7 +16699,7 @@ System.register("dist/app/sold.component.js", ["npm:@angular/core@2.0.0-rc.0.js"
           }
         };
         SoldComponent.prototype.getItem = function(id) {
-          return this._itemService.getItem(id);
+          return this._itemService.getItemById(id);
         };
         SoldComponent.prototype.save = function() {
           this.sale.date.setDate(this.day);
@@ -16788,7 +16788,7 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
             var link = ['ItemList'];
             that._router.navigate(link);
           } else {
-            that._itemService.getItem(id).subscribe(function(item) {
+            that._itemService.getItemById(id).subscribe(function(item) {
               var d = new Date();
               that.day = d.getDate();
               that.month = d.getMonth() + 1;

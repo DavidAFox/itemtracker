@@ -44,7 +44,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                         that._router.navigate(link);
                     }
                     else {
-                        that._itemService.getItem(id).subscribe(function (item) {
+                        that._itemService.getItemById(id).subscribe(function (item) {
                             var d = new Date();
                             that.day = d.getDate();
                             that.month = d.getMonth() + 1;

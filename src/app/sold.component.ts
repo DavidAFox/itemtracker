@@ -72,7 +72,7 @@ export class SoldComponent implements OnInit{
         }
     }
     getItem(id: number) {
-        return this._itemService.getItem(id);
+        return this._itemService.getItemById(id);
     }
     save() {
         //check that item quantity >= sold quantity
