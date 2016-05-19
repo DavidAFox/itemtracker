@@ -59,7 +59,7 @@ export class SoldComponent implements OnInit{
                         sTaxRate: .0725, 
                         quantity: 1, 
                         fee: 0, 
-                        itemId: item.id, 
+                        itemId: item.index, 
                         date: d,
                         where: "", 
                         comment: ""

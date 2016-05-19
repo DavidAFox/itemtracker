@@ -35,7 +35,7 @@ export class StolenComponent implements OnInit{
                     that.year = d.getFullYear();
                     that.item = item;
                     that.price = item.price /100;
-                    that.stolen = {id: 0, quantity: item.quantity, itemId: item.id, date: d, price: item.price}
+                    that.stolen = {id: 0, quantity: item.quantity, itemId: item.index, date: d, price: item.price}
             }, error => that.error = error)
         }
     }

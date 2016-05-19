@@ -27,55 +27,7 @@
     <script src="lib/angular2-polyfills.js"></script>
     <script src="lib/system.src.js"></script>
     <script src="lib/Rx.js"></script>
-<!--    <script src="lib/angular2.dev.js"></script> -->
-<!--    <script src="lib/router.dev.js"></script>
-    <script src="lib/http.dev.js"></script> -->
-    <!-- 2. Configure SystemJS -->
-<!--    <script>
-      System.config({
-        map: {
-          '@angular': '/lib/@angular',
-        },
-        packages: { 
-              dist: {
-                app: {
-                    format: 'register',
-                    defaultExtension: 'js'
-                }
-              },
-              '@angular/core': {
-                 main: 'index.js',
-                defaultExtension: 'js'
-              },
-    '@angular/compiler': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/common': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser-dynamic': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/router-deprecated': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/http': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    }
-        }
-      });
-    </script>
-    -->
-<!--<script src="jspm_packages/system.js"></script> -->
+
 <script src="config.js"></script>
 <script>
       System.import('dist/app/main')

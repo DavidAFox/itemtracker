@@ -16684,7 +16684,7 @@ System.register("dist/app/sold.component.js", ["npm:@angular/core@2.0.0-rc.0.js"
                 sTaxRate: .0725,
                 quantity: 1,
                 fee: 0,
-                itemId: item.id,
+                itemId: item.index,
                 date: d,
                 where: "",
                 comment: ""
@@ -16798,7 +16798,7 @@ System.register("dist/app/stolen.component.js", ["npm:@angular/core@2.0.0-rc.0.j
               that.stolen = {
                 id: 0,
                 quantity: item.quantity,
-                itemId: item.id,
+                itemId: item.index,
                 date: d,
                 price: item.price
               };

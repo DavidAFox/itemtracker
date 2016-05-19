@@ -55,7 +55,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let stolen of stolens" (click)="edit(stolen)">
-                                    <td>{{stolen.itemId}}</td>
+                                    <td>{{items[stolen.id] ? items[stolen.id].id:0}}</td>
                                     <td>{{itemNames[stolen.itemId]}}</td>
                                     <td>{{stolen.quantity}}</td>
                                     <td>{{stolen.price / 100 | currency:'USD':true:'1.2-2'}}</td>

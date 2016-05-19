@@ -76,7 +76,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './item.service'
                                 sTaxRate: .0725,
                                 quantity: 1,
                                 fee: 0,
-                                itemId: item.id,
+                                itemId: item.index,
                                 date: d,
                                 where: "",
                                 comment: ""

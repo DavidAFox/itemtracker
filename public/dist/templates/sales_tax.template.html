@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let sale of sales" (click)="edit(sale)">
-                                    <td>{{sale.itemId}}</td>
+                                    <td>{{items[sale.id] ? items[sale.id].id : 0}}</td>
                                     <td>{{itemNames[sale.itemId]}}</td>
                                     <td>{{sale.price / 100 | currency:'USD':true:'1.2-2'}}</td>
                                     <td>{{sale.quantity}}</td>

@@ -111,7 +111,7 @@
         //return a suggested id for the next item insertion but does not control for concurrency
         public function nextItemId() {
             try{
-                $stmt = $this->conn->prepare("SELECT * FROM (SELECT t1.id as id FROM items t1 WHERE NOT EXISTS(SELECT * FROM items t2 WHERE t2.id=t1.id + 1 AND user_id = ?)UNION SELECT 1 AS id WHERE NOT EXISTS (SELECT* FROM items t3 WHERE t3.id=1 AND user_id = ?)) ot ORDER BY 1");
+                $stmt = $this->conn->prepare("SELECT * FROM (SELECT t1.id as id FROM items t1 WHERE NOT EXISTS(SELECT * FROM items t2 WHERE t2.id=t1.id + 1 AND user_id = ?)UNION SELECT 0 AS id WHERE NOT EXISTS (SELECT* FROM items t3 WHERE t3.id=1 AND user_id = ?)) ot ORDER BY 1");
                 $stmt->execute(array($this->user_id, $this->user_id));
             } catch(PDOException $e) {
                 throw new Exception("Error getting next id");
